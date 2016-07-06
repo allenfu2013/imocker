@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ApiInfo">
+	<insert id="insert" parameterClass="org.allen.imocker.entity.ApiInfo">
+		insert into api_info(
+			api_name,
+			ret_result,
+			status,
+			created_at,
+			created_by,
+			updated_at,
+			updated_by
+		) values (
+			#apiName#, 
+			#retResult#,
+			#status#,
+			now(),
+			'sys',
+			now(),
+			'sys'
+		)
+	</insert>
+	
+	<sql id="all_columns">
+		id id,
+		api_name apiName,
+		ret_result retResult,
+		status status,
+		created_at createdAt,
+		created_by createdBy,
+		updated_at updatedAt,
+		updated_by updatedBy
+	</sql>
+	
+	<select id="findByCondition" parameterClass="map" resultClass="org.allen.imocker.entity.ApiInfo">
+		select <include refid="all_columns"/> from api_info
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="apiName">
+				api_name = #apiName#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status = #status#
+			</isNotEmpty>
+		</dynamic> 
+	</select>
+</sqlMap>
