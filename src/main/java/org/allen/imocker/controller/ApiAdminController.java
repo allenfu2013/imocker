@@ -51,11 +51,11 @@ public class ApiAdminController {
 		return new Gson().toJson(apiResonse);
 	}
 	
-	@RequestMapping(value = "/query-all-api", method = RequestMethod.GET)
+	@RequestMapping(value = "/query-all-api", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String queryAllApi() {
 		ApiResonse apiResonse = null;
-		Map<String, Object> cond = new HashMap<>();
+		Map<String, Object> cond = new HashMap<String, Object>();
 		try {
 			List<ApiInfo> apiInfoList = apiInfoDao.findByCondition(cond);
 			apiResonse = new ApiResonse(ApiResponseCode.SUCCESS);
