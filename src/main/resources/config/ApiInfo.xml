@@ -43,6 +43,7 @@
 			<isNotEmpty prepend="and" property="status">
 				status = #status#
 			</isNotEmpty>
-		</dynamic> 
+		</dynamic>
+        order by updated_at desc limit #start#, #pageSize#
 	</select>
 </sqlMap>

@@ -1,0 +1,73 @@
+<div style="margin-left:20px;margin-right:20px;">
+
+    <div style="border: 1px solid #ccc; padding:5px; border-radius: 4px;">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="apiName">API名称</label>
+                    <input type="text" class="form-control" id="apiName" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="status">状态</label>
+                    <select id="status" class="form-control">
+                        <option value="">请选择</option>
+                        <option value="0">无效</option>
+                        <option value="1">有效</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" style="width:100px; margin-right:50px;" ng-click="search()">查询</button>
+            <button class="btn btn-info" ng-click="reset()">重置</button>
+        </div>
+    </div>
+
+
+    <div style="overflow:hidden;margin-top:10px;margin-bottom:10px;">
+        <lable>每页</lable>
+        <select style="display:inline;width:50px;" id="pageLimit">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+
+        <button class="btn btn-success" style="float:right!important;width:150px;" ng-click="create()">新建</button>
+    </div>
+
+    <div>
+        <table class="table table-bordered table-hover table-wrap">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>API名称</td>
+                <td>API返回值</td>
+                <td>创建人</td>
+                <td>更新人</td>
+                <td>更新时间</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="obj in list">
+                <td>{{(currentPage-1)*pageSize+$index+1}}</td>
+                <td>{{obj.apiName}}</td>
+                <td>{{obj.retResult}}</td>
+                <td>{{obj.createdBy}}</td>
+                <td>{{obj.updatedBy}}</td>
+                <td>{{obj.updatedAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>
+                    <a href="javascript:void(0)" ng-show="(obj.status==0 && username) || username=='admin'" ng-click="edit(obj.id)">编辑</a>
+                    <a href="javascript:void(0)" ng-show="username=='admin'" ng-click="delete(obj.id)">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <custom-pagination size="10" method="load"></custom-pagination>
+    </div>
+
+    <div ng-include="'tpls/api-manage-edit-modal.html'"></div>
+</div>
+

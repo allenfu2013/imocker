@@ -24,7 +24,7 @@
 
     <!--<mvc:default-servlet-handler/>-->
 
-    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+    <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
     <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -32,6 +32,6 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
         <property name="order" value="0"/>
-    </bean>
+    </bean>-->
 
 </beans>

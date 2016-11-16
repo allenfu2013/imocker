@@ -1,0 +1,5 @@
+table.table-wrap {border-collapse:collapse; /*table-layout:fixed;*/ WORD-BREAK: break-all; WORD-WRAP: break-word;}
+table.table-wrap th, table.table-wrap td {text-align: center;}
+table.table-wrap thead {background-color: #ccc}
+
+.input-warn {border: 1px solid #ff0000;}

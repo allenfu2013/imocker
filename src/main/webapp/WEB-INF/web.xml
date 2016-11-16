@@ -45,10 +45,10 @@
 
     <servlet-mapping>
         <servlet-name>spring</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>
     </servlet-mapping>
@@ -61,5 +61,5 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 </web-app>

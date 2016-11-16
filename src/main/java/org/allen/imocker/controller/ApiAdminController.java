@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/api-manage")
 public class ApiAdminController {
 
     @Autowired
@@ -48,12 +48,19 @@ public class ApiAdminController {
         return apiResponse;
     }
 
-    @RequestMapping(value = "/query-all-api", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse queryAllApi() {
+    public ApiResponse queryAllApi(@RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
+                                   @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                   @RequestParam(value = "apiName", required = false) String apiName,
+                                   @RequestParam(value = "status", required = false) Integer status) {
         ApiResponse apiResponse = null;
         Map<String, Object> cond = new HashMap<String, Object>();
         try {
+            cond.put("apiName", apiName);
+            cond.put("status", status);
+            cond.put("start", (pageNo - 1) * pageNo);
+            cond.put("pageSize", pageSize);
             List<ApiInfo> apiInfoList = apiInfoDao.findByCondition(cond);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             apiResponse.setData(apiInfoList);

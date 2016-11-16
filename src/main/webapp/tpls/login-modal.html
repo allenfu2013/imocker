@@ -1,0 +1,29 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal fade" data-backdrop="false" id="login-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:30%;margin-top:10%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">登录</h4>
+                        </div>
+                        <div class="modal-body" style="height:100px;">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input type="text" ng-keyup="loginEnter($event)" id="username" placeholder="UM账号" class="form-control" ng-model="username">
+                                </div>
+                                <div class="col-md-5" ng-show="username=='admin'">
+                                    <input type="password" ng-keyup="loginEnter($event)" id="password" class="form-control" ng-model="password">
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-success" ng-click="login()">登录</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
