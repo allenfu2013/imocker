@@ -46,7 +46,7 @@
 
             if ($rootScope.checkStatus) {
                 if (confirm("确定执行?")) {
-                    $scope.notifyTemplate.updatedBy = $rootScope.username;
+                    $scope.apiInfo.updatedBy = $rootScope.username;
 
                     if (!id) {
                         /*创建*/
@@ -59,9 +59,13 @@
                         /*编辑*/
                         $scope.apiInfo.createdAt = null;
                         $scope.apiInfo.updatedAt = null;
-                        $http.post("rest/admin/api-manage/edit/" + id, $scope.apiInfo).success(function (data) {
-                            $("#api-manage-edit-modal").modal('hide');
-                            $scope.getData(1);
+                        $http.post("rest/admin/api-manage/edit", $scope.apiInfo).success(function (ret) {
+                            if (ret.retCode == "00") {
+                                $("#api-manage-edit-modal").modal('hide');
+                                $scope.getData(1);
+                            } else {
+                                alert("更新失败，请联系管理员");
+                            }
                         });
                     }
                 }
@@ -73,11 +77,15 @@
                 $("#username").val("");
                 $("#login-modal").modal();
             } else {
-                $scope.notifyTemplate = {};
+                $scope.apiInfo = {};
                 $rootScope.clearInputWarn();
-                $http.get("rest/admin/api-manage/get/" + id).success(function (data) {
-                    $scope.apiInfo = data;
-                    $("#api-manage-edit-modal").modal();
+                $http.get("rest/admin/api-manage/get-by-id?id=" + id).success(function (ret) {
+                    if (ret.retCode == "00") {
+                        $scope.apiInfo = ret.data;
+                        $("#api-manage-edit-modal").modal();
+                    } else {
+                        alert("服务器异常, 请联系系统管理员");
+                    }
                 });
             }
         };

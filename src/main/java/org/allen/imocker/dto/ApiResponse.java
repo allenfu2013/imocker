@@ -1,4 +1,4 @@
-package org.allen.imocker.common;
+package org.allen.imocker.dto;
 
 public class ApiResponse {
 

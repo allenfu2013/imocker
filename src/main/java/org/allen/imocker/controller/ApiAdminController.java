@@ -4,18 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.allen.imocker.common.ApiResponse;
-import org.allen.imocker.common.ApiResponseCode;
+import com.alibaba.fastjson.JSON;
+import org.allen.imocker.dto.ApiResponse;
+import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin/api-manage")
@@ -24,27 +22,24 @@ public class ApiAdminController {
     @Autowired
     private ApiInfoDao apiInfoDao;
 
-    @RequestMapping(value = "/add-api", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse addApi(@RequestParam("apiName") String apiName,
-                              @RequestParam("retResult") String retResult) {
+    public ApiResponse addApi(@RequestBody ApiInfo apiInfo) {
+        LoggerUtil.info(this, String.format("[/admin/api-manage/add] apiInfo:%s", JSON.toJSONString(apiInfo)));
         ApiResponse apiResponse = null;
-        if (StringUtils.isEmpty(apiName) || StringUtils.isEmpty(retResult)) {
+        if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
             apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
         } else {
-            ApiInfo apiInfo = new ApiInfo();
-            apiInfo.setApiName(apiName);
-            apiInfo.setRetResult(retResult);
             apiInfo.setStatus(1);
             try {
                 apiInfoDao.insertApiInfo(apiInfo);
                 apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             } catch (Exception e) {
-                LoggerUtil.error(this, String.format("insert api_info failed, apiName: %s, retResult: %s", apiName, retResult), e);
+                LoggerUtil.error(this, String.format("insert api_info failed, error:%s", e.getMessage()), e);
                 apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
             }
         }
-
+        LoggerUtil.info(this, String.format("[/admin/api-manage/add] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 
@@ -54,6 +49,8 @@ public class ApiAdminController {
                                    @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "apiName", required = false) String apiName,
                                    @RequestParam(value = "status", required = false) Integer status) {
+        LoggerUtil.info(this, String.format("[/admin/api-manage/list] pageNo:%s, pageSize:%s, apiName:%s, status:%s",
+                pageNo, pageSize, apiName, status));
         ApiResponse apiResponse = null;
         Map<String, Object> cond = new HashMap<String, Object>();
         try {
@@ -68,7 +65,35 @@ public class ApiAdminController {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
             LoggerUtil.error(this, String.format("query all api failed"), e);
         }
+        LoggerUtil.info(this, String.format("[/admin/api-manage/list] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 
+    @RequestMapping(value = "get-by-id", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getApiInfoById(@RequestParam Long id) {
+        LoggerUtil.info(this, String.format("[/admin/api-manage/get-by-id] id:%s", id));
+        ApiInfo apiInfo = apiInfoDao.getById(id);
+        ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(apiInfo);
+        LoggerUtil.info(this, String.format("[/admin/api-manage/get-by-id] result:%s", JSON.toJSONString(apiResponse)));
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    @ResponseBody
+    public ApiResponse edit(@RequestBody ApiInfo apiInfo) {
+        ApiResponse apiResponse = null;
+        if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
+            apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
+        } else {
+            boolean isUpdate = apiInfoDao.update(apiInfo);
+            if (isUpdate) {
+                apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
+            } else {
+                apiResponse = new ApiResponse(ApiResponseCode.UPDATE_API_FAIL);
+            }
+        }
+        LoggerUtil.info(this, String.format("[/admin/api-manage/edit] result:%s", JSON.toJSONString(apiResponse)));
+        return apiResponse;
+    }
 }

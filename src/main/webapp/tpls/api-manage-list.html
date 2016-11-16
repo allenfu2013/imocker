@@ -59,7 +59,7 @@
                 <td>{{obj.updatedBy}}</td>
                 <td>{{obj.updatedAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td>
-                    <a href="javascript:void(0)" ng-show="(obj.status==0 && username) || username=='admin'" ng-click="edit(obj.id)">编辑</a>
+                    <a href="javascript:void(0)" ng-show="username" ng-click="edit(obj.id)">编辑</a>
                     <a href="javascript:void(0)" ng-show="username=='admin'" ng-click="delete(obj.id)">删除</a>
                 </td>
             </tr>

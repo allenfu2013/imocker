@@ -7,8 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.gson.Gson;
-import org.allen.imocker.common.ApiResponse;
-import org.allen.imocker.common.ApiResponseCode;
+import org.allen.imocker.dto.ApiResponse;
+import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.util.LoggerUtil;
