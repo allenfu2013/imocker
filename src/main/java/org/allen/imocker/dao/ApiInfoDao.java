@@ -17,6 +17,11 @@ public class ApiInfoDao extends BaseDao {
         return queryForList("ApiInfo.findByCondition", cond);
     }
 
+    public Long countByCondition(Map<String, Object> cond) {
+        Long total = queryForObject("ApiInfo.countByCondition", cond);
+        return total;
+    }
+
     public ApiInfo getById(long id) {
         return queryForObject("ApiInfo.getById", id);
     }

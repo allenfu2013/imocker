@@ -49,6 +49,18 @@
         order by updated_at desc limit #start#, #pageSize#
     </select>
 
+    <select id="countByCondition" parameterClass="map" resultClass="java.lang.Long">
+        select count(id) from api_info
+        <dynamic prepend="where">
+            <isNotEmpty prepend="and" property="apiName">
+                api_name like concat('%', #apiName#, '%')
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="status">
+                status = #status#
+            </isNotEmpty>
+        </dynamic>
+    </select>
+
     <select id="getById" resultClass="org.allen.imocker.entity.ApiInfo">
         select
         <include refid="all_columns"/>

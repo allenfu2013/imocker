@@ -15,8 +15,10 @@
 
             var url = "api/manage/list?pageNo=" + page + "&pageSize=" + pageSize +
                 "&apiName=" + apiName + "&status=" + status;
-            $http.get(url).success(function (data) {
-                callback && callback(data);
+            $http.get(url).success(function (ret) {
+                if(ret.retCode=="00") {
+                    callback && callback(ret.data);
+                }
             });
         };
 

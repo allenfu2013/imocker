@@ -1,5 +1,6 @@
 package org.allen.imocker.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dao.ApiInfoDao;
+import org.allen.imocker.dto.Pagination;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class ApiAdminController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse addApi(@RequestBody ApiInfo apiInfo) {
+    public ApiResponse add(@RequestBody ApiInfo apiInfo) {
         LoggerUtil.info(this, String.format("[/admin/api-manage/add] apiInfo:%s", JSON.toJSONString(apiInfo)));
         ApiResponse apiResponse = null;
         if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
@@ -45,7 +47,7 @@ public class ApiAdminController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse queryAllApi(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+    public ApiResponse list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "apiName", required = false) String apiName,
                                    @RequestParam(value = "status", required = false) Integer status) {
@@ -56,11 +58,20 @@ public class ApiAdminController {
         try {
             cond.put("apiName", apiName);
             cond.put("status", status);
-            cond.put("start", (pageNo - 1) * pageNo);
-            cond.put("pageSize", pageSize);
-            List<ApiInfo> apiInfoList = apiInfoDao.findByCondition(cond);
+
+            List<ApiInfo> apiInfoList = null;
+            Long total = apiInfoDao.countByCondition(cond);
+            if (total > 0) {
+                cond.put("start", (pageNo - 1) * pageSize);
+                cond.put("pageSize", pageSize);
+                apiInfoList = apiInfoDao.findByCondition(cond);
+            } else {
+                apiInfoList = new ArrayList<>();
+            }
+            Pagination pagination = new Pagination(pageSize, total, pageNo);
+            pagination.setData(apiInfoList);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
-            apiResponse.setData(apiInfoList);
+            apiResponse.setData(pagination);
         } catch (Exception e) {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
             LoggerUtil.error(this, String.format("query all api failed"), e);
@@ -71,7 +82,7 @@ public class ApiAdminController {
 
     @RequestMapping(value = "get-by-id", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getApiInfoById(@RequestParam Long id) {
+    public ApiResponse getById(@RequestParam Long id) {
         LoggerUtil.info(this, String.format("[/admin/api-manage/get-by-id] id:%s", id));
         ApiInfo apiInfo = apiInfoDao.getById(id);
         ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(apiInfo);
