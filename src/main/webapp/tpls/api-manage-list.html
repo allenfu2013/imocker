@@ -43,6 +43,7 @@
             <tr>
                 <td>#</td>
                 <td>API名称</td>
+                <td>URL</td>
                 <td>API返回值</td>
                 <td>创建人</td>
                 <td>更新人</td>
@@ -52,13 +53,14 @@
             </thead>
             <tbody>
             <tr ng-repeat="obj in list">
-                <td>{{(currentPage-1)*pageSize+$index+1}}</td>
-                <td>{{obj.apiName}}</td>
-                <td>{{obj.retResult}}</td>
-                <td>{{obj.createdBy}}</td>
-                <td>{{obj.updatedBy}}</td>
-                <td>{{obj.updatedAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td>
+                <td style="width:5%">{{(currentPage-1)*pageSize+$index+1}}</td>
+                <td style="width:10%">{{obj.apiName}}</td>
+                <td style="width:10%"><a href="{{uriPrefix}}{{obj.apiName}}" target="_blank">{{uriPrefix}}{{obj.apiName}}</a></td>
+                <td style="width:40%">{{obj.retResult}}</td>
+                <td style="width:5%">{{obj.createdBy}}</td>
+                <td style="width:5%">{{obj.updatedBy}}</td>
+                <td style="width:10%">{{obj.updatedAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td style="width:10%">
                     <a href="javascript:void(0)" ng-show="username" ng-click="edit(obj.id)">编辑</a>
                     <a href="javascript:void(0)" ng-show="username=='admin'" ng-click="delete(obj.id)">删除</a>
                 </td>

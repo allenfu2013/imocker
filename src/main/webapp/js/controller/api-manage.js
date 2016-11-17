@@ -13,7 +13,7 @@
             var pageSize = $("#pageLimit").val();
             $scope.pageSize = pageSize;
 
-            var url = "rest/admin/api-manage/list?pageNo=" + page + "&pageSize=" + pageSize +
+            var url = "api/manage/list?pageNo=" + page + "&pageSize=" + pageSize +
                 "&apiName=" + apiName + "&status=" + status;
             $http.get(url).success(function (data) {
                 callback && callback(data);
@@ -51,7 +51,7 @@
                     if (!id) {
                         /*创建*/
                         $scope.apiInfo.createdBy = $rootScope.username;
-                        $http.post("rest/admin/api-manage/add", $scope.apiInfo).success(function (data) {
+                        $http.post("api/manage/add", $scope.apiInfo).success(function (ret) {
                             $("#api-manage-edit-modal").modal('hide');
                             $scope.getData(1);
                         });
@@ -59,7 +59,7 @@
                         /*编辑*/
                         $scope.apiInfo.createdAt = null;
                         $scope.apiInfo.updatedAt = null;
-                        $http.post("rest/admin/api-manage/edit", $scope.apiInfo).success(function (ret) {
+                        $http.post("api/manage/edit", $scope.apiInfo).success(function (ret) {
                             if (ret.retCode == "00") {
                                 $("#api-manage-edit-modal").modal('hide');
                                 $scope.getData(1);
@@ -79,7 +79,7 @@
             } else {
                 $scope.apiInfo = {};
                 $rootScope.clearInputWarn();
-                $http.get("rest/admin/api-manage/get-by-id?id=" + id).success(function (ret) {
+                $http.get("api/manage/get-by-id?id=" + id).success(function (ret) {
                     if (ret.retCode == "00") {
                         $scope.apiInfo = ret.data;
                         $("#api-manage-edit-modal").modal();
@@ -96,7 +96,7 @@
                 $("#login-modal").modal();
             } else {
                 if (confirm("确定执行?")) {
-                    $http.delete("rest/admin/api-manage/delete/" + id).success(function (data) {
+                    $http.delete("api/manage/delete/" + id).success(function (ret) {
                         $scope.getData(1);
                     });
                 }

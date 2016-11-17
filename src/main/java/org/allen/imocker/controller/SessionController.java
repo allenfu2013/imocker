@@ -1,6 +1,7 @@
 package org.allen.imocker.controller;
 
 import org.allen.imocker.common.AppProperties;
+import org.allen.imocker.dto.SessionInfo;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dto.Constants;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class UserController {
+public class SessionController {
 
     @Autowired
     private AppProperties appProperties;
@@ -42,7 +43,10 @@ public class UserController {
     @RequestMapping(value = "/check-session", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse checkSession(HttpSession httpSession) {
+        SessionInfo sessionInfo = new SessionInfo();
+        sessionInfo.setUriPrefix(appProperties.getAppUriPrefix());
         User user = (User) httpSession.getAttribute(Constants.SESSION_KEY);
-        return new ApiResponse(ApiResponseCode.SUCCESS).setData(user);
+        sessionInfo.setUser(user);
+        return new ApiResponse(ApiResponseCode.SUCCESS).setData(sessionInfo);
     }
 }

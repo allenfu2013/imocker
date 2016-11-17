@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/admin/api-manage")
+@RequestMapping("/manage")
 public class ApiAdminController {
 
     @Autowired
@@ -45,8 +45,8 @@ public class ApiAdminController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse queryAllApi(@RequestParam(value = "pageNo", required = false, defaultValue = "1") Integer pageNo,
-                                   @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+    public ApiResponse queryAllApi(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                    @RequestParam(value = "apiName", required = false) String apiName,
                                    @RequestParam(value = "status", required = false) Integer status) {
         LoggerUtil.info(this, String.format("[/admin/api-manage/list] pageNo:%s, pageSize:%s, apiName:%s, status:%s",

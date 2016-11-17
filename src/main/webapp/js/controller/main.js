@@ -6,6 +6,7 @@
     app.controller('MainController', function ($scope, $rootScope, $http, $location, $cookieStore) {
         var username = $cookieStore.get("username");
         $rootScope.username = username;
+        $rootScope.uriPrefix = null;
         $scope.activeWhen = function (value) {
             return value ? 'active' : '';
         };
@@ -23,7 +24,7 @@
             var username = $("#username").val();
             var password = $("#password").val();
             if (username) {
-                $http.post("rest/login", {username: username, password: password}).success(function (ret) {
+                $http.post("api/login", {username: username, password: password}).success(function (ret) {
                     if (ret.data == "00") {
                         $rootScope.username = username;
                         $cookieStore.put("username", username);
@@ -36,7 +37,7 @@
         };
 
         $scope.logout = function () {
-            $http.post("rest/logout").success(function () {
+            $http.post("api/logout").success(function () {
                 $rootScope.username = null;
                 $cookieStore.remove("username");
             });
@@ -50,12 +51,17 @@
         };
 
         var checkSession = function () {
-            $http.get("rest/check-session").success(function (ret) {
-                if (ret.data) {
-                    $rootScope.username = ret.data.username;
-                } else {
-                    $rootScope.username = null;
-                    $cookieStore.remove("username");
+            $http.get("api/check-session").success(function (ret) {
+                if(ret.retCode=="00") {
+                    var sessionInfo = ret.data;
+                    $rootScope.uriPrefix = sessionInfo.uriPrefix;
+                    var user = sessionInfo.user;
+                    if (user) {
+                        $rootScope.username = user.username;
+                    } else {
+                        $rootScope.username = null;
+                        $cookieStore.remove("username");
+                    }
                 }
             });
         }
