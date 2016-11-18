@@ -13,13 +13,16 @@ public class ApiInfoDao extends BaseDao {
         return (Integer) insert("ApiInfo.insert", apiInfo);
     }
 
+    public List<ApiInfo> findApiInfoByName(String apiName) {
+        return queryForList("ApiInfo.findApiInfoByName", apiName);
+    }
+
     public List<ApiInfo> findByCondition(Map<String, Object> cond) {
         return queryForList("ApiInfo.findByCondition", cond);
     }
 
     public Long countByCondition(Map<String, Object> cond) {
-        Long total = queryForObject("ApiInfo.countByCondition", cond);
-        return total;
+        return queryForObject("ApiInfo.countByCondition", cond);
     }
 
     public ApiInfo getById(long id) {

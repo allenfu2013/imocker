@@ -1,8 +1,6 @@
 package org.allen.imocker.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,7 +8,6 @@ import com.alibaba.fastjson.JSON;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dao.ApiInfoDao;
-import org.allen.imocker.dto.Constants;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ApiController {
 
-    private static final String PREFIX_API = "/api/";
-
     @Autowired
     private ApiInfoDao apiInfoDao;
 
@@ -31,26 +26,20 @@ public class ApiController {
     @ResponseBody
     public Object mockApi(HttpServletRequest request) {
         Object apiResponse = null;
-        String pathInfo = request.getPathInfo();
-        String apiName = pathInfo.substring(PREFIX_API.length());
-        LoggerUtil.info(this, String.format("pathInfo:%s, apiName: %s", pathInfo, apiName));
-        Map<String, Object> cond = new HashMap<String, Object>();
-        cond.put("apiName", apiName);
-        cond.put("status", 1);
-        cond.put("start", 0);
-        cond.put("pageSize", Constants.PAGE_SIZE);
+        String apiName = request.getPathInfo().substring(1);
+        LoggerUtil.info(this, String.format("[imocker] api request, apiName: %s", apiName));
         try {
-            List<ApiInfo> apiInfoList = apiInfoDao.findByCondition(cond);
+            List<ApiInfo> apiInfoList = apiInfoDao.findApiInfoByName(apiName);
             if (!CollectionUtils.isEmpty(apiInfoList)) {
                 apiResponse = JSON.parseObject(apiInfoList.get(0).getRetResult());
             } else {
-                apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(String.format("No invalid api found, api: %s", apiName));
+                apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(String.format("api not found, api: %s", apiName));
             }
         } catch (Exception e) {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
-            LoggerUtil.error(this, String.format("find api_info failed, apiName: %s", apiName), e);
+            LoggerUtil.error(this, String.format("[imocker] mocker api failed, apiName: %s", apiName), e);
         }
-        LoggerUtil.info(this, String.format("[%s] result: %s", apiName, JSON.toJSONString(apiResponse)));
+        LoggerUtil.info(this, String.format("[imocker] apiName: %s, result: %s", apiName, JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 }

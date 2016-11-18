@@ -34,6 +34,13 @@
         updated_by updatedBy
     </sql>
 
+    <select id="findApiInfoByName" parameterClass="string" resultClass="org.allen.imocker.entity.ApiInfo">
+        select
+        <include refid="all_columns"/>
+        from api_info
+        where api_name = #apiName# and status = 1
+    </select>
+
     <select id="findByCondition" parameterClass="map" resultClass="org.allen.imocker.entity.ApiInfo">
         select
         <include refid="all_columns"/>
