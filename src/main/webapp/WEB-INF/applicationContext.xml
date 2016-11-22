@@ -56,4 +56,5 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <import resource="xfire.xml"/>
 </beans>
