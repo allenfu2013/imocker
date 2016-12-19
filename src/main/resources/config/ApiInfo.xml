@@ -6,6 +6,7 @@
     <insert id="insert" parameterClass="org.allen.imocker.entity.ApiInfo">
         insert into api_info(
             api_name,
+            method,
             ret_result,
             status,
             created_at,
@@ -14,18 +15,20 @@
             updated_by
         ) values (
             #apiName#,
+            #method#,
             #retResult#,
             #status#,
             now(),
-            'sys',
+            #createdBy#,
             now(),
-            'sys'
+            #updatedBy#
         )
     </insert>
 
     <sql id="all_columns">
         id id,
         api_name apiName,
+        method method,
         ret_result retResult,
         status status,
         created_at createdAt,
@@ -75,7 +78,7 @@
     </select>
 
     <update id="update" parameterClass="org.allen.imocker.entity.ApiInfo">
-        update api_info set api_name = #apiName#, ret_result = #retResult#, status = #status#, updated_by = #updatedBy#, updated_at = now()
+        update api_info set api_name = #apiName#, method = #method#, ret_result = #retResult#, status = #status#, updated_by = #updatedBy#, updated_at = now()
         where id = #id#
     </update>
 </sqlMap>

@@ -5,8 +5,10 @@ import java.util.Date;
 public class ApiInfo {
 	
 	private Integer id;
-	
+
 	private String apiName;
+
+    private String method;
 	
 	private String retResult;
 	
@@ -36,7 +38,15 @@ public class ApiInfo {
 		this.apiName = apiName;
 	}
 
-	public String getRetResult() {
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getRetResult() {
 		return retResult;
 	}
 

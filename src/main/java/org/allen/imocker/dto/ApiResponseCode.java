@@ -5,7 +5,8 @@ public enum ApiResponseCode {
     ILLEGAL_PARAMETER("01", "illegal parameter"),
     SERVER_ERROR("02", "server internal error"),
     API_NOT_FOUND("03", "api not found"),
-    UPDATE_API_FAIL("04", "failed to update api info");
+    UPDATE_API_FAIL("04", "failed to update api info"),
+    API_METHOD_INVALID("05", "bad http method for api");
 
     private String code;
 

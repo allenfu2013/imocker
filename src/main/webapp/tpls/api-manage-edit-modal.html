@@ -18,12 +18,22 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="method">HTTP方法<span style="color: red; font-size:20px;">*</span></label>
+                                        <select id="method" class="form-control" ng-model="apiInfo.method">
+                                            <option value="GET">GET</option>
+                                            <option value="POST">POST</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <label for="retResultEdit">API返回值<span style="color: red; font-size:20px;">*</span></label>
                                         <textarea class="form-control validate-inp-template" id="retResultEdit" ng-model="apiInfo.retResult"></textarea>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div class="modal-footer" id="apiInfoOpsBtn" style="margin-top:50px;">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

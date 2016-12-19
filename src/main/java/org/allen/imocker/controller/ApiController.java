@@ -27,13 +27,18 @@ public class ApiController {
     public Object mockApi(HttpServletRequest request) {
         Object apiResponse = null;
         String apiName = request.getPathInfo().substring(1);
-        LoggerUtil.info(this, String.format("[imocker] api request, apiName: %s", apiName));
+        String method = request.getMethod();
+        LoggerUtil.info(this, String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
         try {
             List<ApiInfo> apiInfoList = apiInfoDao.findApiInfoByName(apiName);
             if (!CollectionUtils.isEmpty(apiInfoList)) {
-                apiResponse = JSON.parseObject(apiInfoList.get(0).getRetResult());
+                if (method.equalsIgnoreCase(apiInfoList.get(0).getMethod())) {
+                    apiResponse = JSON.parseObject(apiInfoList.get(0).getRetResult());
+                } else {
+                    apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
+                }
             } else {
-                apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(String.format("api not found, api: %s", apiName));
+                apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);
             }
         } catch (Exception e) {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);

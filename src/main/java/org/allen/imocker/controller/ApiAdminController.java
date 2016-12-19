@@ -94,7 +94,9 @@ public class ApiAdminController {
     @ResponseBody
     public ApiResponse edit(@RequestBody ApiInfo apiInfo) {
         ApiResponse apiResponse = null;
-        if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
+        if (StringUtils.isEmpty(apiInfo.getApiName())
+                || StringUtils.isEmpty(apiInfo.getRetResult())
+                || StringUtils.isEmpty(apiInfo.getMethod())) {
             apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
         } else {
             boolean isUpdate = apiInfoDao.update(apiInfo);
