@@ -32,4 +32,8 @@ public class ApiInfoDao extends BaseDao {
     public boolean update(ApiInfo apiInfo) {
         return update("ApiInfo.update", apiInfo) > 0 ? true : false;
     }
+
+    public List<ApiInfo> findRegexApi() {
+        return queryForList("ApiInfo.findRegexApi", null);
+    }
 }

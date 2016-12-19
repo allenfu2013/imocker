@@ -10,6 +10,7 @@ import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.util.LoggerUtil;
+import org.allen.imocker.util.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -25,7 +26,7 @@ public class ApiController {
     @RequestMapping(value = "/**")
     @ResponseBody
     public Object mockApi(HttpServletRequest request) {
-        Object apiResponse = null;
+        Object apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);;
         String apiName = request.getPathInfo().substring(1);
         String method = request.getMethod();
         LoggerUtil.info(this, String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
@@ -38,7 +39,14 @@ public class ApiController {
                     apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
                 }
             } else {
-                apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);
+                List<ApiInfo> regexApiList = apiInfoDao.findRegexApi();
+                for (ApiInfo apiInfo : regexApiList) {
+                    String regex = apiInfo.getRegex();
+                    if (RegexUtil.isMatch(regex, apiName)) {
+                        apiResponse = JSON.parseObject(apiInfo.getRetResult());
+                        break;
+                    }
+                }
             }
         } catch (Exception e) {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);

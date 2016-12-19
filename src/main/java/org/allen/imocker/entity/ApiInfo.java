@@ -11,6 +11,8 @@ public class ApiInfo {
     private String method;
 	
 	private String retResult;
+
+    private String regex;
 	
 	private Integer status;
 	
@@ -54,7 +56,15 @@ public class ApiInfo {
 		this.retResult = retResult;
 	}
 
-	public Integer getStatus() {
+    public String getRegex() {
+        return regex;
+    }
+
+    public void setRegex(String regex) {
+        this.regex = regex;
+    }
+
+    public Integer getStatus() {
 		return status;
 	}
 

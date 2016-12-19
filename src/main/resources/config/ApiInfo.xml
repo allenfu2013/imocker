@@ -8,6 +8,7 @@
             api_name,
             method,
             ret_result,
+            regex,
             status,
             created_at,
             created_by,
@@ -17,6 +18,7 @@
             #apiName#,
             #method#,
             #retResult#,
+            #regex#,
             #status#,
             now(),
             #createdBy#,
@@ -30,6 +32,7 @@
         api_name apiName,
         method method,
         ret_result retResult,
+        regex regex,
         status status,
         created_at createdAt,
         created_by createdBy,
@@ -78,7 +81,13 @@
     </select>
 
     <update id="update" parameterClass="org.allen.imocker.entity.ApiInfo">
-        update api_info set api_name = #apiName#, method = #method#, ret_result = #retResult#, status = #status#, updated_by = #updatedBy#, updated_at = now()
+        update api_info set api_name = #apiName#, method = #method#, ret_result = #retResult#, regex = #regex#, status = #status#, updated_by = #updatedBy#, updated_at = now()
         where id = #id#
     </update>
+
+    <select id="findRegexApi" resultClass="org.allen.imocker.entity.ApiInfo">
+        select
+        <include refid="all_columns"/>
+        from api_info where status = 1 and regex is not null
+    </select>
 </sqlMap>
