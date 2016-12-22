@@ -36,4 +36,8 @@ public class ApiInfoDao extends BaseDao {
     public List<ApiInfo> findRegexApi() {
         return queryForList("ApiInfo.findRegexApi", null);
     }
+
+    public boolean deleteByCond(Map<String, Object> cond) {
+        return delete("ApiInfo.deleteByCond", cond) > 0 ? true : false;
+    }
 }

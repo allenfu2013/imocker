@@ -90,4 +90,8 @@
         <include refid="all_columns"/>
         from api_info where status = 1 and regex is not null and regex != ''
     </select>
+
+    <delete id="deleteByCond">
+        delete from api_info where id = #id#
+    </delete>
 </sqlMap>

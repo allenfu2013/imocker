@@ -27,7 +27,7 @@ public class ApiAdminController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse add(@RequestBody ApiInfo apiInfo) {
-        LoggerUtil.info(this, String.format("[/admin/api-manage/add] apiInfo:%s", JSON.toJSONString(apiInfo)));
+        LoggerUtil.info(this, String.format("[/manage/add] apiInfo:%s", JSON.toJSONString(apiInfo)));
         ApiResponse apiResponse = null;
         if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
             apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
@@ -44,7 +44,7 @@ public class ApiAdminController {
                 apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
             }
         }
-        LoggerUtil.info(this, String.format("[/admin/api-manage/add] result:%s", JSON.toJSONString(apiResponse)));
+        LoggerUtil.info(this, String.format("[/manage/add] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 
@@ -54,7 +54,7 @@ public class ApiAdminController {
                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                             @RequestParam(value = "apiName", required = false) String apiName,
                             @RequestParam(value = "status", required = false) Integer status) {
-        LoggerUtil.info(this, String.format("[/admin/api-manage/list] pageNo:%s, pageSize:%s, apiName:%s, status:%s",
+        LoggerUtil.info(this, String.format("[/manage/list] pageNo:%s, pageSize:%s, apiName:%s, status:%s",
                 pageNo, pageSize, apiName, status));
         ApiResponse apiResponse = null;
         Map<String, Object> cond = new HashMap<String, Object>();
@@ -79,23 +79,24 @@ public class ApiAdminController {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
             LoggerUtil.error(this, String.format("query all api failed"), e);
         }
-        LoggerUtil.info(this, String.format("[/admin/api-manage/list] result:%s", JSON.toJSONString(apiResponse)));
+        LoggerUtil.info(this, String.format("[/manage/list] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 
-    @RequestMapping(value = "get-by-id", method = RequestMethod.GET)
+    @RequestMapping(value = "/get-by-id", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse getById(@RequestParam Long id) {
-        LoggerUtil.info(this, String.format("[/admin/api-manage/get-by-id] id:%s", id));
+        LoggerUtil.info(this, String.format("[/manage/get-by-id] id:%s", id));
         ApiInfo apiInfo = apiInfoDao.getById(id);
         ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(apiInfo);
-        LoggerUtil.info(this, String.format("[/admin/api-manage/get-by-id] result:%s", JSON.toJSONString(apiResponse)));
+        LoggerUtil.info(this, String.format("[/manage/get-by-id] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 
-    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse edit(@RequestBody ApiInfo apiInfo) {
+        LoggerUtil.info(this, String.format("[/manage/edit] apiInfo:%s", apiInfo));
         ApiResponse apiResponse = null;
         if (StringUtils.isEmpty(apiInfo.getApiName())
                 || StringUtils.isEmpty(apiInfo.getRetResult())
@@ -112,7 +113,24 @@ public class ApiAdminController {
                 apiResponse = new ApiResponse(ApiResponseCode.UPDATE_API_FAIL);
             }
         }
-        LoggerUtil.info(this, String.format("[/admin/api-manage/edit] result:%s", JSON.toJSONString(apiResponse)));
+        LoggerUtil.info(this, String.format("[/manage/edit] result:%s", JSON.toJSONString(apiResponse)));
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ApiResponse delete(@PathVariable long id) {
+        LoggerUtil.info(this, String.format("[/manage/delete] id:%s", id));
+        ApiResponse apiResponse = null;
+        Map<String, Object> cond = new HashMap<>();
+        cond.put("id", id);
+        boolean flag = apiInfoDao.deleteByCond(cond);
+        if (flag) {
+            apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
+        } else {
+            apiResponse = new ApiResponse(ApiResponseCode.DELETE_API_FAIL);
+        }
+        LoggerUtil.info(this, String.format("[/manage/delete] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 }

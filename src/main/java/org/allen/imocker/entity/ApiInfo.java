@@ -103,5 +103,20 @@ public class ApiInfo {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
+
+    @Override
+    public String toString() {
+        return "ApiInfo{" +
+                "id=" + id +
+                ", apiName='" + apiName + '\'' +
+                ", method='" + method + '\'' +
+                ", retResult='" + retResult + '\'' +
+                ", regex='" + regex + '\'' +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
+    }
 }

@@ -50,4 +50,12 @@ public abstract class BaseDao {
             throw new RuntimeException(String.format("DAO queryForObject failed, sqlId=%s, param=%s, error=%s", sqlId, param, e.getCause().getMessage()), e);
         }
     }
+
+    public int delete(String sqlId, Object param) {
+        try {
+            return sqlMapClient.delete(sqlId, param);
+        } catch (SQLException e) {
+            throw new RuntimeException(String.format("DAO delete failed, sqlId=%s, param=%s, error=%s", sqlId, param, e.getCause().getMessage()), e);
+        }
+    }
 }
