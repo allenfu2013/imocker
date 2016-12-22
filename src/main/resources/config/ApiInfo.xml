@@ -88,6 +88,6 @@
     <select id="findRegexApi" resultClass="org.allen.imocker.entity.ApiInfo">
         select
         <include refid="all_columns"/>
-        from api_info where status = 1 and regex is not null
+        from api_info where status = 1 and regex is not null and regex != ''
     </select>
 </sqlMap>

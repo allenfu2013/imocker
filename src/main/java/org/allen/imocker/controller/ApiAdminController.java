@@ -34,6 +34,9 @@ public class ApiAdminController {
         } else {
             apiInfo.setStatus(1);
             try {
+                if (StringUtils.isEmpty(apiInfo.getRegex())) {
+                    apiInfo.setRegex(null);
+                }
                 apiInfoDao.insertApiInfo(apiInfo);
                 apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             } catch (Exception e) {
@@ -48,9 +51,9 @@ public class ApiAdminController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
-                                   @RequestParam(value = "apiName", required = false) String apiName,
-                                   @RequestParam(value = "status", required = false) Integer status) {
+                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                            @RequestParam(value = "apiName", required = false) String apiName,
+                            @RequestParam(value = "status", required = false) Integer status) {
         LoggerUtil.info(this, String.format("[/admin/api-manage/list] pageNo:%s, pageSize:%s, apiName:%s, status:%s",
                 pageNo, pageSize, apiName, status));
         ApiResponse apiResponse = null;
@@ -99,6 +102,9 @@ public class ApiAdminController {
                 || StringUtils.isEmpty(apiInfo.getMethod())) {
             apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
         } else {
+            if (StringUtils.isEmpty(apiInfo.getRegex())) {
+                apiInfo.setRegex(null);
+            }
             boolean isUpdate = apiInfoDao.update(apiInfo);
             if (isUpdate) {
                 apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
