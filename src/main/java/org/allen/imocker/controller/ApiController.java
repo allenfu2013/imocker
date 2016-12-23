@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
+import com.dianping.cat.Cat;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dao.ApiInfoDao;
@@ -34,6 +35,7 @@ public class ApiController {
             List<ApiInfo> apiInfoList = apiInfoDao.findApiInfoByName(apiName);
             if (!CollectionUtils.isEmpty(apiInfoList)) {
                 if (method.equalsIgnoreCase(apiInfoList.get(0).getMethod())) {
+                    Cat.logMetricForCount("CallMockApiCount");
                     apiResponse = JSON.parseObject(apiInfoList.get(0).getRetResult());
                 } else {
                     apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
