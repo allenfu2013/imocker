@@ -5,6 +5,7 @@ import com.dianping.cat.CatConstants;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.ibatis.sqlmap.client.SqlMapClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ public abstract class BaseDao {
     @Resource(name = "sqlMapClientTemplate")
     protected SqlMapClientTemplate sqlMapClientTemplate;
 
+    @Value("${jdbc.url}")
+    String databaseUrl;
+
     @Transactional(propagation = Propagation.REQUIRED)
     public Object insert(String sqlId, Object param) {
         Transaction t = Cat.newTransaction(CatConstants.TYPE_SQL, sqlId);
@@ -28,6 +32,7 @@ public abstract class BaseDao {
             Object obj = sqlMapClient.insert(sqlId, param);
             t.setStatus(Transaction.SUCCESS);
             Cat.logEvent("SQL.Method", "INSERT", Message.SUCCESS, null);
+            Cat.logEvent("SQL.Database", databaseUrl);
             return obj;
         } catch (SQLException e) {
             t.setStatus(e);
@@ -45,6 +50,7 @@ public abstract class BaseDao {
             int ret = sqlMapClient.update(sqlId, param);
             t.setStatus(Transaction.SUCCESS);
             Cat.logEvent("SQL.Method", "UPDATE", Message.SUCCESS, null);
+            Cat.logEvent("SQL.Database", databaseUrl);
             return ret;
         } catch (SQLException e) {
             t.setStatus(e);
@@ -61,6 +67,7 @@ public abstract class BaseDao {
             List list = sqlMapClient.queryForList(sqlId, param);
             t.setStatus(Transaction.SUCCESS);
             Cat.logEvent("SQL.Method", "SELECT", Message.SUCCESS, null);
+            Cat.logEvent("SQL.Database", databaseUrl);
             return list;
         } catch (SQLException e) {
             t.setStatus(e);
@@ -77,6 +84,7 @@ public abstract class BaseDao {
             Object obj = sqlMapClient.queryForObject(sqlId, param);
             t.setStatus(Transaction.SUCCESS);
             Cat.logEvent("SQL.Method", "SELECT", Message.SUCCESS, null);
+            Cat.logEvent("SQL.Database", databaseUrl);
             return (T) obj;
         } catch (SQLException e) {
             t.setStatus(e);
@@ -93,6 +101,7 @@ public abstract class BaseDao {
             int ret = sqlMapClient.delete(sqlId, param);
             t.setStatus(Transaction.SUCCESS);
             Cat.logEvent("SQL.Method", "DELETE", Message.SUCCESS, null);
+            Cat.logEvent("SQL.Database", databaseUrl);
             return ret;
         } catch (SQLException e) {
             t.setStatus(e);
