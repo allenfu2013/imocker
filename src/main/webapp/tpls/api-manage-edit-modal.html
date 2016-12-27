@@ -13,17 +13,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="apiNameEdit">API接口</label>
-                                        <input id="apiNameEdit" type="text" class="form-control validate-inp-template" ng-model="apiInfo.apiName" />
+                                        <input id="apiNameEdit" type="text" required="true" class="form-control validate-inp-template" ng-model="apiInfo.apiName" />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="regex">正则表达式(适用于API中有变量)</span></label>
-                                        <input id="regex" type="text" class="form-control" ng-model="apiInfo.regex" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="method">HTTP方法</label>
@@ -38,9 +30,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
+                                    <div class="alert alert-success" role="alert">API接口中数值型,字符串型变量使用{int},{string}代替。比如: /uses/{int}, /categories/{string}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="retResultEdit">API返回值</label>
-                                        <textarea class="form-control validate-inp-template" id="retResultEdit" ng-model="apiInfo.retResult"></textarea>
+                                        <textarea class="form-control validate-inp-template" rows="5" id="retResultEdit" ng-model="apiInfo.retResult"></textarea>
                                     </div>
                                 </div>
                             </div>

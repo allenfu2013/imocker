@@ -10,6 +10,7 @@ import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.dto.Pagination;
+import org.allen.imocker.dto.RegexEnum;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,7 @@ public class ApiAdminController {
         } else {
             apiInfo.setStatus(1);
             try {
-                if (StringUtils.isEmpty(apiInfo.getRegex())) {
-                    apiInfo.setRegex(null);
-                }
+                parseUriVariable(apiInfo);
                 apiInfoDao.insertApiInfo(apiInfo);
                 apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             } catch (Exception e) {
@@ -103,9 +102,7 @@ public class ApiAdminController {
                 || StringUtils.isEmpty(apiInfo.getMethod())) {
             apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
         } else {
-            if (StringUtils.isEmpty(apiInfo.getRegex())) {
-                apiInfo.setRegex(null);
-            }
+            parseUriVariable(apiInfo);
             boolean isUpdate = apiInfoDao.update(apiInfo);
             if (isUpdate) {
                 apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
@@ -133,4 +130,18 @@ public class ApiAdminController {
         LoggerUtil.info(this, String.format("[/manage/delete] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
+
+    private static void parseUriVariable(ApiInfo apiInfo) {
+        String apiName = apiInfo.getApiName();
+        if (apiName.contains("/" + RegexEnum.INT.getName() + "/")
+                || apiName.endsWith("/" + RegexEnum.INT.getName())) {
+            apiInfo.setRegex(apiName.replaceAll(RegexEnum.INT.getRegex(), RegexEnum.INT.getReplacement()));
+        } else if (apiName.contains("/" + RegexEnum.STRING.getName() + "/")
+                || apiName.endsWith("/" + RegexEnum.STRING.getName())) {
+            apiInfo.setRegex(apiName.replaceAll(RegexEnum.STRING.getRegex(), RegexEnum.STRING.getReplacement()));
+        } else {
+            apiInfo.setRegex(null);
+        }
+    }
+
 }

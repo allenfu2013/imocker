@@ -54,8 +54,12 @@
                         /*创建*/
                         $scope.apiInfo.createdBy = $rootScope.username;
                         $http.post("api/manage/add", $scope.apiInfo).success(function (ret) {
-                            $("#api-manage-edit-modal").modal('hide');
-                            $scope.getData(1);
+                            if(ret.retCode == "00") {
+                                $("#api-manage-edit-modal").modal('hide');
+                                $scope.getData(1);
+                            } else {
+                                alert("创建失败，请联系管理员");
+                            }
                         });
                     } else {
                         /*编辑*/
@@ -98,7 +102,7 @@
                 $("#login-modal").modal();
             } else {
                 if (confirm("确定执行?")) {
-                    $http.delete("api/manage/delete/" + id).success(function (ret) {
+                    $http.delete("api/manage/delete" + id).success(function (ret) {
                         $scope.getData(1);
                     });
                 }

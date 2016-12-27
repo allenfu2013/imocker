@@ -2,7 +2,7 @@
 
     <div style="border: 1px solid #ccc; padding:5px; border-radius: 4px;">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="apiName">API名称</label>
                     <input type="text" class="form-control" id="apiName" />
@@ -42,8 +42,9 @@
             <thead>
             <tr>
                 <td>#</td>
-                <td>API名称</td>
-                <td>URL</td>
+                <td>接口名称</td>
+                <td>方法</td>
+                <td>Mock地址</td>
                 <td>API返回值</td>
                 <td>创建人</td>
                 <td>更新人</td>
@@ -53,12 +54,13 @@
             </thead>
             <tbody>
             <tr ng-repeat="obj in list">
-                <td style="width:5%">{{(currentPage-1)*pageSize+$index+1}}</td>
+                <td style="width: 5%">{{(currentPage-1)*pageSize+$index+1}}</td>
                 <td style="width:10%">{{obj.apiName}}</td>
+                <td style="width: 5%">{{obj.method}}</td>
                 <td style="width:10%"><a href="{{uriPrefix}}{{obj.apiName}}" target="_blank">{{uriPrefix}}{{obj.apiName}}</a></td>
-                <td style="width:40%">{{obj.retResult}}</td>
-                <td style="width:5%">{{obj.createdBy}}</td>
-                <td style="width:5%">{{obj.updatedBy}}</td>
+                <td style="width:40%"><textarea class="form-control" readonly>{{obj.retResult}}</textarea></td>
+                <td style="width: 5%">{{obj.createdBy}}</td>
+                <td style="width: 5%">{{obj.updatedBy}}</td>
                 <td style="width:10%">{{obj.updatedAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                 <td style="width:10%">
                     <a href="javascript:void(0)" ng-show="username" ng-click="edit(obj.id)">编辑</a>

@@ -3,10 +3,15 @@
     var app = angular.module('imocker-app', ['ngCookies']);
 
     app.config(function ($routeProvider, $httpProvider) {
-        $routeProvider.when('/api-manage', {
+        $routeProvider.when('/home', {
+            templateUrl: 'tpls/home.html'
+        }).when('/api-manage', {
             controller: 'ApiManageCtrl',
             templateUrl: 'tpls/api-manage-list.html'
+        }).otherwise({
+            templateUrl: 'tpls/home.html'
         });
+
         $httpProvider.interceptors.push('httpInterceptor');
     });
 
