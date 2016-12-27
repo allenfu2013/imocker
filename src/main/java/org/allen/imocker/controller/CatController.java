@@ -1,11 +1,11 @@
 package org.allen.imocker.controller;
 
 import com.dianping.cat.Cat;
-import com.dianping.cat.CatConstants;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,21 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("cat")
 public class CatController {
 
-    @RequestMapping(value = "call", method = RequestMethod.GET)
+    @RequestMapping(value = "error", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse testRemoteCall() {
-        Transaction t = Cat.newTransaction(CatConstants.TYPE_CALL, "TestCall");
-        try {
-            Thread.sleep(200);
-            t.setStatus(Transaction.SUCCESS);
-            Cat.logEvent(CatConstants.TYPE_CALL, "TestCall", Message.SUCCESS, null);
-        } catch (Exception e) {
-            t.setStatus(e);
-            Cat.logEvent(CatConstants.TYPE_CALL, "TestCall", "99", null);
-        } finally {
-            t.complete();
-        }
-        return new ApiResponse(ApiResponseCode.SUCCESS);
+    public ApiResponse testError() {
+        LoggerUtil.error(this, "test error", new RuntimeException("test error"));
+        return new ApiResponse(ApiResponseCode.SERVER_ERROR);
     }
 
     @RequestMapping(value = "memcached", method = RequestMethod.GET)
@@ -47,7 +37,7 @@ public class CatController {
         } finally {
             t.complete();
         }
-        return new ApiResponse(ApiResponseCode.SUCCESS);
+        return new ApiResponse(ApiResponseCode.SUCCESS).setRetMsg("test memcached");
     }
 
     @RequestMapping(value = "redis", method = RequestMethod.GET)
@@ -64,7 +54,7 @@ public class CatController {
         } finally {
             t.complete();
         }
-        return new ApiResponse(ApiResponseCode.SUCCESS);
+        return new ApiResponse(ApiResponseCode.SUCCESS).setRetMsg("test redis");
     }
 
     @Value("${jdbc.url}")
@@ -85,17 +75,17 @@ public class CatController {
         } finally {
             t.complete();
         }
-        return new ApiResponse(ApiResponseCode.SUCCESS);
+        return new ApiResponse(ApiResponseCode.SUCCESS).setRetMsg("test sql");
     }
 
     @RequestMapping(value = "pigeonCall", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse pigeonCall() {
-        Transaction t = Cat.newTransaction("PigeonCall", "serviceName");
+        Transaction t = Cat.newTransaction("PigeonCall", "service1");
         try {
             Thread.sleep(50);
             t.setStatus(Transaction.SUCCESS);
-            Cat.logEvent("PigeonCall.app", "cat-sample");
+            Cat.logEvent("PigeonCall.app", "test-app-1");
             Cat.logEvent("PigeonCall.server", "192.168.1.3");
             Cat.logEvent("PigeonCall.port", "9999");
         } catch (Exception e) {
@@ -103,7 +93,25 @@ public class CatController {
         } finally {
             t.complete();
         }
-        return new ApiResponse(ApiResponseCode.SUCCESS);
+        return new ApiResponse(ApiResponseCode.SUCCESS).setRetMsg("test pigeon call");
+    }
+
+    @RequestMapping(value = "call", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse call() {
+        Transaction t = Cat.newTransaction("Call", "service2");
+        try {
+            Thread.sleep(50);
+            t.setStatus(Transaction.SUCCESS);
+            Cat.logEvent("Call.app", "test-app-2");
+            Cat.logEvent("Call.server", "192.168.1.3");
+            Cat.logEvent("Call.port", "9999");
+        } catch (Exception e) {
+            t.setStatus(e);
+        } finally {
+            t.complete();
+        }
+        return new ApiResponse(ApiResponseCode.SUCCESS).setRetMsg("test call");
     }
 
 }
