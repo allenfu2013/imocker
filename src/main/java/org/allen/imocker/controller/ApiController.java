@@ -28,7 +28,7 @@ public class ApiController {
     @ResponseBody
     public Object mockApi(HttpServletRequest request) {
         Object apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);;
-        String apiName = request.getPathInfo().substring(1);
+        String apiName = request.getPathInfo();
         String method = request.getMethod();
         LoggerUtil.info(this, String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
         try {
