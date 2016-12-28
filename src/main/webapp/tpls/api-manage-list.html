@@ -10,11 +10,13 @@
             </div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <label for="status">状态</label>
-                    <select id="status" class="form-control">
+                    <label for="method">方法</label>
+                    <select id="method" class="form-control">
                         <option value="">请选择</option>
-                        <option value="0">无效</option>
-                        <option value="1">有效</option>
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
                     </select>
                 </div>
             </div>
@@ -49,10 +51,13 @@
                 <td>创建人</td>
                 <td>更新人</td>
                 <td>更新时间</td>
-                <td>操作</td>
+                <td ng-show="username">操作</td>
             </tr>
             </thead>
             <tbody>
+            <tr ng-show="list.length==0">
+                <td colspan="9">没有找到任何数据</td>
+            </tr>
             <tr ng-repeat="obj in list">
                 <td style="width: 5%">{{(currentPage-1)*pageSize+$index+1}}</td>
                 <td style="width:10%">{{obj.apiName}}</td>
@@ -62,8 +67,8 @@
                 <td style="width: 5%">{{obj.createdBy}}</td>
                 <td style="width: 5%">{{obj.updatedBy}}</td>
                 <td style="width:10%">{{obj.updatedAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                <td style="width:10%">
-                    <a href="javascript:void(0)" ng-show="username" ng-click="edit(obj.id)">编辑</a>
+                <td style="width:10%" ng-show="username">
+                    <a href="javascript:void(0)" ng-click="edit(obj.id)">编辑</a>
                     <a href="javascript:void(0)" ng-show="username=='admin'" ng-click="delete(obj.id)">删除</a>
                 </td>
             </tr>

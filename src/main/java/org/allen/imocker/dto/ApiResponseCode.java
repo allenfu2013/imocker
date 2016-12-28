@@ -7,7 +7,8 @@ public enum ApiResponseCode {
     API_NOT_FOUND("03", "api not found"),
     UPDATE_API_FAIL("04", "failed to update api info"),
     API_METHOD_INVALID("05", "bad http method for api"),
-    DELETE_API_FAIL("06", "failed to delete api");
+    DELETE_API_FAIL("06", "failed to delete api"),
+    RET_INVALID_JSON("07", "invalid json result");
 
     private String code;
 

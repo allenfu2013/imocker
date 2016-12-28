@@ -52,13 +52,15 @@ public class ApiAdminController {
     public ApiResponse list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                             @RequestParam(value = "apiName", required = false) String apiName,
+                            @RequestParam(value = "method", required = false) String method,
                             @RequestParam(value = "status", required = false) Integer status) {
-        LoggerUtil.info(this, String.format("[/manage/list] pageNo:%s, pageSize:%s, apiName:%s, status:%s",
-                pageNo, pageSize, apiName, status));
+        LoggerUtil.info(this, String.format("[/manage/list] pageNo:%s, pageSize:%s, apiName:%s, method:%s, status:%s",
+                pageNo, pageSize, apiName, method, status));
         ApiResponse apiResponse = null;
         Map<String, Object> cond = new HashMap<String, Object>();
         try {
             cond.put("apiName", apiName);
+            cond.put("method", method);
             cond.put("status", status);
 
             List<ApiInfo> apiInfoList = null;

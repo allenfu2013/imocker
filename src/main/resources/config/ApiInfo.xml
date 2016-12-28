@@ -55,6 +55,9 @@
             <isNotEmpty prepend="and" property="apiName">
                 api_name like concat('%', #apiName#, '%')
             </isNotEmpty>
+            <isNotEmpty prepend="and" property="method">
+                method = #method#
+            </isNotEmpty>
             <isNotEmpty prepend="and" property="status">
                 status = #status#
             </isNotEmpty>
@@ -67,6 +70,9 @@
         <dynamic prepend="where">
             <isNotEmpty prepend="and" property="apiName">
                 api_name like concat('%', #apiName#, '%')
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="method">
+                method = #method#
             </isNotEmpty>
             <isNotEmpty prepend="and" property="status">
                 status = #status#

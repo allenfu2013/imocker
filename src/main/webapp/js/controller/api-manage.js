@@ -9,12 +9,12 @@
 
         $scope.load = function (page, size, callback) {
             var apiName = $("#apiName").val();
-            var status = $("#status").val();
+            var method = $("#method").val();
             var pageSize = $("#pageLimit").val();
             $scope.pageSize = pageSize;
 
             var url = "api/manage/list?pageNo=" + page + "&pageSize=" + pageSize +
-                "&apiName=" + apiName + "&status=" + status;
+                "&apiName=" + apiName + "&method=" + method;
             $http.get(url).success(function (ret) {
                 if(ret.retCode=="00") {
                     callback && callback(ret.data);
@@ -28,7 +28,7 @@
 
         $scope.reset = function () {
             $("#apiName").val("");
-            $("#status").val("");
+            $("#method").val("");
         };
 
         $scope.create = function () {
@@ -36,7 +36,7 @@
                 $("#username").val("");
                 $("#login-modal").modal();
             } else {
-                $scope.apiInfo = {};
+                $scope.apiInfo = {"method":"GET"};
                 $("#api-manage-edit-modal").modal();
             }
         };
@@ -102,8 +102,12 @@
                 $("#login-modal").modal();
             } else {
                 if (confirm("确定执行?")) {
-                    $http.delete("api/manage/delete" + id).success(function (ret) {
-                        $scope.getData(1);
+                    $http.delete("api/manage/delete/" + id).success(function (ret) {
+                        if (ret.retCode == "00") {
+                            $scope.getData(1);
+                        } else {
+                            alert("删除失败, 请联系系统管理员");
+                        }
                     });
                 }
             }
