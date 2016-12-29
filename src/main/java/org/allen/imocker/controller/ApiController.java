@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.dianping.cat.Cat;
 import org.allen.imocker.dto.ApiResponse;
@@ -28,7 +29,7 @@ public class ApiController {
     @RequestMapping(value = "/**")
     @ResponseBody
     public Object mockApi(HttpServletRequest request) {
-        Object apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);;
+        Object apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);
         String apiName = request.getPathInfo();
         String method = request.getMethod();
         LoggerUtil.info(this, String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
@@ -39,8 +40,12 @@ public class ApiController {
                     Cat.logMetricForCount("CallMockApiCount");
                     try {
                         apiResponse = JSON.parseObject(apiInfoList.get(0).getRetResult());
-                    } catch (JSONException e) {
-                        apiResponse = new ApiResponse(ApiResponseCode.RET_INVALID_JSON);
+                    } catch (Exception e) {
+                        try {
+                            apiResponse = JSON.parseArray(apiInfoList.get(0).getRetResult());
+                        } catch (JSONException je) {
+                            apiResponse = new ApiResponse(ApiResponseCode.RET_INVALID_JSON);
+                        }
                     }
                 } else {
                     apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
