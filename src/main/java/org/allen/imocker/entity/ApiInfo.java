@@ -3,42 +3,48 @@ package org.allen.imocker.entity;
 import java.util.Date;
 
 public class ApiInfo {
-	
-	private Integer id;
 
-	private String apiName;
+    private Integer id;
+
+    private String apiName;
 
     private String method;
-	
-	private String retResult;
+
+    private String retResult;
 
     private String regex;
-	
-	private Integer status;
-	
-	private Date createdAt;
-	
-	private String createdBy;
-	
-	private Date updatedAt;
-	
-	private String updatedBy;
 
-	public Integer getId() {
-		return id;
-	}
+    private String description;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private String qaUrl;
 
-	public String getApiName() {
-		return apiName;
-	}
+    private String prdUrl;
 
-	public void setApiName(String apiName) {
-		this.apiName = apiName;
-	}
+    private Integer status;
+
+    private Date createdAt;
+
+    private String createdBy;
+
+    private Date updatedAt;
+
+    private String updatedBy;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
+    }
 
     public String getMethod() {
         return method;
@@ -49,12 +55,12 @@ public class ApiInfo {
     }
 
     public String getRetResult() {
-		return retResult;
-	}
+        return retResult;
+    }
 
-	public void setRetResult(String retResult) {
-		this.retResult = retResult;
-	}
+    public void setRetResult(String retResult) {
+        this.retResult = retResult;
+    }
 
     public String getRegex() {
         return regex;
@@ -64,59 +70,86 @@ public class ApiInfo {
         this.regex = regex;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDesc(String description) {
+        this.description = description;
+    }
+
+    public String getQaUrl() {
+        return qaUrl;
+    }
+
+    public void setQaUrl(String qaUrl) {
+        this.qaUrl = qaUrl;
+    }
+
+    public String getPrdUrl() {
+        return prdUrl;
+    }
+
+    public void setPrdUrl(String prdUrl) {
+        this.prdUrl = prdUrl;
+    }
+
     public Integer getStatus() {
-		return status;
-	}
+        return status;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
     @Override
     public String toString() {
         return "ApiInfo{" +
-                "id=" + id +
+                "updatedBy='" + updatedBy + '\'' +
+                ", id=" + id +
                 ", apiName='" + apiName + '\'' +
                 ", method='" + method + '\'' +
                 ", retResult='" + retResult + '\'' +
                 ", regex='" + regex + '\'' +
+                ", description='" + description + '\'' +
+                ", qaUrl='" + qaUrl + '\'' +
+                ", prdUrl='" + prdUrl + '\'' +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedAt=" + updatedAt +
-                ", updatedBy='" + updatedBy + '\'' +
                 '}';
     }
 }

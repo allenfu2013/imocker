@@ -18,6 +18,8 @@
             $http.get(url).success(function (ret) {
                 if(ret.retCode=="00") {
                     callback && callback(ret.data);
+                } else {
+                    alert("服务器异常, 请联系系统管理员");
                 }
             });
         };
