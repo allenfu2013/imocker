@@ -32,6 +32,9 @@
                     } else {
                         alert("密码不正确!");
                     }
+                }).error(function(data,header,config,status){
+                    //处理响应失败
+                    alert("服务器异常, 请联系系统管理员");
                 });
             }
         };
@@ -40,7 +43,10 @@
             $http.post("api/logout").success(function () {
                 $rootScope.username = null;
                 $cookieStore.remove("username");
-            });
+            }).error(function(data,header,config,status){
+                //处理响应失败
+                alert("服务器异常, 请联系系统管理员");
+            });;
         };
 
         $scope.loginEnter = function (e) {
@@ -63,7 +69,10 @@
                         $cookieStore.remove("username");
                     }
                 }
-            });
+            }).error(function(data,header,config,status){
+                //处理响应失败
+                alert("服务器异常, 请联系系统管理员");
+            });;
         }
 
         checkSession();

@@ -1,5 +1,7 @@
 package org.allen.imocker.entity;
 
+import org.allen.imocker.dto.StatusEnum;
+
 import java.util.Date;
 
 public class ApiInfo {
@@ -20,7 +22,7 @@ public class ApiInfo {
 
     private String prdUrl;
 
-    private Integer status;
+    private StatusEnum status;
 
     private Date createdAt;
 
@@ -94,12 +96,20 @@ public class ApiInfo {
         this.prdUrl = prdUrl;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
+        return status.ordinal();
+    }
+
+    public StatusEnum getStatusEnum() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(int status) {
+        this.status = StatusEnum.getStatusEnumByValue(status);
+    }
+
+    public void setStatusEnum(StatusEnum statusEnum) {
+        this.status = statusEnum;
     }
 
     public Date getCreatedAt() {

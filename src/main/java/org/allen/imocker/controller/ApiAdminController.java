@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import org.allen.imocker.dto.ApiResponse;
-import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.dto.*;
 import org.allen.imocker.dao.ApiInfoDao;
-import org.allen.imocker.dto.Pagination;
-import org.allen.imocker.dto.RegexEnum;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +30,7 @@ public class ApiAdminController {
         if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
             apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
         } else {
-            apiInfo.setStatus(1);
+            apiInfo.setStatusEnum(StatusEnum.YES);
             try {
                 parseUriVariable(apiInfo);
                 apiInfoDao.insertApiInfo(apiInfo);
