@@ -8,6 +8,9 @@
         }).when('/api-manage', {
             controller: 'ApiManageCtrl',
             templateUrl: 'tpls/api-manage-list.html'
+        }).when('/api-doc', {
+            controller: 'ApiDocCtrl',
+            templateUrl: 'tpls/api-doc-edit.html'
         }).otherwise({
             templateUrl: 'tpls/home.html'
         });

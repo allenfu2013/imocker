@@ -12,7 +12,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="apiNameEdit">API接口</label>
+                                        <label for="apiNameEdit">接口名称</label>
+                                        <span data-toggle="tooltip" data-placement="top" title="API接口中数值型,字符串型变量使用{int},{string}代替。比如: /uses/{int}, /categories/{string}" class="glyphicon glyphicon-question-sign"></span>
                                         <input id="apiNameEdit" type="text" placeholder="/users" required="true" class="form-control validate-inp-template" ng-model="apiInfo.apiName" />
                                     </div>
                                 </div>
@@ -30,7 +31,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="alert alert-success" role="alert">API接口中数值型,字符串型变量使用{int},{string}代替。比如: /uses/{int}, /categories/{string}</div>
+                                    <div class="form-group">
+                                        <label for="description">接口描述</label>
+                                        <textarea class="form-control validate-inp-template" placeholder="查询所有用户信息" id="description" ng-model="apiInfo.description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="description">接口参数</label>
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
