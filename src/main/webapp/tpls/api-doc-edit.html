@@ -1,7 +1,97 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            敬请期待
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="inpApiDesc" class="col-sm-1 control-label">接口描述</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="inpApiDesc" placeholder="接口描述">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inpApiName" class="col-sm-1 control-label">接口名称</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="inpApiName" placeholder="接口名称">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="selMethod" class="col-sm-1 control-label">HTTP方法</label>
+
+                    <div class="col-sm-11">
+                        <select id="selMethod" class="form-control" style="width:100px;">
+                            <option value="GET">GET</option>
+                            <option value="GET">POST</option>
+                            <option value="GET">PUT</option>
+                            <option value="GET">DELETE</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">接口参数</label>
+
+                    <div class="col-sm-11">
+                        <button class="btn btn-default glyphicon glyphicon-plus"></button>
+                        <div style="margin-top: 10px;">
+                            <input type="text" class="form-control" style="width:200px;display: inline;" placeholder="参数名称">
+                            <select class="form-control" style="width:100px;display: inline;">
+                                <option value="Integer">数字</option>
+                                <option value="String">字符串</option>
+                                <option value="Boolean">布尔</option>
+                            </select>
+                            <select class="form-control" style="width:100px;display: inline;">
+                                <option value="1">必须</option>
+                                <option value="0">非必须</option>
+                            </select>
+                            <input type="text" class="form-control" style="width:250px;display: inline;" placeholder="参数说明">
+                            <button class="btn btn-default glyphicon glyphicon-minus"></button>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <input type="text" class="form-control" style="width:200px;display: inline;" placeholder="参数名称">
+                            <select class="form-control" style="width:100px;display: inline;">
+                                <option value="Integer">数字</option>
+                                <option value="String">字符串</option>
+                                <option value="Boolean">布尔</option>
+                            </select>
+                            <select class="form-control" style="width:100px;display: inline;">
+                                <option value="1">必须</option>
+                                <option value="0">非必须</option>
+                            </select>
+                            <input type="text" class="form-control" style="width:250px;display: inline;" placeholder="参数说明">
+                            <button class="btn btn-default glyphicon glyphicon-minus"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">返回值</label>
+
+                    <div class="col-sm-11">
+                        <textarea class="form-control" rows="3" placeholder="返回值举例说明"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Mock</label>
+
+                    <div class="col-sm-11">
+                        <textarea class="form-control" rows="3" placeholder="Mock返回值"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">测试URL</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" placeholder="http://{host}:{port}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label"></label>
+
+                    <div class="col-sm-11">
+                        <button class="btn btn-success">生成文档</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
