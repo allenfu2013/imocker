@@ -11,6 +11,9 @@
         }).when('/api-doc', {
             controller: 'ApiDocCtrl',
             templateUrl: 'tpls/api-doc-edit.html'
+        }).when('/api-test', {
+            controller: 'ApiTestCtrl',
+            templateUrl: 'tpls/api-test.html'
         }).otherwise({
             templateUrl: 'tpls/home.html'
         });

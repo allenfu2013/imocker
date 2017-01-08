@@ -56,5 +56,7 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <bean id="httpRemoteService" class="org.allen.imocker.httpclient.HttpRemoteService"/>
+
     <import resource="xfire.xml"/>
 </beans>

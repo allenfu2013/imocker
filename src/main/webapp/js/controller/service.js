@@ -6,7 +6,7 @@
     app.service('serviceDemo', function ($q, $http) {
         this.serviceData = [];
 
-        this.getDepartOffice = function () {
+        this.getServiceData = function () {
             var deferred = $q.defer();
             var url = "";
             return $http.get(url).then(function (data) {
