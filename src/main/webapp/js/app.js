@@ -5,15 +5,18 @@
     app.config(function ($routeProvider, $httpProvider) {
         $routeProvider.when('/home', {
             templateUrl: 'tpls/home.html'
-        }).when('/api-manage', {
-            controller: 'ApiManageCtrl',
-            templateUrl: 'tpls/api-manage-list.html'
+        }).when('/api-mock', {
+            controller: 'ApiMockCtrl',
+            templateUrl: 'tpls/api-mock-list.html'
         }).when('/api-doc', {
             controller: 'ApiDocCtrl',
             templateUrl: 'tpls/api-doc-edit.html'
         }).when('/api-test', {
             controller: 'ApiTestCtrl',
             templateUrl: 'tpls/api-test.html'
+        }).when('/int-test', {
+            controller: 'ApiIntTestCtrl',
+            templateUrl: 'tpls/int-test.html'
         }).otherwise({
             templateUrl: 'tpls/home.html'
         });

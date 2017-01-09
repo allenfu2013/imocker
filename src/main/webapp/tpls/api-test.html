@@ -1,171 +1,76 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-success">
-                    <div class="panel-heading" role="tab" id="chsiHeading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#chsi" aria-expanded="true"
-                               aria-controls="collapseOne">学信</a>
-                        </h4>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="qaUrl" class="col-sm-1 control-label">URL</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" style="display: inline;width: 90%;" class="form-control" id="qaUrl" placeholder="Enter request URL">
+                        <button class="btn btn-primary" style="display: inline;float: right;">Send</button>
                     </div>
-                    <div id="chsi" class="panel-collapse collapse in" role="tabpanel"
-                         aria-labelledby="chsiHeading">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="账号"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="password" class="form-control" placeholder="密码"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="验证码"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <img alt="获取验证码" src="data:image/png;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAUADwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD1HW9Ss7EC/urryba3yGmVS3lHO05A5PzNHxz+VZ9xq66bFbL57ol3OkUJjBY+YxJ2bcYz16bRyM9RVrVdJtb6Ca1uy9v9p81Gm4A2tvxg9MnI6/3fpnhfDDXk+sWPnALJ4ftpIpUjHEdwS0exhyGBjiyWXHOTnoDvGKauYc1rRWp0ura9rdpqGmadpFsn22/lm4viPLARAx4UKQTuz6cd88bNhqOpXMUTXVtBb30e9LkAv5ZAB2vkjhTjcAeRnHrXOeM7rRUgW316EvDPIzi5WNyqsoGE4O5W7+w3Dp1m8D30kmk3Avp7mUPdyNp91cHzJmiO0ITxuOfcDI46YFZ9TrlTToqaj/wf67eVzT1DxdBZXL2N48dtcpGWYZLfNjI5HA+hzngd6SfxHafYv7QnCmDiTJzlAcAbeM85Xpgg5OMcVybyJpkWv6ZdwEXMxlePbb+YZlzwQf7oKlsn7u045yKXVElXwFHKUXymgiQMADzuU4Pof1x7VpyowqRjCm5LdI6nTNZ0m+vLiOLVWfYuSe7dQQ24HfgDHGR07nnTijsLoMZYJ32HarbJOVxkcDgden6DOK4oX9vqXiXTp9MtGh+wRP574ZfLUoFWNuAQQcrx69Tya27sQ+cGgRo1ZAxjbPyn0yevrn3pNEUb1E7v5o1NaupoM2ZfzEkQMWcDcOegxgdvSsyBllco0SbQGcAD+6rHGeuP14HNFFI2jpF2NC2gSfUJoZC7RJN5SozEgKA5HX6Y9snvzSaZB5zxRea6I0JkYJgbjvIweORjsc0UUB3+Rn3Un23QdSglUBYbOaVCpI5AJ6Zx3PasTV53j8ARxrgRz2kBdccAq6jI9/lGfrRRVIyrfwp/M6K7vZ1vJlLKxSXKsUAOVPBOAM8evrVe4UbIHAAaRCzY4GdzDp26CiikdKSVrH//2Q=="/>
-                                    <button class="btn btn-primary" style="width:100px; margin-right:50px;"
-                                            ng-click="chsi_captcha()">获取验证码
-                                    </button>
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary" style="width:100px; margin-right:50px;"
-                                            ng-click="chsi_acquire()">1 爬取
-                                    </button>
-                                    <button class="btn btn-primary" style="width:100px; margin-right:50px;"
-                                            ng-click="chsi_query()">2 查询
-                                    </button>
-                                </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="selMethod" class="col-sm-1 control-label">Method</label>
+
+                    <div class="col-sm-11">
+                        <select id="selMethod" class="form-control" style="width:100px;display: inline;">
+                            <option value="GET">GET</option>
+                            <option value="GET">POST</option>
+                            <option value="GET">PUT</option>
+                            <option value="GET">DELETE</option>
+                        </select>
+
+                        <div style="display: inline; margin-left: 50px;">
+                            <label class="radio-inline">
+                                <input type="radio" name="inlineRadioOptions" id="urlencodedRadio" value="1" checked>
+                                x-www-form-urlencoded
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="inlineRadioOptions" id="rawRadio" value="2"> raw
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Params</label>
+
+                    <div class="col-sm-11">
+                        <div style="">
+                            <button class="btn btn-default glyphicon glyphicon-plus"></button>
+                            <div style="margin-top: 10px;">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="key">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="value">
+                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
                             </div>
+                            <div style="margin-top: 10px;">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="key">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="value">
+                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea class="form-control" rows="3"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="panel panel-info">
-                    <div class="panel-heading" role="tab" id="gjjHeading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#gjj" aria-expanded="true"
-                               aria-controls="collapseOne">公积金</a>
-                        </h4>
-                    </div>
-                    <div id="gjj" class="panel-collapse collapse in" role="tabpanel"
-                         aria-labelledby="gjjHeading">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="账号"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="password" class="form-control" placeholder="密码"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <select class="form-control">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Response</label>
 
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="验证码"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAQACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxvSvDR1BLd7vVtN0lLp9ts2oNIom+baWGxG2oG43vtXIYAna20tvC9y17qltqF3aaWNLcxXU12XZFl37PKBiVyzkhiAAchHPRSa7yws/sln4ZTV/D8Go+GobRZzr5Xi1WUl3UMuY28qUsBDMsjO4YAfvVQc3obeMH0u8uLDS49RttSuEubq/u7SO8SN4/MBMryhkiP7xmYvggENkK2SAc/JopfVIbDTL+01R5E3eZbCRETGS24zIm0KoLFj8oHJPBxY1Lw0bLRl1a01bTdTs/tAtpWtGkDQyFSyhklRGwwV8MAR8jDORXWaYiXPxH1K+8PWdjJdW2nm4TSrYK8F1OYUS5gjViwePLzttTO5EIQjKsMvxLEf7L0jR7bRJNI1aa4kN3o8HmMZG+UQSFH3SK5DSKI2Y4A3KFEuWAMO48O3Ft4e/tl7uxePzYYzBDcCWRRKjsjNtyq58pwVLBwRyoBBJW5rvhrXtJ8B6Ql9ompQJHcXN7NNJauqQrKYoURyQNr7oCcHs6EE5wCgD/2Q=="/>
-                                    <button class="btn btn-primary" style="width:150px; margin-right:50px;"
-                                            ng-click="gjj_captcha()">重新获取验证码
-                                    </button>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary" style="width:100px; margin-right:50px;"
-                                            ng-click="gjj()">查询
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-sm-11">
+                        <textarea class="form-control" rows="5"></textarea>
                     </div>
                 </div>
-
-                <div class="panel panel-info">
-                    <div class="panel-heading" role="tab" id="shebaoHeading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#shebao" aria-expanded="true"
-                               aria-controls="collapseOne">社保</a>
-                        </h4>
-                    </div>
-                    <div id="shebao" class="panel-collapse collapse in" role="tabpanel"
-                         aria-labelledby="shebaoHeading">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="账号"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="password" class="form-control" placeholder="密码"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <select class="form-control">
-
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="验证码"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAUADwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD1HW9Ss7EC/urryba3yGmVS3lHO05A5PzNHxz+VZ9xq66bFbL57ol3OkUJjBY+YxJ2bcYz16bRyM9RVrVdJtb6Ca1uy9v9p81Gm4A2tvxg9MnI6/3fpnhfDDXk+sWPnALJ4ftpIpUjHEdwS0exhyGBjiyWXHOTnoDvGKauYc1rRWp0ura9rdpqGmadpFsn22/lm4viPLARAx4UKQTuz6cd88bNhqOpXMUTXVtBb30e9LkAv5ZAB2vkjhTjcAeRnHrXOeM7rRUgW316EvDPIzi5WNyqsoGE4O5W7+w3Dp1m8D30kmk3Avp7mUPdyNp91cHzJmiO0ITxuOfcDI46YFZ9TrlTToqaj/wf67eVzT1DxdBZXL2N48dtcpGWYZLfNjI5HA+hzngd6SfxHafYv7QnCmDiTJzlAcAbeM85Xpgg5OMcVybyJpkWv6ZdwEXMxlePbb+YZlzwQf7oKlsn7u045yKXVElXwFHKUXymgiQMADzuU4Pof1x7VpyowqRjCm5LdI6nTNZ0m+vLiOLVWfYuSe7dQQ24HfgDHGR07nnTijsLoMZYJ32HarbJOVxkcDgden6DOK4oX9vqXiXTp9MtGh+wRP574ZfLUoFWNuAQQcrx69Tya27sQ+cGgRo1ZAxjbPyn0yevrn3pNEUb1E7v5o1NaupoM2ZfzEkQMWcDcOegxgdvSsyBllco0SbQGcAD+6rHGeuP14HNFFI2jpF2NC2gSfUJoZC7RJN5SozEgKA5HX6Y9snvzSaZB5zxRea6I0JkYJgbjvIweORjsc0UUB3+Rn3Un23QdSglUBYbOaVCpI5AJ6Zx3PasTV53j8ARxrgRz2kBdccAq6jI9/lGfrRRVIyrfwp/M6K7vZ1vJlLKxSXKsUAOVPBOAM8evrVe4UbIHAAaRCzY4GdzDp26CiikdKSVrH//2Q=="/>
-                                    <button class="btn btn-primary" style="width:150px; margin-right:50px;"
-                                            ng-click="shebao_captcha()">重新获取验证码
-                                    </button>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary" style="width:100px; margin-right:50px;"
-                                            ng-click="shebao()">查询
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel panel-info">
-                    <div class="panel-heading" role="tab" id="brHeading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#br" aria-expanded="true"
-                               aria-controls="collapseOne">百融</a>
-                        </h4>
-                    </div>
-                    <div id="br" class="panel-collapse collapse in" role="tabpanel"
-                         aria-labelledby="brHeading">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="reqId"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="姓名"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="身份证"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="手机号"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" placeholder="银行卡(可选)"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <button class="btn btn-primary" style="width:100px; margin-right:50px;"
-                                            ng-click="brReport()">查询
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row" id="brResult" style="margin-top: 10px;display: none;">
-                                <div class="col-md-12">
-                                    <textarea class="form-control" readonly></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
+
     </div>
 </div>

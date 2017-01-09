@@ -28,8 +28,12 @@ public class ApiAdminController {
         LoggerUtil.info(this, String.format("[/manage/add] apiInfo:%s", JSON.toJSONString(apiInfo)));
         ApiResponse apiResponse = null;
         if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
-            apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
+            apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
         } else {
+            List<ApiInfo> list = apiInfoDao.findApiInfoByName(apiInfo.getApiName());
+            if (list != null && list.size() > 0) {
+                return new ApiResponse(ApiResponseCode.API_EXIST);
+            }
             apiInfo.setStatusEnum(StatusEnum.YES);
             try {
                 parseUriVariable(apiInfo);
@@ -99,7 +103,7 @@ public class ApiAdminController {
         if (StringUtils.isEmpty(apiInfo.getApiName())
                 || StringUtils.isEmpty(apiInfo.getRetResult())
                 || StringUtils.isEmpty(apiInfo.getMethod())) {
-            apiResponse = new ApiResponse(ApiResponseCode.ILLEGAL_PARAMETER);
+            apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
         } else {
             parseUriVariable(apiInfo);
             boolean isUpdate = apiInfoDao.update(apiInfo);

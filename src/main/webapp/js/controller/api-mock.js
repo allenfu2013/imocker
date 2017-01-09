@@ -3,7 +3,7 @@
 
     /********************************** API管理 **************************************************/
 
-    app.controller('ApiManageCtrl', function ($scope, $rootScope, $http, $filter) {
+    app.controller('ApiMockCtrl', function ($scope, $rootScope, $http, $filter) {
         $scope.apiInfo = {};
         $scope.list = [];
 
@@ -39,7 +39,7 @@
                 $("#login-modal").modal();
             } else {
                 $scope.apiInfo = {"method":"GET"};
-                $("#api-manage-edit-modal").modal();
+                $("#api-mock-edit-modal").modal();
             }
         };
 
@@ -55,6 +55,7 @@
                     if (!id) {
                         /*创建*/
                         $scope.apiInfo.createdBy = $rootScope.username;
+                        $scope.apiInfo.status = 1;
                         $http.post("api/manage/add", $scope.apiInfo).success(function (ret) {
                             if(ret.retCode == "00") {
                                 $("#api-manage-edit-modal").modal('hide');
