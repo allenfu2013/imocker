@@ -8,7 +8,8 @@ public enum ApiResponseCode {
     UPDATE_API_FAIL("04", "failed to update api info"),
     API_METHOD_INVALID("05", "bad http method for api"),
     DELETE_API_FAIL("06", "failed to delete api"),
-    RET_INVALID_JSON("07", "invalid json result");
+    RET_INVALID_JSON("07", "invalid json result"),
+    QA_URL_EMPTY("08", "qa url of api is empty");
 
     private String code;
 

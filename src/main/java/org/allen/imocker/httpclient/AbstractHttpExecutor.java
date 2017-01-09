@@ -98,12 +98,12 @@ public abstract class AbstractHttpExecutor implements HttpOperation {
         /*Transaction transaction = Cat.newTransaction(CatConstants.TYPE_HTTP_REMOTE_CALL, requestPath);*/
 
         try {
-            LoggerUtil.info(this, String.format("http client request start, url: %s", request.getURI()));
+            LoggerUtil.info(this, String.format("http client [%s] start, url: %s", request.getMethod(), request.getURI()));
             long t1 = System.currentTimeMillis();
             response = getHttpClient().execute(request);
            /* transaction.setStatus(Transaction.SUCCESS);*/
             long t2 = System.currentTimeMillis();
-            LoggerUtil.info(this, String.format("http client request end, url: %s, took: %s", request.getURI(), (t2 - t1)));
+            LoggerUtil.info(this, String.format("http client [%s] end, url: %s, took: %s", request.getMethod(), request.getURI(), (t2 - t1)));
             in = response.getEntity().getContent();
             String content = IOUtils.toString(in, "UTF-8");
             if (t == String.class) {
