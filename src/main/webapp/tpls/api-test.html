@@ -31,12 +31,13 @@
                                 <td>
                                     <div style="margin-left: 50px;" ng-show="apiInfo.method == 'POST'">
                                         <label class="radio-inline">
-                                            <input type="radio" ng-value="urlencoded" ng-model="postType" name="postTypeRadio" id="urlencodedRadio" value="1"
-                                                   checked>
+                                            <input type="radio" ng-value="1" ng-model="postType" name="postTypeRadio"
+                                                   id="urlencodedRadio">
                                             x-www-form-urlencoded
                                         </label>
                                         <label class="radio-inline">
-                                            <input type="radio" ng-value="raw" ng-model="postType" name="postTypeRadio" id="rawRadio" value="2"> raw
+                                            <input type="radio" ng-value="2" ng-model="postType" name="postTypeRadio"
+                                                   id="rawRadio"> raw
                                         </label>
                                     </div>
                                 </td>
@@ -49,22 +50,8 @@
                     <label class="col-sm-1 control-label">Headers</label>
 
                     <div class="col-sm-11">
-                        <div style="">
-                            <button class="btn btn-default glyphicon glyphicon-plus"></button>
-                            <div style="margin-top: 10px;">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="key">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="value">
-                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
-                            </div>
-                            <div style="margin-top: 10px;">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="key">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="value">
-                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
-                            </div>
+                        <button ng-click="addHeaders()" class="btn btn-default glyphicon glyphicon-plus"></button>
+                        <div id="headersContainer">
                         </div>
                     </div>
                 </div>
@@ -73,25 +60,13 @@
                     <label class="col-sm-1 control-label">Params</label>
 
                     <div class="col-sm-11">
-                        <div ng-show="postType == 'urlencoded'">
-                            <button class="btn btn-default glyphicon glyphicon-plus"></button>
-                            <div style="margin-top: 10px;">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="key">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="value">
-                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
-                            </div>
-                            <div style="margin-top: 10px;">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="key">
-                                <input type="text" class="form-control" style="width:200px;display: inline;"
-                                       placeholder="value">
-                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
+                        <div ng-show="postType == '1'">
+                            <button class="btn btn-default glyphicon glyphicon-plus" ng-click="addParams()"></button>
+                            <div id="paramsContainer">
                             </div>
                         </div>
-                        <div ng-show="postType == 'raw'">
-                            <textarea class="form-control" rows="3"></textarea>
+                        <div ng-show="postType == '2'">
+                            <textarea class="form-control" rows="3" placeholder="put json string here"></textarea>
                         </div>
                     </div>
                 </div>
