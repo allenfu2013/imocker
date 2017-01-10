@@ -43,7 +43,7 @@ public class ApiController {
                     } catch (Exception e) {
                         try {
                             apiResponse = JSON.parseArray(apiInfoList.get(0).getRetResult());
-                        } catch (JSONException je) {
+                        } catch (Exception je) {
                             apiResponse = new ApiResponse(ApiResponseCode.RET_INVALID_JSON);
                         }
                     }

@@ -73,7 +73,18 @@ public class RemoteCallController {
             result = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
         } else {
             try {
-                result = remoteCallService.invoke(remoteCallInfo);
+                String text = remoteCallService.invoke(remoteCallInfo);
+                try {
+                    result = JSON.parseObject(text);
+                } catch (Exception e) {
+                    LoggerUtil.error(this, String.format("parse json failed"), e);
+                    try {
+                        result = JSON.parseArray(text);
+                    } catch (Exception ex) {
+                        LoggerUtil.error(this, String.format("parse json array failed"), ex);
+                        result = text;
+                    }
+                }
             } catch (Exception e) {
                 LoggerUtil.error(this, String.format("[/postman] failed, error: %s", e.getMessage()), e);
                 result = new ApiResponse(ApiResponseCode.SERVER_ERROR);

@@ -15,13 +15,13 @@
             $scope.remoteCallInfo.url = $scope.apiInfo.qaUrl;
 
             $http.post("api/postman", $scope.remoteCallInfo).success(function (ret) {
-                $("#callResult").val(ret);
+                $("#callResult").val(angular.toJson(ret));
             });
         };
 
         $scope.addHeaders = function () {
             console.log("add headers");
-            var headerModel = "<div style='margin-top: 10px;'><input type='text' class='form-control' style='width:200px;display: inline;' placeholder='key'><input type='text' class='form-control' style='width:200px;display: inline;' placeholder='value'> <button class='btn btn-default glyphicon glyphicon-minus header-minus'></button></div>";
+            var headerModel = "<div style='margin-top: 10px;'><input type='text' class='form-control' style='width:200px;display: inline;' placeholder='key'><input type='text' class='form-control' style='width:200px;margin-left:5px;display: inline;' placeholder='value'> <button class='btn btn-default glyphicon glyphicon-minus header-minus'></button></div>";
             $("#headersContainer").append(headerModel);
             $(".header-minus").unbind("click");
             $(".header-minus").click(function () {
@@ -31,7 +31,7 @@
 
         $scope.addParams = function ($compile) {
             console.log("add params");
-            var paramTemplate = "<div style='margin-top: 10px;'><input type='text' class='form-control' style='width:200px;display: inline;' placeholder='key'><input type='text' class='form-control' style='width:200px;display: inline;' placeholder='value'> <button class='btn btn-default glyphicon glyphicon-minus param-minus'></button></div>";
+            var paramTemplate = "<div style='margin-top: 10px;'><input type='text' class='form-control' style='width:200px;display: inline;' placeholder='key'><input type='text' class='form-control' style='width:200px;margin-left:5px;display: inline;' placeholder='value'> <button class='btn btn-default glyphicon glyphicon-minus param-minus'></button></div>";
             $("#paramsContainer").append(paramTemplate);
             $(".param-minus").unbind("click");
             $(".param-minus").click(function () {
