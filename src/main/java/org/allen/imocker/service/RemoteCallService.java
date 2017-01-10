@@ -1,5 +1,6 @@
 package org.allen.imocker.service;
 
+import org.allen.imocker.dto.RemoteCallInfo;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.httpclient.HttpRemoteService;
 import org.allen.imocker.util.LoggerUtil;
@@ -17,7 +18,7 @@ public class RemoteCallService {
     @Autowired
     private HttpRemoteService httpRemoteService;
 
-    public String remoteCall(HttpServletRequest request, ApiInfo apiInfo) {
+    public String apiCall(HttpServletRequest request, ApiInfo apiInfo) {
         String method = request.getMethod();
         String queryString = request.getQueryString();
         String qaUrl = apiInfo.getQaUrl();
@@ -40,5 +41,32 @@ public class RemoteCallService {
         }
 
         return null;
+    }
+
+    public String invoke(RemoteCallInfo remoteCallInfo) {
+        String url = remoteCallInfo.getUrl();
+        String method = remoteCallInfo.getMethod();
+        Map<String, Object> headers = remoteCallInfo.getHeaders();
+        Map<String, Object> params = remoteCallInfo.getParams();
+        String jsonBody = remoteCallInfo.getJsonBody();
+        int timeout = httpRemoteService.getHttpClientConfig().getSocketTimeout();
+        boolean isApplicationJson = isApplicationJson(headers);
+
+        if ("GET".equalsIgnoreCase(method)) {
+            return httpRemoteService.get(url, headers, params, String.class, timeout);
+        } else if ("POST".equalsIgnoreCase(method) && !isApplicationJson) {
+            return httpRemoteService.post(url, headers, params, String.class, timeout);
+        } else if ("POST".equalsIgnoreCase(method) && isApplicationJson) {
+            httpRemoteService.postJson(url, headers, jsonBody, String.class, timeout);
+        } else if ("PUT".equalsIgnoreCase(method)) {
+            // TODO
+        } else if ("DELETE".equalsIgnoreCase(method)) {
+            // TODO
+        }
+        return null;
+    }
+
+    private boolean isApplicationJson(Map<String, Object> headers) {
+        return headers != null && "application/json".equalsIgnoreCase((String) headers.get("Content-Type"));
     }
 }

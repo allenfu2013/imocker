@@ -6,8 +6,10 @@
                     <label for="qaUrl" class="col-sm-1 control-label">URL</label>
 
                     <div class="col-sm-11">
-                        <input type="text" style="display: inline;width: 90%;" class="form-control" id="qaUrl" placeholder="Enter request URL">
-                        <button class="btn btn-primary" style="display: inline;float: right;">Send</button>
+                        <input type="text" style="display: inline;width: 90%;" ng-model="apiInfo.qaUrl"
+                               class="form-control" id="qaUrl" placeholder="Enter request URL">
+                        <button class="btn btn-primary" ng-click="send()" style="display: inline;float: right;">Send
+                        </button>
                     </div>
                 </div>
 
@@ -15,28 +17,36 @@
                     <label for="selMethod" class="col-sm-1 control-label">Method</label>
 
                     <div class="col-sm-11">
-                        <select id="selMethod" class="form-control" style="width:100px;display: inline;">
-                            <option value="GET">GET</option>
-                            <option value="GET">POST</option>
-                            <option value="GET">PUT</option>
-                            <option value="GET">DELETE</option>
-                        </select>
-
-                        <div style="display: inline; margin-left: 50px;">
-                            <label class="radio-inline">
-                                <input type="radio" name="inlineRadioOptions" id="urlencodedRadio" value="1" checked>
-                                x-www-form-urlencoded
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="inlineRadioOptions" id="rawRadio" value="2"> raw
-                            </label>
-                        </div>
-
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="selMethod" class="form-control" ng-model="apiInfo.method"
+                                            style="width:100px;display: inline;">
+                                        <option value="GET">GET</option>
+                                        <option value="POST">POST</option>
+                                        <option value="PUT">PUT</option>
+                                        <option value="DELETE">DELETE</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div style="margin-left: 50px;" ng-show="apiInfo.method == 'POST'">
+                                        <label class="radio-inline">
+                                            <input type="radio" ng-value="urlencoded" ng-model="postType" name="postTypeRadio" id="urlencodedRadio" value="1"
+                                                   checked>
+                                            x-www-form-urlencoded
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" ng-value="raw" ng-model="postType" name="postTypeRadio" id="rawRadio" value="2"> raw
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">Params</label>
+                    <label class="col-sm-1 control-label">Headers</label>
 
                     <div class="col-sm-11">
                         <div style="">
@@ -56,7 +66,31 @@
                                 <button class="btn btn-default glyphicon glyphicon-minus"></button>
                             </div>
                         </div>
-                        <div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="apiInfo.method == 'POST'">
+                    <label class="col-sm-1 control-label">Params</label>
+
+                    <div class="col-sm-11">
+                        <div ng-show="postType == 'urlencoded'">
+                            <button class="btn btn-default glyphicon glyphicon-plus"></button>
+                            <div style="margin-top: 10px;">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="key">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="value">
+                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="key">
+                                <input type="text" class="form-control" style="width:200px;display: inline;"
+                                       placeholder="value">
+                                <button class="btn btn-default glyphicon glyphicon-minus"></button>
+                            </div>
+                        </div>
+                        <div ng-show="postType == 'raw'">
                             <textarea class="form-control" rows="3"></textarea>
                         </div>
                     </div>
@@ -66,7 +100,7 @@
                     <label class="col-sm-1 control-label">Response</label>
 
                     <div class="col-sm-11">
-                        <textarea class="form-control" rows="5"></textarea>
+                        <textarea class="form-control" rows="5" id="callResult"></textarea>
                     </div>
                 </div>
             </form>

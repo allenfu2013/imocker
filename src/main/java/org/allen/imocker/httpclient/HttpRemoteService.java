@@ -65,6 +65,14 @@ public class HttpRemoteService extends AbstractHttpExecutor {
         return httpClient;
     }
 
+    public HttpClientConfig getHttpClientConfig() {
+        return httpClientConfig;
+    }
+
+    public void setHttpClientConfig(HttpClientConfig httpClientConfig) {
+        this.httpClientConfig = httpClientConfig;
+    }
+
     public void close() {
         try {
             httpClient.close();

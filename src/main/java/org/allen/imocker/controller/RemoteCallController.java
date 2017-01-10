@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.dto.RemoteCallInfo;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.service.RemoteCallService;
 import org.allen.imocker.util.LoggerUtil;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/call")
 public class RemoteCallController {
 
     @Autowired
@@ -29,7 +31,7 @@ public class RemoteCallController {
     @Autowired
     private RemoteCallService remoteCallService;
 
-    @RequestMapping(value = "/**")
+    @RequestMapping(value = "/call/**")
     @ResponseBody
     public Object remoteCall(HttpServletRequest request, HttpServletResponse response) {
         String pathInfo = request.getPathInfo();
@@ -48,7 +50,7 @@ public class RemoteCallController {
                     return new ApiResponse(ApiResponseCode.QA_URL_EMPTY);
                 }
                 try {
-                    String result = remoteCallService.remoteCall(request, apiInfo);
+                    String result = remoteCallService.apiCall(request, apiInfo);
                     LoggerUtil.info(this, String.format("[%s] end, result: %s", pathInfo, result));
                     return result;
                 } catch (Exception e) {
@@ -60,5 +62,24 @@ public class RemoteCallController {
             }
         }
         return new ApiResponse(ApiResponseCode.API_NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/postman", method = RequestMethod.POST)
+    @ResponseBody
+    public Object postman(@RequestBody RemoteCallInfo remoteCallInfo) {
+        Object result = null;
+        if (StringUtils.isEmpty(remoteCallInfo.getUrl())
+                || StringUtils.isEmpty(remoteCallInfo.getMethod())) {
+            result = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
+        } else {
+            try {
+                result = remoteCallService.invoke(remoteCallInfo);
+            } catch (Exception e) {
+                LoggerUtil.error(this, String.format("[/postman] failed, error: %s", e.getMessage()), e);
+                result = new ApiResponse(ApiResponseCode.SERVER_ERROR);
+            }
+        }
+        LoggerUtil.info(this, String.format("[/postman] end, result: %s", JSON.toJSONString(result)));
+        return result;
     }
 }
