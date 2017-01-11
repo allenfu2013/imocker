@@ -58,7 +58,7 @@
                         $scope.apiInfo.status = 1;
                         $http.post("api/manage/add", $scope.apiInfo).success(function (ret) {
                             if(ret.retCode == "00") {
-                                $("#api-manage-edit-modal").modal('hide');
+                                $("#api-mock-edit-modal").modal('hide');
                                 $scope.getData(1);
                             } else {
                                 alert("创建失败，请联系管理员");
@@ -70,7 +70,7 @@
                         $scope.apiInfo.updatedAt = null;
                         $http.post("api/manage/edit", $scope.apiInfo).success(function (ret) {
                             if (ret.retCode == "00") {
-                                $("#api-manage-edit-modal").modal('hide');
+                                $("#api-mock-edit-modal").modal('hide');
                                 $scope.getData(1);
                             } else {
                                 alert("更新失败，请联系管理员");
@@ -91,7 +91,7 @@
                 $http.get("api/manage/get-by-id?id=" + id).success(function (ret) {
                     if (ret.retCode == "00") {
                         $scope.apiInfo = ret.data;
-                        $("#api-manage-edit-modal").modal();
+                        $("#api-mock-edit-modal").modal();
                     } else {
                         alert("服务器异常, 请联系系统管理员");
                     }

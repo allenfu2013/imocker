@@ -58,7 +58,7 @@ public class RemoteCallService {
         } else if ("POST".equalsIgnoreCase(method) && !isApplicationJson) {
             return httpRemoteService.post(url, headers, params, String.class, timeout);
         } else if ("POST".equalsIgnoreCase(method) && isApplicationJson) {
-            httpRemoteService.postJson(url, headers, jsonBody, String.class, timeout);
+            return httpRemoteService.postJson(url, headers, jsonBody, String.class, timeout);
         } else if ("PUT".equalsIgnoreCase(method)) {
             // TODO
         } else if ("DELETE".equalsIgnoreCase(method)) {

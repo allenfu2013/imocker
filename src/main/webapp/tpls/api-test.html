@@ -7,7 +7,7 @@
 
                     <div class="col-sm-11">
                         <input type="text" style="display: inline;width: 90%;" ng-model="apiInfo.qaUrl"
-                               class="form-control" id="qaUrl" placeholder="Enter request URL">
+                               class="form-control validate-inp-template" id="qaUrl" placeholder="Enter request URL">
                         <button class="btn btn-primary" ng-click="send()" style="display: inline;float: right;">Send
                         </button>
                     </div>
@@ -24,8 +24,8 @@
                                             style="width:100px;display: inline;">
                                         <option value="GET">GET</option>
                                         <option value="POST">POST</option>
-                                        <option value="PUT">PUT</option>
-                                        <option value="DELETE">DELETE</option>
+                                        <!--<option value="PUT">PUT</option>
+                                        <option value="DELETE">DELETE</option>-->
                                     </select>
                                 </td>
                                 <td>
@@ -80,7 +80,7 @@
                             </div>
                         </div>
                         <div ng-show="postType == '2'">
-                            <textarea class="form-control" rows="3" placeholder="put json string here"></textarea>
+                            <textarea id="jsonBody" class="form-control" rows="3" placeholder="put json string here"></textarea>
                         </div>
                     </div>
                 </div>

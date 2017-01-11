@@ -3,7 +3,7 @@
     var app = angular.module('imocker-app', ['ngCookies']);
 
     app.config(function ($routeProvider, $httpProvider) {
-        $routeProvider.when('/home', {
+        $routeProvider.when('/', {
             templateUrl: 'tpls/home.html'
         }).when('/api-mock', {
             controller: 'ApiMockCtrl',
@@ -14,11 +14,14 @@
         }).when('/api-test', {
             controller: 'ApiTestCtrl',
             templateUrl: 'tpls/api-test.html'
+        }).when('/api-test/:id', {
+            controller: 'ApiTestCtrl',
+            templateUrl: 'tpls/api-test.html'
         }).when('/int-test', {
             controller: 'ApiIntTestCtrl',
             templateUrl: 'tpls/int-test.html'
         }).otherwise({
-            templateUrl: 'tpls/home.html'
+            templateUrl: 'tpls/404.html'
         });
 
         $httpProvider.interceptors.push('httpInterceptor');

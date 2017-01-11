@@ -32,16 +32,17 @@ public class ApiAdminController {
         } else {
             List<ApiInfo> list = apiInfoDao.findApiInfoByName(apiInfo.getApiName());
             if (list != null && list.size() > 0) {
-                return new ApiResponse(ApiResponseCode.API_EXIST);
-            }
-            apiInfo.setStatusEnum(StatusEnum.YES);
-            try {
-                parseUriVariable(apiInfo);
-                apiInfoDao.insertApiInfo(apiInfo);
-                apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
-            } catch (Exception e) {
-                LoggerUtil.error(this, String.format("insert api_info failed, error:%s", e.getMessage()), e);
-                apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
+                apiResponse = new ApiResponse(ApiResponseCode.API_EXIST);
+            } else {
+                apiInfo.setStatusEnum(StatusEnum.YES);
+                try {
+                    parseUriVariable(apiInfo);
+                    apiInfoDao.insertApiInfo(apiInfo);
+                    apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
+                } catch (Exception e) {
+                    LoggerUtil.error(this, String.format("insert api_info failed, error:%s", e.getMessage()), e);
+                    apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
+                }
             }
         }
         LoggerUtil.info(this, String.format("[/manage/add] result:%s", JSON.toJSONString(apiResponse)));
