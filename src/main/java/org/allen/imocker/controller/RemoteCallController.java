@@ -77,11 +77,11 @@ public class RemoteCallController {
                 try {
                     result = JSON.parseObject(text);
                 } catch (Exception e) {
-                    LoggerUtil.error(this, String.format("parse json failed"), e);
+                    LoggerUtil.warn(this, String.format("parse json failed"), e);
                     try {
                         result = JSON.parseArray(text);
                     } catch (Exception ex) {
-                        LoggerUtil.error(this, String.format("parse json array failed"), ex);
+                        LoggerUtil.warn(this, String.format("parse json array failed"), ex);
                         result = text;
                     }
                 }

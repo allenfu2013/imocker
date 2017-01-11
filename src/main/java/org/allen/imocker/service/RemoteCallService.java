@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,8 +47,8 @@ public class RemoteCallService {
     public String invoke(RemoteCallInfo remoteCallInfo) {
         String url = remoteCallInfo.getUrl();
         String method = remoteCallInfo.getMethod();
-        Map<String, Object> headers = remoteCallInfo.getHeaders();
-        Map<String, Object> params = remoteCallInfo.getParams();
+        Map<String, Object> headers = getHeadersOrParams(remoteCallInfo.getHeaders());
+        Map<String, Object> params = getHeadersOrParams(remoteCallInfo.getParams());
         String jsonBody = remoteCallInfo.getJsonBody();
         int timeout = httpRemoteService.getHttpClientConfig().getSocketTimeout();
         boolean isApplicationJson = isApplicationJson(headers);
@@ -68,5 +69,13 @@ public class RemoteCallService {
 
     private boolean isApplicationJson(Map<String, Object> headers) {
         return headers != null && "application/json".equalsIgnoreCase((String) headers.get("Content-Type"));
+    }
+
+    private Map<String, Object> getHeadersOrParams(List<Map<String, Object>> list) {
+        Map<String, Object> resultMap = new HashMap<>();
+        for (Map<String, Object> map : list) {
+            resultMap.put((String) map.get("key"), map.get("value"));
+        }
+        return resultMap;
     }
 }

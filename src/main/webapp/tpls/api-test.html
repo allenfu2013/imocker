@@ -52,6 +52,13 @@
                     <div class="col-sm-11">
                         <button ng-click="addHeaders()" class="btn btn-default glyphicon glyphicon-plus"></button>
                         <div id="headersContainer">
+                            <div style="margin-top: 10px;" ng-repeat="header in headerList">
+                                <input type="text" class="form-control header-key" style="width:200px;display: inline;"
+                                       placeholder="key" value="{{header.key}}">
+                                <input type="text" class="form-control header-value"
+                                       style="width:200px;margin-left:5px;display: inline;" placeholder="value" value="{{header.value}}">
+                                <button class="btn btn-default glyphicon glyphicon-minus" ng-click="deleteHeader($event.target)"></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,6 +70,13 @@
                         <div ng-show="postType == '1'">
                             <button class="btn btn-default glyphicon glyphicon-plus" ng-click="addParams()"></button>
                             <div id="paramsContainer">
+                                <div style="margin-top: 10px;" ng-repeat="param in paramList">
+                                    <input type="text" class="form-control param-key" style="width:200px;display: inline;"
+                                           placeholder="key" value="{{param}}">
+                                    <input type="text" class="form-control param-value"
+                                           style="width:200px;margin-left:5px;display: inline;" placeholder="value">
+                                    <button class="btn btn-default glyphicon glyphicon-minus" ng-click="deleteParam($event.target)"></button>
+                                </div>
                             </div>
                         </div>
                         <div ng-show="postType == '2'">

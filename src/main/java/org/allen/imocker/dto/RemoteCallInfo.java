@@ -1,5 +1,6 @@
 package org.allen.imocker.dto;
 
+import java.util.List;
 import java.util.Map;
 
 public class RemoteCallInfo {
@@ -8,9 +9,9 @@ public class RemoteCallInfo {
 
     private String method;
 
-    private Map<String, Object> headers;
+    private List<Map<String, Object>> headers;
 
-    private Map<String, Object> params;
+    private List<Map<String, Object>> params;
 
     private String jsonBody;
 
@@ -30,19 +31,19 @@ public class RemoteCallInfo {
         this.method = method;
     }
 
-    public Map<String, Object> getHeaders() {
+    public List<Map<String, Object>> getHeaders() {
         return headers;
     }
 
-    public void setHeaders(Map<String, Object> headers) {
+    public void setHeaders(List<Map<String, Object>> headers) {
         this.headers = headers;
     }
 
-    public Map<String, Object> getParams() {
+    public List<Map<String, Object>> getParams() {
         return params;
     }
 
-    public void setParams(Map<String, Object> params) {
+    public void setParams(List<Map<String, Object>> params) {
         this.params = params;
     }
 
