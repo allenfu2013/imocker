@@ -5,13 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
 import com.dianping.cat.Cat;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
-import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.entity.ApiInfo;
+import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.util.LoggerUtil;
 import org.allen.imocker.util.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ApiController {
 
     @Autowired
-    private ApiInfoDao apiInfoDao;
+    private ApiInfoService apiInfoService;
 
     @RequestMapping(value = "/**")
     @ResponseBody
@@ -34,7 +32,7 @@ public class ApiController {
         String method = request.getMethod();
         LoggerUtil.info(this, String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
         try {
-            List<ApiInfo> apiInfoList = apiInfoDao.findApiInfoByName(apiName);
+            List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(apiName);
             if (!CollectionUtils.isEmpty(apiInfoList)) {
                 if (method.equalsIgnoreCase(apiInfoList.get(0).getMethod())) {
                     Cat.logMetricForCount("CallMockApiCount");
@@ -51,7 +49,7 @@ public class ApiController {
                     apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
                 }
             } else {
-                List<ApiInfo> regexApiList = apiInfoDao.findRegexApi();
+                List<ApiInfo> regexApiList = apiInfoService.findRegexApi();
                 for (ApiInfo apiInfo : regexApiList) {
                     String regex = apiInfo.getRegex();
                     if (RegexUtil.isMatch(regex, apiName)) {

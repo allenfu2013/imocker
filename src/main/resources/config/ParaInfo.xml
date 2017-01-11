@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ParaInfo">
+    <insert id="insert" parameterClass="org.allen.imocker.entity.ParaInfo">
+        insert into para_info(
+            api_id,
+            para_name,
+            para_type,
+            required,
+            description,
+            created_at,
+            created_by,
+            updated_at,
+            updated_by
+        ) values (
+            #apiId#,
+            #paraName#,
+            #paraType#,
+            #required#,
+            #description#,
+            now(),
+            #createdBy#,
+            now(),
+            #updatedBy#
+        )
+    </insert>
+
+    <sql id="all_columns">
+        api_id apiId,
+        para_name paraName,
+        para_type paraType,
+        required required,
+        description description,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy
+    </sql>
+
+    <select id="findParaInfoById" resultClass="org.allen.imocker.entity.ParaInfo">
+        select
+        <include refid="all_columns"/>
+        from para_info
+        where api_id = #apiId#
+    </select>
+
+
+</sqlMap>

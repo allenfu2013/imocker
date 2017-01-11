@@ -5,8 +5,10 @@ import com.dianping.cat.CatConstants;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.ibatis.sqlmap.client.SqlMapClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +16,8 @@ import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class BaseDao {
+@Repository
+public class BaseDao {
 
     @Resource(name = "sqlMapClient")
     protected SqlMapClient sqlMapClient;

@@ -6,7 +6,7 @@
                     <label for="qaUrl" class="col-sm-1 control-label">URL</label>
 
                     <div class="col-sm-11">
-                        <input type="text" style="display: inline;width: 90%;" ng-model="apiInfo.qaUrl"
+                        <input type="text" style="display: inline;width: 90%;" ng-model="remoteCallInfo.url"
                                class="form-control validate-inp-template" id="qaUrl" placeholder="Enter request URL">
                         <button class="btn btn-primary" ng-click="send()" style="display: inline;float: right;">Send
                         </button>
@@ -20,7 +20,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <select id="selMethod" class="form-control" ng-model="apiInfo.method"
+                                    <select id="selMethod" class="form-control" ng-model="remoteCallInfo.method"
                                             style="width:100px;display: inline;">
                                         <option value="GET">GET</option>
                                         <option value="POST">POST</option>
@@ -29,7 +29,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <div style="margin-left: 50px;" ng-show="apiInfo.method == 'POST'">
+                                    <div style="margin-left: 50px;" ng-show="remoteCallInfo.method == 'POST'">
                                         <label class="radio-inline">
                                             <input type="radio" ng-value="1" ng-model="postType" name="postTypeRadio"
                                                    id="urlencodedRadio">
@@ -52,7 +52,7 @@
                     <div class="col-sm-11">
                         <button ng-click="addHeaders()" class="btn btn-default glyphicon glyphicon-plus"></button>
                         <div id="headersContainer">
-                            <div style="margin-top: 10px;" ng-repeat="header in headerList">
+                            <div style="margin-top: 10px;" ng-repeat="header in remoteCallInfo.headerList">
                                 <input type="text" class="form-control header-key" style="width:200px;display: inline;"
                                        placeholder="key" value="{{header.key}}">
                                 <input type="text" class="form-control header-value"
@@ -63,14 +63,14 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-show="apiInfo.method == 'POST'">
+                <div class="form-group">
                     <label class="col-sm-1 control-label">Params</label>
 
                     <div class="col-sm-11">
                         <div ng-show="postType == '1'">
                             <button class="btn btn-default glyphicon glyphicon-plus" ng-click="addParams()"></button>
                             <div id="paramsContainer">
-                                <div style="margin-top: 10px;" ng-repeat="param in paramList">
+                                <div style="margin-top: 10px;" ng-repeat="param in remoteCallInfo.paramList">
                                     <input type="text" class="form-control param-key" style="width:200px;display: inline;"
                                            placeholder="key" value="{{param}}">
                                     <input type="text" class="form-control param-value"

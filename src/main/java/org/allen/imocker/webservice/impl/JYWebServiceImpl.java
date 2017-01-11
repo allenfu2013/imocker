@@ -1,7 +1,7 @@
 package org.allen.imocker.webservice.impl;
 
-import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.entity.ApiInfo;
+import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.webservice.JYWebservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 public class JYWebServiceImpl implements JYWebservice {
 
     @Autowired
-    private ApiInfoDao apiInfoDao;
+    private ApiInfoService apiInfoService;
 
     public String compareAll(String strName, String strId, String strIDPhoto,
                              String strData, String strTime, String strLicenseCode1,
@@ -33,7 +33,7 @@ public class JYWebServiceImpl implements JYWebservice {
 
     public String check(String strName, String strId, String strTime,
                         String strLicenseCode, String strEncryValue) {
-        List<ApiInfo> apiInfoList = apiInfoDao.findApiInfoByName("jyVerifyIdentity");
+        List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName("jyVerifyIdentity");
 
         if (!CollectionUtils.isEmpty(apiInfoList)) {
             return apiInfoList.get(0).getRetResult();
@@ -56,7 +56,7 @@ public class JYWebServiceImpl implements JYWebservice {
 
     public String method(String strHeadIn, String strParamIn,
                          String strEncryValue) throws Exception {
-        List<ApiInfo> apiInfoList = apiInfoDao.findApiInfoByName("jyVerifyBankCard");
+        List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName("jyVerifyBankCard");
 
         if (!CollectionUtils.isEmpty(apiInfoList)) {
             return apiInfoList.get(0).getRetResult();
@@ -65,11 +65,4 @@ public class JYWebServiceImpl implements JYWebservice {
         }
     }
 
-    public ApiInfoDao getApiInfoDao() {
-        return apiInfoDao;
-    }
-
-    public void setApiInfoDao(ApiInfoDao apiInfoDao) {
-        this.apiInfoDao = apiInfoDao;
-    }
 }

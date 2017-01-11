@@ -7,8 +7,8 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import org.allen.imocker.dto.*;
-import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.entity.ApiInfo;
+import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApiAdminController {
 
     @Autowired
-    private ApiInfoDao apiInfoDao;
+    private ApiInfoService apiInfoService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
@@ -30,14 +30,14 @@ public class ApiAdminController {
         if (StringUtils.isEmpty(apiInfo.getApiName()) || StringUtils.isEmpty(apiInfo.getRetResult())) {
             apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
         } else {
-            List<ApiInfo> list = apiInfoDao.findApiInfoByName(apiInfo.getApiName());
+            List<ApiInfo> list = apiInfoService.findApiInfoByName(apiInfo.getApiName());
             if (list != null && list.size() > 0) {
                 apiResponse = new ApiResponse(ApiResponseCode.API_EXIST);
             } else {
                 apiInfo.setStatusEnum(StatusEnum.YES);
                 try {
                     parseUriVariable(apiInfo);
-                    apiInfoDao.insertApiInfo(apiInfo);
+                    apiInfoService.insertApiInfo(apiInfo);
                     apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
                 } catch (Exception e) {
                     LoggerUtil.error(this, String.format("insert api_info failed, error:%s", e.getMessage()), e);
@@ -66,11 +66,11 @@ public class ApiAdminController {
             cond.put("status", status);
 
             List<ApiInfo> apiInfoList = null;
-            Long total = apiInfoDao.countByCondition(cond);
+            Long total = apiInfoService.countByCondition(cond);
             if (total > 0) {
                 cond.put("start", (pageNo - 1) * pageSize);
                 cond.put("pageSize", pageSize);
-                apiInfoList = apiInfoDao.findByCondition(cond);
+                apiInfoList = apiInfoService.findByCondition(cond);
             } else {
                 apiInfoList = new ArrayList<>();
             }
@@ -90,7 +90,7 @@ public class ApiAdminController {
     @ResponseBody
     public ApiResponse getById(@RequestParam Long id) {
         LoggerUtil.info(this, String.format("[/manage/get-by-id] id:%s", id));
-        ApiInfo apiInfo = apiInfoDao.getById(id);
+        ApiInfo apiInfo = apiInfoService.getById(id);
         ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(apiInfo);
         LoggerUtil.info(this, String.format("[/manage/get-by-id] result:%s", JSON.toJSONString(apiResponse)));
         return apiResponse;
@@ -107,7 +107,7 @@ public class ApiAdminController {
             apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
         } else {
             parseUriVariable(apiInfo);
-            boolean isUpdate = apiInfoDao.update(apiInfo);
+            boolean isUpdate = apiInfoService.update(apiInfo);
             if (isUpdate) {
                 apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             } else {
@@ -125,13 +125,31 @@ public class ApiAdminController {
         ApiResponse apiResponse = null;
         Map<String, Object> cond = new HashMap<>();
         cond.put("id", id);
-        boolean flag = apiInfoDao.deleteByCond(cond);
+        boolean flag = apiInfoService.deleteByCond(cond);
         if (flag) {
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
         } else {
             apiResponse = new ApiResponse(ApiResponseCode.DELETE_API_FAIL);
         }
         LoggerUtil.info(this, String.format("[/manage/delete] result:%s", JSON.toJSONString(apiResponse)));
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/params/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse getApiInfoWithParams(@PathVariable long id) {
+        LoggerUtil.info(this, String.format("[/params/%s] start", id));
+        ApiResponse apiResponse = null;
+
+        try {
+            RemoteCallInfo remoteCallInfo = apiInfoService.getApiInfoWithParams(id);
+            apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(remoteCallInfo);
+        } catch (Exception e) {
+            LoggerUtil.error(this, String.format("[/params/%s] failed", id), e);
+            apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
+        }
+
+        LoggerUtil.info(this, String.format("[/params/%s] end, result: %s", id, JSON.toJSONString(apiResponse)));
         return apiResponse;
     }
 

@@ -4,26 +4,23 @@
     /********************************** API测试 **************************************************/
 
     app.controller('ApiTestCtrl', function ($scope, $rootScope, $http, $filter, $location) {
-        $scope.apiInfo = {};
         $scope.remoteCallInfo = {};
-        $scope.apiInfo.method = "GET";
+        $scope.remoteCallInfo.method = "GET";
         $scope.postType = "1";
-        $scope.headerList = [];
         $scope.paramList = [];
 
         var apiId = $location.url().substr(10);
-        $http.get("api/manage/get-by-id?id=" + apiId).success(function (ret) {
-            if (ret.retCode == "00") {
-                $scope.apiInfo = ret.data;
-            } else {
-                alert("服务器异常, 请联系系统管理员");
-            }
-        });
+        if (apiId) {
+            $http.get("api/manage/params/" + apiId).success(function (ret) {
+                if (ret.retCode == "00") {
+                    $scope.remoteCallInfo = ret.data;
+                } else {
+                    alert("服务器异常, 请联系系统管理员");
+                }
+            });
+        }
 
         $scope.send = function () {
-            $scope.remoteCallInfo.method = $scope.apiInfo.method;
-            $scope.remoteCallInfo.url = $scope.apiInfo.qaUrl;
-
             $rootScope.validateInput("validate-inp-template");
 
             if ($rootScope.checkStatus) {

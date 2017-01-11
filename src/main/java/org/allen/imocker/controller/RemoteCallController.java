@@ -1,11 +1,11 @@
 package org.allen.imocker.controller;
 
 import com.alibaba.fastjson.JSON;
-import org.allen.imocker.dao.ApiInfoDao;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dto.RemoteCallInfo;
 import org.allen.imocker.entity.ApiInfo;
+import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.service.RemoteCallService;
 import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class RemoteCallController {
 
     @Autowired
-    private ApiInfoDao apiInfoDao;
+    private ApiInfoService apiInfoService;
 
     @Autowired
     private RemoteCallService remoteCallService;
@@ -42,7 +42,7 @@ public class RemoteCallController {
         LoggerUtil.info(this, String.format("[%s] start, apiName: %s, queryString: %s, para: %s",
                 pathInfo, apiName, queryString, JSON.toJSONString(paraMap)));
 
-        List<ApiInfo> apiInfoList = apiInfoDao.findApiInfoByName(apiName);
+        List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(apiName);
         if (!CollectionUtils.isEmpty(apiInfoList)) {
             ApiInfo apiInfo = apiInfoList.get(0);
             if (method.equalsIgnoreCase(apiInfo.getMethod())) {

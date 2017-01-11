@@ -8,4 +8,5 @@
     <settings useStatementNamespaces="true" errorTracingEnabled="false"/>
 
     <sqlMap resource="config/ApiInfo.xml"/>
+    <sqlMap resource="config/ParaInfo.xml"/>
 </sqlMapConfig>

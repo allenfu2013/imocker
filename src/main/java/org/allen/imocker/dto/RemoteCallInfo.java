@@ -13,6 +13,8 @@ public class RemoteCallInfo {
 
     private List<Map<String, Object>> params;
 
+    private List<String> paramList;
+
     private String jsonBody;
 
     public String getUrl() {
@@ -45,6 +47,14 @@ public class RemoteCallInfo {
 
     public void setParams(List<Map<String, Object>> params) {
         this.params = params;
+    }
+
+    public List<String> getParamList() {
+        return paramList;
+    }
+
+    public void setParamList(List<String> paramList) {
+        this.paramList = paramList;
     }
 
     public String getJsonBody() {

@@ -61,7 +61,7 @@
                                 $("#api-mock-edit-modal").modal('hide');
                                 $scope.getData(1);
                             } else {
-                                alert("创建失败，请联系管理员");
+                                alert(ret.retMsg);
                             }
                         });
                     } else {
@@ -73,7 +73,7 @@
                                 $("#api-mock-edit-modal").modal('hide');
                                 $scope.getData(1);
                             } else {
-                                alert("更新失败，请联系管理员");
+                                alert(ret.retMsg);
                             }
                         });
                     }
@@ -93,7 +93,7 @@
                         $scope.apiInfo = ret.data;
                         $("#api-mock-edit-modal").modal();
                     } else {
-                        alert("服务器异常, 请联系系统管理员");
+                        alert(ret.retMsg);
                     }
                 });
             }
@@ -109,7 +109,7 @@
                         if (ret.retCode == "00") {
                             $scope.getData(1);
                         } else {
-                            alert("删除失败, 请联系系统管理员");
+                            alert(ret.retMsg);
                         }
                     });
                 }
