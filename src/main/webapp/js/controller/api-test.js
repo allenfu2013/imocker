@@ -69,8 +69,12 @@
         };
 
         $scope.addHeaders = function () {
-            console.log("add headers");
-            var headerModel = "<div style='margin-top: 10px;'><input type='text' class='form-control header-key' style='width:200px;display: inline;' placeholder='key'><input type='text' class='form-control header-value' style='width:200px;margin-left:5px;display: inline;' placeholder='value'> <button class='btn btn-default glyphicon glyphicon-minus header-minus'></button></div>";
+            var headerModel = "<div style='margin-top: 10px;'>" +
+                "<input type='text' class='form-control header-key' style='width:200px;display: inline;' placeholder='key'>" +
+                "<input type='text' class='form-control header-value' style='width:200px;margin-left:5px;display: inline;' placeholder='value'>" +
+                "<button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-minus header-minus'></button>" +
+                "</div>";
+
             $("#headersContainer").append(headerModel);
             $(".header-minus").unbind("click");
             $(".header-minus").click(function () {
@@ -79,8 +83,12 @@
         };
 
         $scope.addParams = function () {
-            console.log("add params");
-            var paramTemplate = "<div style='margin-top: 10px;'><input type='text' class='form-control param-key' style='width:200px;display: inline;' placeholder='key'><input type='text' class='form-control param-value' style='width:200px;margin-left:5px;display: inline;' placeholder='value'> <button class='btn btn-default glyphicon glyphicon-minus param-minus'></button></div>";
+            var paramTemplate = "<div style='margin-top: 10px;'>" +
+                "<input type='text' class='form-control param-key' style='width:200px;display: inline;' placeholder='key'>" +
+                "<input type='text' class='form-control param-value' style='width:200px;margin-left:5px;display: inline;' placeholder='value'>" +
+                "<button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-minus param-minus'></button>" +
+                "</div>";
+
             $("#paramsContainer").append(paramTemplate);
             $(".param-minus").unbind("click");
             $(".param-minus").click(function () {
