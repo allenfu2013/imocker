@@ -1,6 +1,9 @@
 package org.allen.imocker.httpclient;
 
 import com.alibaba.fastjson.JSON;
+import com.dianping.cat.Cat;
+import com.dianping.cat.CatConstants;
+import com.dianping.cat.message.Transaction;
 import org.allen.imocker.util.LoggerUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
@@ -93,17 +96,17 @@ public abstract class AbstractHttpExecutor implements HttpOperation {
         CloseableHttpResponse response = null;
         InputStream in = null;
         URI uri = request.getURI();
-        String port = uri.getPort() > 0 ? new StringBuilder(":").append(uri.getPort()).append("/").toString() : "";
+        String port = uri.getPort() > 0 ? new StringBuilder(":").append(uri.getPort()).toString() : "";
         String requestPath = new StringBuilder().append(uri.getScheme()).append("://").append(uri.getHost()).append(port).append(uri.getPath()).toString();
-        /*Transaction transaction = Cat.newTransaction(CatConstants.TYPE_HTTP_REMOTE_CALL, requestPath);*/
+        Transaction transaction = Cat.newTransaction(CatConstants.TYPE_REMOTE_CALL, requestPath);
 
         try {
-            LoggerUtil.info(this, String.format("http client [%s] start, url: %s", request.getMethod(), request.getURI()));
+            LoggerUtil.info(this, String.format("http client [%s] start, url: %s", request.getMethod(), requestPath));
             long t1 = System.currentTimeMillis();
             response = getHttpClient().execute(request);
-           /* transaction.setStatus(Transaction.SUCCESS);*/
+            transaction.setStatus(Transaction.SUCCESS);
             long t2 = System.currentTimeMillis();
-            LoggerUtil.info(this, String.format("http client [%s] end, url: %s, took: %s", request.getMethod(), request.getURI(), (t2 - t1)));
+            LoggerUtil.info(this, String.format("http client [%s] end, url: %s, took: %s", request.getMethod(), requestPath, (t2 - t1)));
             in = response.getEntity().getContent();
             String content = IOUtils.toString(in, "UTF-8");
             if (t == String.class) {
@@ -114,10 +117,10 @@ public abstract class AbstractHttpExecutor implements HttpOperation {
             }
         } catch (Exception e) {
             LoggerUtil.error(this, String.format("http client request failed, error: %s", e.getMessage()), e);
-            /*transaction.setStatus(e);*/
+            transaction.setStatus(e);
             throw new HttpException(e.getMessage(), e);
         } finally {
-            /*transaction.complete();*/
+            transaction.complete();
             if (in != null) {
                 try {
                     in.close();
