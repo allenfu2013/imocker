@@ -2,9 +2,12 @@ package org.allen.imocker.entity;
 
 import java.util.Date;
 
+/**
+ * 参数信息
+ */
 public class ParaInfo {
 
-    private long apiId;
+    private Integer apiId;
 
     private String paraName;
 
@@ -22,11 +25,11 @@ public class ParaInfo {
 
     private String updatedBy;
 
-    public long getApiId() {
+    public Integer getApiId() {
         return apiId;
     }
 
-    public void setApiId(long apiId) {
+    public void setApiId(Integer apiId) {
         this.apiId = apiId;
     }
 

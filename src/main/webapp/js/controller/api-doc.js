@@ -11,6 +11,7 @@
                 + "<div style='margin-top: 10px;'>"
                 + "<input type='text' class='form-control header-key' style='width:200px;display: inline;' placeholder='key'>"
                 + "<input type='text' class='form-control header-value' style='width:200px;margin-left:5px;display: inline;' placeholder='value'>"
+                + "<input type='text' class='form-control header-desc' style='width:200px;margin-left:5px;display: inline;' placeholder='说明'>"
                 + "<button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-minus header-minus'></button>"
                 + "</div>";
             $("#headersContainer").append(headerTemplate);

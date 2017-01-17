@@ -4,6 +4,9 @@ import org.allen.imocker.dto.StatusEnum;
 
 import java.util.Date;
 
+/**
+ * API信息
+ */
 public class ApiInfo {
 
     private Integer id;
