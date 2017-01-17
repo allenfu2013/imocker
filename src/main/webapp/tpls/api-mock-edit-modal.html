@@ -6,18 +6,17 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title" id="myModalLabel">API管理</h4>
+                            <h4 class="modal-title" id="myModalLabel">Mock API</h4>
                         </div>
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="apiNameEdit">接口名称</label>
-                                        <span data-toggle="tooltip" data-placement="top" title="API接口中数值型,字符串型变量使用{int},{string}代替。比如: /uses/{int}, /categories/{string}" class="glyphicon glyphicon-question-sign"></span>
                                         <input id="apiNameEdit" type="text" placeholder="/users" required="true" class="form-control validate-inp-template" ng-model="apiInfo.apiName" />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="method">HTTP方法</label>
                                         <select id="method" class="form-control" ng-model="apiInfo.method">
@@ -25,6 +24,16 @@
                                             <option value="POST">POST</option>
                                             <option value="PUT">PUT</option>
                                             <option value="DELETE">DELETE</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="method">项目</label>
+                                        <select id="" class="form-control" ng-model="apiInfo.project">
+                                            <option value="dfp">dfp</option>
+                                            <option value="earth">earth</option>
                                         </select>
                                     </div>
                                 </div>
@@ -37,13 +46,18 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="retResultEdit">API返回值</label>
+                                        <label for="retResultEdit">Mock返回值</label>
                                         <textarea class="form-control validate-inp-template" placeholder="目前仅支持json格式返回值" rows="5" id="retResultEdit" ng-model="apiInfo.retResult"></textarea>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-warning" role="alert">如果想创建基于参数返回不同Mock值，请使用“文档创建”方式</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-footer" id="apiInfoOpsBtn" style="margin-top:50px;">
+                        <div class="modal-footer" id="apiInfoOpsBtn" style="margin-top:10px;">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                             <button type="button" class="btn btn-primary" ng-click="save()">确定</button>
                         </div>
