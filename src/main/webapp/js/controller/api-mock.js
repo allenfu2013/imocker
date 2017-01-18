@@ -3,7 +3,7 @@
 
     /********************************** API管理 **************************************************/
 
-    app.controller('ApiMockCtrl', function ($scope, $rootScope, $http, $filter) {
+    app.controller('ApiMockCtrl', function ($scope, $rootScope, $http, $filter, $location) {
         $scope.apiInfo = {};
         $scope.list = [];
 
@@ -41,6 +41,10 @@
                 $scope.apiInfo = {"method":"GET"};
                 $("#api-mock-edit-modal").modal();
             }
+        };
+
+        $scope.createWithDoc = function() {
+          $location.path("/api-doc");
         };
 
         $scope.save = function () {

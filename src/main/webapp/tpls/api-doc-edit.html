@@ -64,18 +64,19 @@
                         <textarea class="form-control" rows="3" placeholder="返回值举例说明"></textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">Mock</label>
 
-                    <div class="col-sm-11">
-                        <textarea class="form-control" rows="3" placeholder="Mock返回值"></textarea>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="col-sm-1 control-label">测试URL</label>
 
                     <div class="col-sm-11">
-                        <input type="text" class="form-control" placeholder="http://{host}:{port}"/>
+                        <input type="text" class="form-control" placeholder="http://127.0.0.1:8080/users"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Mock</label>
+
+                    <div class="col-sm-11">
+                        <button ng-click="addMock()" class="btn btn-default glyphicon glyphicon-plus"></button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -88,4 +89,5 @@
             </form>
         </div>
     </div>
+    <div ng-include="'tpls/api-doc-mock-edit-modal.html'"></div>
 </div>

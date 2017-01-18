@@ -42,6 +42,11 @@
                 $(this).parent().remove();
             });
         };
+
+        $scope.addMock = function() {
+            console.log("add mock");
+            $("#api-doc-mock-edit-modal").modal();
+        };
     });
 
 }());
