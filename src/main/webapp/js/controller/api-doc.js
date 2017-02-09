@@ -20,7 +20,7 @@
             });
         };
 
-        $scope.addParams = function() {
+        $scope.addParams = function () {
             var paramTemplate = ""
                 + "<div style='margin-top: 10px;'>"
                 + "<input type='text' class='form-control' style='width:200px;display: inline;' placeholder='参数名称'>"
@@ -43,9 +43,45 @@
             });
         };
 
-        $scope.addMock = function() {
-            console.log("add mock");
+        $scope.addMock = function () {
+            $("#conditionContainer").empty();
             $("#api-doc-mock-edit-modal").modal();
+        };
+
+        $scope.addCondition = function () {
+            var conditionTemplate = ""
+                + "<tr>"
+                + "<td>"
+                + "<select id='method' class='form-control'>"
+                + "<option value='name'>name</option>"
+                + "<option value='cardNo'>cardNo</option>"
+                + "<option value='phone'>phone</option>"
+                + "</select>"
+                + "</td>"
+                + "<td>"
+                + "<select id='' class='form-control'>"
+                + "<option value='>'>大于</option>"
+                + "<option value='='>等于</option>"
+                + "<option value='<'>小于</option>"
+                + "<option value='>='>大于等于</option>"
+                + "<option value='<='>小于等于</option>"
+                + "<option value='!='>不等于</option>"
+                + "</select>"
+                + "</td>"
+                + "<td>"
+                + "<input id='apiNameEdit' type='text' placeholder='' required='true' class='form-control validate-inp-template' />"
+                + "</td>"
+                + "<td>"
+                + "<button class='btn btn-default glyphicon glyphicon-minus condition-minus'></button>"
+                + "</td>"
+                + "</tr>";
+
+            $("#conditionContainer").append(conditionTemplate);
+
+            $(".condition-minus").unbind("click");
+            $(".condition-minus").click(function () {
+                $(this).parent().parent().remove();
+            });
         };
     });
 
