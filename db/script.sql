@@ -3,7 +3,7 @@ CREATE TABLE `api_info` (
   `api_name` varchar(50) NOT NULL DEFAULT '' COMMENT 'api名称',
   `ret_result` text COMMENT 'api返回值',
   `method` varchar(10) NOT NULL DEFAULT '' COMMENT 'http方法',
-  `regex` varchar(50) DEFAULT NULL COMMENT '有url变量的正则表达式',
+  `uri_variable` varchar(50) DEFAULT NULL COMMENT 'url中的变量列表',
   `description` varchar(200) DEFAULT NULL COMMENT '描述',
   `qa_url` varchar(100) DEFAULT NULL COMMENT '测试环境地址',
   `prd_url` varchar(100) DEFAULT NULL COMMENT '生产环境地址',

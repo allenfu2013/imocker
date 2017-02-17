@@ -65,8 +65,8 @@ public class ApiInfoService {
         return baseDao.update("ApiInfo.update", apiInfo) > 0 ? true : false;
     }
 
-    public List<ApiInfo> findRegexApi() {
-        return baseDao.queryForList("ApiInfo.findRegexApi", null);
+    public List<ApiInfo> findUriVariableApi() {
+        return baseDao.queryForList("ApiInfo.findUriVariableApi", null);
     }
 
     public boolean deleteByCond(Map<String, Object> cond) {

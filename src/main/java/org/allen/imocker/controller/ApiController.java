@@ -1,6 +1,7 @@
 package org.allen.imocker.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +16,10 @@ import org.allen.imocker.util.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriTemplate;
 
 @Controller
 public class ApiController {
@@ -49,12 +52,17 @@ public class ApiController {
                     apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
                 }
             } else {
-                List<ApiInfo> regexApiList = apiInfoService.findRegexApi();
+                List<ApiInfo> regexApiList = apiInfoService.findUriVariableApi();
                 for (ApiInfo apiInfo : regexApiList) {
-                    String regex = apiInfo.getRegex();
-                    if (RegexUtil.isMatch(regex, apiName)) {
-                        apiResponse = JSON.parseObject(apiInfo.getRetResult());
-                        break;
+                    UriTemplate uriTemplate = new UriTemplate(apiInfo.getApiName());
+                    if (uriTemplate.matches(apiName)) {
+                        Map<String, String> variableMap = uriTemplate.match(apiName);
+                        for (String value : variableMap.values()) {
+                            if (!StringUtils.isEmpty(value) && !value.contains("/")) {
+                                apiResponse = JSON.parseObject(apiInfo.getRetResult());
+                                break;
+                            }
+                        }
                     }
                 }
             }

@@ -17,7 +17,7 @@ public class ApiInfo {
 
     private String retResult;
 
-    private String regex;
+    private String uriVariable;
 
     private String description;
 
@@ -67,12 +67,12 @@ public class ApiInfo {
         this.retResult = retResult;
     }
 
-    public String getRegex() {
-        return regex;
+    public String getUriVariable() {
+        return uriVariable;
     }
 
-    public void setRegex(String regex) {
-        this.regex = regex;
+    public void setUriVariable(String uriVariable) {
+        this.uriVariable = uriVariable;
     }
 
     public String getDescription() {
@@ -150,12 +150,11 @@ public class ApiInfo {
     @Override
     public String toString() {
         return "ApiInfo{" +
-                "updatedBy='" + updatedBy + '\'' +
-                ", id=" + id +
+                "id=" + id +
                 ", apiName='" + apiName + '\'' +
                 ", method='" + method + '\'' +
                 ", retResult='" + retResult + '\'' +
-                ", regex='" + regex + '\'' +
+                ", uriVariable='" + uriVariable + '\'' +
                 ", description='" + description + '\'' +
                 ", qaUrl='" + qaUrl + '\'' +
                 ", prdUrl='" + prdUrl + '\'' +
@@ -163,6 +162,7 @@ public class ApiInfo {
                 ", createdAt=" + createdAt +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedAt=" + updatedAt +
+                ", updatedBy='" + updatedBy + '\'' +
                 '}';
     }
 }

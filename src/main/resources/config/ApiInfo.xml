@@ -8,7 +8,7 @@
             api_name,
             method,
             ret_result,
-            regex,
+            uri_variable,
             description,
             qa_url,
             prd_url,
@@ -21,7 +21,7 @@
             #apiName#,
             #method#,
             #retResult#,
-            #regex#,
+            #uriVariable#,
             #description#,
             #qaUrl#,
             #prdUrl#,
@@ -38,7 +38,7 @@
         api_name apiName,
         method method,
         ret_result retResult,
-        regex regex,
+        uri_variable uriVariable,
         description description,
         qa_url qaUrl,
         prd_url prdUrl,
@@ -96,14 +96,14 @@
     </select>
 
     <update id="update" parameterClass="org.allen.imocker.entity.ApiInfo">
-        update api_info set api_name = #apiName#, method = #method#, ret_result = #retResult#, regex = #regex#, status = #status#, updated_by = #updatedBy#, updated_at = now()
+        update api_info set api_name = #apiName#, method = #method#, ret_result = #retResult#, uri_variable = #uriVariable#, status = #status#, updated_by = #updatedBy#, updated_at = now()
         where id = #id#
     </update>
 
-    <select id="findRegexApi" resultClass="org.allen.imocker.entity.ApiInfo">
+    <select id="findUriVariableApi" resultClass="org.allen.imocker.entity.ApiInfo">
         select
         <include refid="all_columns"/>
-        from api_info where status = 1 and regex is not null and regex != ''
+        from api_info where status = 1 and uri_variable is not null and uri_variable != ''
     </select>
 
     <delete id="deleteByCond">

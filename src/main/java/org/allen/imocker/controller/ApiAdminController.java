@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriTemplate;
 
 @Controller
 @RequestMapping("/manage")
@@ -155,14 +156,10 @@ public class ApiAdminController {
 
     private static void parseUriVariable(ApiInfo apiInfo) {
         String apiName = apiInfo.getApiName();
-        if (apiName.contains("/" + RegexEnum.INT.getName() + "/")
-                || apiName.endsWith("/" + RegexEnum.INT.getName())) {
-            apiInfo.setRegex(apiName.replaceAll(RegexEnum.INT.getRegex(), RegexEnum.INT.getReplacement()));
-        } else if (apiName.contains("/" + RegexEnum.STRING.getName() + "/")
-                || apiName.endsWith("/" + RegexEnum.STRING.getName())) {
-            apiInfo.setRegex(apiName.replaceAll(RegexEnum.STRING.getRegex(), RegexEnum.STRING.getReplacement()));
-        } else {
-            apiInfo.setRegex(null);
+        UriTemplate uriTemplate = new UriTemplate(apiName);
+        List<String> variableNames = uriTemplate.getVariableNames();
+        if (!variableNames.isEmpty()) {
+            apiInfo.setUriVariable(variableNames.toString());
         }
     }
 
