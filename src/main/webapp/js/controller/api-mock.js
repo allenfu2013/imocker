@@ -16,7 +16,7 @@
             var url = "api/manage/list?pageNo=" + page + "&pageSize=" + pageSize +
                 "&apiName=" + apiName + "&method=" + method;
             $http.get(url).success(function (ret) {
-                if(ret.retCode=="00") {
+                if (ret.retCode == "00") {
                     callback && callback(ret.data);
                 } else {
                     alert("服务器异常, 请联系系统管理员");
@@ -38,13 +38,13 @@
                 $("#username").val("");
                 $("#login-modal").modal();
             } else {
-                $scope.apiInfo = {"method":"GET"};
+                $scope.apiInfo = {"method": "GET"};
                 $("#api-mock-edit-modal").modal();
             }
         };
 
-        $scope.createWithDoc = function() {
-          $location.path("/api-doc");
+        $scope.createWithDoc = function () {
+            $location.path("/api-doc");
         };
 
         $scope.save = function () {
@@ -61,7 +61,7 @@
                         $scope.apiInfo.createdBy = $rootScope.username;
                         $scope.apiInfo.status = 1;
                         $http.post("api/manage/add", $scope.apiInfo).success(function (ret) {
-                            if(ret.retCode == "00") {
+                            if (ret.retCode == "00") {
                                 $("#api-mock-edit-modal").modal('hide');
                                 $scope.getData(1);
                             } else {
@@ -118,6 +118,17 @@
                     });
                 }
             }
+        };
+
+        $scope.callMockApi = function (url, method) {
+            // 创建Form
+            var form = $('<form></form>');
+            // 设置属性
+            form.attr('action', url);
+            form.attr('method', method);
+            form.attr('target', '_blank');
+            // 提交表单
+            form.submit();
         };
 
     });
