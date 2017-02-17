@@ -6,13 +6,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
-import com.dianping.cat.Cat;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.util.LoggerUtil;
-import org.allen.imocker.util.RegexUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -38,7 +36,6 @@ public class ApiController {
             List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(apiName);
             if (!CollectionUtils.isEmpty(apiInfoList)) {
                 if (method.equalsIgnoreCase(apiInfoList.get(0).getMethod())) {
-                    Cat.logMetricForCount("CallMockApiCount");
                     try {
                         apiResponse = JSON.parseObject(apiInfoList.get(0).getRetResult());
                     } catch (Exception e) {
