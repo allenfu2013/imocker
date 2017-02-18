@@ -1,6 +1,7 @@
 package org.allen.imocker.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoggerUtil {
 
@@ -17,7 +18,7 @@ public class LoggerUtil {
 	}
 
 	public static void error(Class clazz, String message, Throwable t) {
-		Logger logger = Logger.getLogger(clazz);
+		Logger logger = LoggerFactory.getLogger(clazz);
 		logger.error(message, t);
 	}
 
@@ -34,7 +35,7 @@ public class LoggerUtil {
 	}
 
 	public static void warn(Class clazz, String message, Throwable t) {
-		Logger logger = Logger.getLogger(clazz);
+        Logger logger = LoggerFactory.getLogger(clazz);
 		logger.warn(message, t);
 	}
 
@@ -43,7 +44,7 @@ public class LoggerUtil {
 	}
 
 	public static void info(Class clazz, String message) {
-		Logger logger = Logger.getLogger(clazz);
+        Logger logger = LoggerFactory.getLogger(clazz);
 		logger.info(message);
 	}
 
@@ -52,7 +53,7 @@ public class LoggerUtil {
 	}
 
 	public static void debug(Class clazz, String message) {
-		Logger logger = Logger.getLogger(clazz);
+        Logger logger = LoggerFactory.getLogger(clazz);
 		logger.debug(message);
 	}
 }

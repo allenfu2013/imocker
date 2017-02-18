@@ -20,14 +20,12 @@ public class JYWebServiceImpl implements JYWebservice {
                              String strEncryValue1, String strLicenseCode2,
                              String strEncryValue2, String strLicenseCode3, String strEncryValue3)
             throws Exception {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public String compare(String strName, String strId, String strPhoto1,
                           String strPhoto2, String strTime, String strLicenseCode,
                           String strEncryValue) throws Exception {
-        // TODO Auto-generated method stub
         return null;
     }
 
