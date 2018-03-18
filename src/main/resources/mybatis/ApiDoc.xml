@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApiDoc">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.allen.imocker.entity.ApiDoc">
+        insert into api_doc(
+            project,
+            api_name,
+            api_desc,
+            api_method,
+            api_param_example,
+            api_response_status,
+            api_response_example,
+            test_url,
+            created_at,
+            created_by,
+            updated_at,
+            updated_by
+        ) values (
+            #{project},
+            #{apiName},
+            #{apiDesc},
+            #{apiMethod},
+            #{apiParamExample},
+            #{apiResponseStatus},
+            #{apiResponseExample},
+            #{testUrl},
+            now(),
+            #{createdBy},
+            now(),
+            #{updatedBy}
+        )
+    </insert>
+
+    <sql id="all_columns">
+        id id,
+        project project,
+        api_name apiName,
+        api_desc apiDesc,
+        api_method apiMethod,
+        api_param_example apiParamExample,
+        api_response_status apiResponseStatus,
+        api_response_example apiResponseExample,
+        test_url testUrl,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy
+    </sql>
+
+    <select id="countByCondition" parameterType="map" resultType="java.lang.Long">
+        select count(id) from api_doc
+        <where>
+            1=1
+            <if test="project != null and project !=''">
+                and project = #{project}
+            </if>
+            <if test="apiName != null and apiName !=''">
+                and api_name like concat('%', #{apiName}, '%')
+            </if>
+            <if test="operator != null and operator !=''">
+                and updated_by = #{operator}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByCondition" parameterType="map" resultType="org.allen.imocker.entity.ApiDoc">
+        select
+        <include refid="all_columns"/>
+        from api_doc
+        <where>
+            1=1
+            <if test="project != null and project !=''">
+                and project = #{project}
+            </if>
+            <if test="apiName != null and apiName !=''">
+                and api_name like concat('%', #{apiName}, '%')
+            </if>
+            <if test="operator != null and operator !=''">
+                and updated_by = #{operator}
+            </if>
+        </where>
+        order by updated_at desc limit #{start}, #{pageSize}
+    </select>
+
+    <select id="findByProject" parameterType="map" resultType="org.allen.imocker.entity.ApiDoc">
+        select
+        <include refid="all_columns"/>
+        from api_doc
+        <where>
+            1=1
+            <if test="project != null and project !=''">
+                and project = #{project}
+            </if>
+        </where>
+    </select>
+
+    <select id="getById" resultType="org.allen.imocker.entity.ApiDoc">
+        select
+        <include refid="all_columns"/>
+        from api_doc where id = #{id}
+    </select>
+
+    <update id="update" parameterType="org.allen.imocker.entity.ApiDoc">
+        update api_doc
+        set
+          project = #{project},
+          api_name = #{apiName},
+          api_method = #{apiMethod},
+          api_desc = #{apiDesc},
+          api_param_example = #{apiParamExample},
+          api_response_status = #{apiResponseStatus},
+          api_response_example = #{apiResponseExample},
+          test_url = #{testUrl},
+          updated_by = #{updatedBy},
+          updated_at = now()
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from api_doc where id = #{id}
+    </delete>
+</mapper>

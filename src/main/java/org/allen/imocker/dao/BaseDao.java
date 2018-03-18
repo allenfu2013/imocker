@@ -1,72 +1,79 @@
 package org.allen.imocker.dao;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.orm.ibatis.SqlMapClientTemplate;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.sql.SQLException;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 @Repository
-public class BaseDao {
+public class BaseDao extends SqlSessionDaoSupport {
 
-    @Resource(name = "sqlMapClient")
-    protected SqlMapClient sqlMapClient;
+    private static final int BATCH_SIZE = 100;
 
-    @Resource(name = "sqlMapClientTemplate")
-    protected SqlMapClientTemplate sqlMapClientTemplate;
-
-    @Value("${jdbc.url}")
-    String databaseUrl;
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    public Object insert(String sqlId, Object param) {
+    public int insert(String sqlId, Object param) {
         try {
-            Object obj = sqlMapClient.insert(sqlId, param);
-            return obj;
-        } catch (SQLException e) {
-            throw new RuntimeException(String.format("DAO insert failed, sqlId=%s, param=%s, error=%s", sqlId, param, e.getCause().getMessage()), e);
+            return this.getSqlSession().insert(sqlId, param);
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("insert failed, sqlId=%s, param=%s, error=%s",
+                    sqlId, param, e.getCause().getMessage()), e);
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public int update(String sqlId, Object param) {
         try {
-            int ret = sqlMapClient.update(sqlId, param);
-            return ret;
-        } catch (SQLException e) {
-            throw new RuntimeException(String.format("DAO update failed, sqlId=%s, param=%s, error=%s", sqlId, param, e.getCause().getMessage()), e);
-        }
-    }
-
-    public <T> List<T> queryForList(String sqlId, Object param) {
-        try {
-            List list = sqlMapClient.queryForList(sqlId, param);
-            return list;
-        } catch (SQLException e) {
-            throw new RuntimeException(String.format("DAO queryForList failed, sqlId=%s, param=%s, error=%s", sqlId, param, e.getCause().getMessage()), e);
+            return this.getSqlSession().update(sqlId, param);
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("update failed, sqlId=%s, param=%s, error=%s",
+                    sqlId, param, e.getCause().getMessage()), e);
         }
     }
 
     public <T> T queryForObject(String sqlId, Object param) {
         try {
-            Object obj = sqlMapClient.queryForObject(sqlId, param);
-            return (T) obj;
-        } catch (SQLException e) {
-            throw new RuntimeException(String.format("DAO queryForObject failed, sqlId=%s, param=%s, error=%s", sqlId, param, e.getCause().getMessage()), e);
+            return this.getSqlSession().selectOne(sqlId, param);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    String.format("queryObject failed, sqlId=%s, param=%s, error=%s", sqlId, param,
+                            e.getCause().getMessage()),
+                    e);
+        }
+    }
+
+    public <T> List<T> queryForList(String sqlId, Object param) {
+        try {
+            return this.getSqlSession().selectList(sqlId, param);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    String.format("queryList failed, sqlId=%s, param=%s, error=%s", sqlId, param,
+                            e.getCause().getMessage()),
+                    e);
         }
     }
 
     public int delete(String sqlId, Object param) {
         try {
-            int ret = sqlMapClient.delete(sqlId, param);
-            return ret;
-        } catch (SQLException e) {
-            throw new RuntimeException(String.format("DAO delete failed, sqlId=%s, param=%s, error=%s", sqlId, param, e.getCause().getMessage()), e);
+            return this.getSqlSession().delete(sqlId, param);
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("delete failed, sqlId=%s, param=%s, error=%s",
+                    sqlId, param, e.getCause().getMessage()), e);
         }
     }
+
+    @Autowired
+    @Override
+    public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+        super.setSqlSessionFactory(sqlSessionFactory);
+    }
+
+    @Autowired
+    @Override
+    public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+        super.setSqlSessionTemplate(sqlSessionTemplate);
+    }
+
 }

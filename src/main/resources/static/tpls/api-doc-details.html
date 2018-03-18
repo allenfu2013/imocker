@@ -1,0 +1,146 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>项目</h4>
+            <span>{{apiDoc.project}}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>接口名称</h4>
+            <span>{{apiDoc.apiName}}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>接口描述</h4>
+            <span>{{apiDoc.apiDesc}}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Method</h4>
+            <span>{{apiDoc.apiMethod}}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Header</h4>
+            <table class="table table-bordered" ng-show="apiDoc.apiHeaders.length!=0"
+                   style="width:700px;">
+                <thead>
+                <tr>
+                    <td>Key</td>
+                    <td>Value</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apiHeader in apiDoc.apiHeaders">
+                    <td>{{apiHeader.headerKey}}</td>
+                    <td>{{apiHeader.headerValue}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Parameters</h4>
+            <table class="table table-bordered" ng-show="apiDoc.apiParameters.length!=0"
+                   style="width:700px;">
+                <thead>
+                <tr>
+                    <td>参数</td>
+                    <td>类型</td>
+                    <td>必须</td>
+                    <td>父元素</td>
+                    <td>描述</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apiParameter in apiDoc.apiParameters">
+                    <td>{{apiParameter.paramKey}}</td>
+                    <td>{{apiParameter.paramType}}</td>
+                    <td ng-show="apiParameter.paramRequired == 1">是</td>
+                    <td ng-show="apiParameter.paramRequired == 0">否</td>
+                    <td>{{apiParameter.paramParent}}</td>
+                    <td>{{apiParameter.paramDesc}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div ng-show="apiDoc.apiParamExample !=null">
+                <h5>Example:</h5>
+                <pre style="width: 700px;">{{apiDoc.apiParamExample}}</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Response</h4>
+            <span>Http Status: {{apiDoc.apiResponseStatus}}</span>
+            <table class="table table-bordered" ng-show="apiDoc.apiResponseBodies.length!=0"
+                   style="width:700px;">
+                <thead>
+                <tr>
+                    <td>参数</td>
+                    <td>类型</td>
+                    <td>必须</td>
+                    <td>父元素</td>
+                    <td>描述</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apiResponse in apiDoc.apiResponseBodies">
+                    <td>{{apiResponse.responseKey}}</td>
+                    <td>{{apiResponse.responseType}}</td>
+                    <td ng-show="apiResponse.responseRequired == 1">是</td>
+                    <td ng-show="apiResponse.responseRequired == 0">否</td>
+                    <td>{{apiResponse.responseParent}}</td>
+                    <td>{{apiResponse.responseDesc}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div ng-show="apiDoc.apiResponseExample !=null">
+                <h5>Example:</h5>
+                <pre style="width: 700px;">{{apiDoc.apiResponseExample}}</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Error</h4>
+            <table class="table table-bordered" ng-show="apiDoc.apiErrors.length!=0"
+                   style="width:700px;">
+                <thead>
+                <tr>
+                    <td>Http Status</td>
+                    <td>错误编码</td>
+                    <td>错误描述</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="apiError in apiDoc.apiErrors">
+                    <td>{{apiError.httpStatus}}</td>
+                    <td>{{apiError.businessCode}}</td>
+                    <td>{{apiError.errorMsg}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>测试URL</h4>
+            <span>{{apiDoc.testUrl}}</span>
+        </div>
+    </div>
+</div>

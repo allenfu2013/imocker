@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApiError">
+    <insert id="insert" parameterType="org.allen.imocker.entity.ApiError">
+        insert into api_error(
+            api_doc_id,
+            http_status,
+            business_code,
+            error_msg
+        ) values (
+            #{apiDocId},
+            #{httpStatus},
+            #{businessCode},
+            #{errorMsg}
+        )
+    </insert>
+
+    <sql id="all_columns">
+        id id,
+        api_doc_id apiDocId,
+        http_status httpStatus,
+        business_code businessCode,
+        error_msg errorMsg
+    </sql>
+
+    <select id="getByApiDocId" resultType="org.allen.imocker.entity.ApiError">
+        select
+        <include refid="all_columns"/>
+        from api_error where api_doc_id = #{apiDocId}
+    </select>
+
+    <delete id="deleteByApiDocId">
+        delete from api_error where api_doc_id = #{apiDocId}
+    </delete>
+</mapper>

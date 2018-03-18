@@ -1,7 +1,7 @@
 package org.allen.imocker.httpclient;
 
 import com.alibaba.fastjson.JSON;
-import org.allen.imocker.util.LoggerUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public abstract class AbstractHttpExecutor implements HttpOperation {
 
     protected abstract CloseableHttpClient getHttpClient();
@@ -87,7 +88,7 @@ public abstract class AbstractHttpExecutor implements HttpOperation {
         if (timeout > 0) {
             request.setConfig(RequestConfig.custom().setSocketTimeout(timeout).build());
         } else {
-            LoggerUtil.warn(this, String.format("http client timeout is set to no-timeout!!!"));
+            log.warn("http client timeout is set to no-timeout!!!");
         }
 
         CloseableHttpResponse response = null;
@@ -97,11 +98,11 @@ public abstract class AbstractHttpExecutor implements HttpOperation {
         String requestPath = new StringBuilder().append(uri.getScheme()).append("://").append(uri.getHost()).append(port).append(uri.getPath()).toString();
 
         try {
-            LoggerUtil.info(this, String.format("http client [%s] start, url: %s", request.getMethod(), requestPath));
+            log.info("http client [{}] start, url: {}", request.getMethod(), requestPath);
             long t1 = System.currentTimeMillis();
             response = getHttpClient().execute(request);
             long t2 = System.currentTimeMillis();
-            LoggerUtil.info(this, String.format("http client [%s] end, url: %s, took: %s", request.getMethod(), requestPath, (t2 - t1)));
+            log.info("http client [{}] end, url: {}, took: {}", request.getMethod(), requestPath, (t2 - t1));
             in = response.getEntity().getContent();
             String content = IOUtils.toString(in, "UTF-8");
             if (t == String.class) {
@@ -111,7 +112,7 @@ public abstract class AbstractHttpExecutor implements HttpOperation {
                 return ret;
             }
         } catch (Exception e) {
-            LoggerUtil.error(this, String.format("http client request failed, error: %s", e.getMessage()), e);
+            log.error(String.format("http client request failed, error: %s", e.getMessage()), e);
             throw new HttpException(e.getMessage(), e);
         } finally {
             if (in != null) {

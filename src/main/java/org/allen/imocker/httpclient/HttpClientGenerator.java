@@ -1,5 +1,6 @@
 package org.allen.imocker.httpclient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -10,10 +11,11 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.springframework.util.Base64Utils;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
+import java.io.ByteArrayInputStream;
+import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
@@ -65,10 +67,11 @@ public class HttpClientGenerator {
         return clientConnManager;
     }
 
-    private SSLContext buildSSLContext() throws HttpException {
+    private SSLContext buildCommonSSLContext() throws HttpException {
         SSLContext sslContext = null;
         try {
             sslContext = SSLContext.getInstance("TLS");
+
             X509TrustManager tm = new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(X509Certificate[] chain,
@@ -85,8 +88,37 @@ public class HttpClientGenerator {
                     return null;
                 }
             };
-
             sslContext.init(null, new TrustManager[]{tm}, null);
+
+        } catch (Exception e) {
+            throw new HttpException(e.getMessage(), e);
+        }
+        return sslContext;
+    }
+
+    private SSLContext buildSSLContext() throws HttpException {
+        if(StringUtils.isEmpty(clientConfig.getClientKeyCert())
+                || StringUtils.isEmpty(clientConfig.getTrustServerCert())){
+            return buildCommonSSLContext();
+        }
+        SSLContext sslContext = null;
+        try {
+            sslContext = SSLContext.getInstance("TLS");
+
+            // 加载客户端证书: 包括证书和私钥
+            KeyStore keyStore = KeyStore.getInstance("JKS");
+            byte[] clientCertBytes = Base64Utils.decodeFromString(clientConfig.getClientKeyCert());
+            keyStore.load(new ByteArrayInputStream(clientCertBytes), clientConfig.getClientKeyPwd().toCharArray());
+            KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+            keyManagerFactory.init(keyStore, clientConfig.getClientKeyPwd().toCharArray());
+
+            // 加载服务端证书
+            KeyStore trustStore = KeyStore.getInstance("JKS");
+            byte[] trustCertBytes = Base64Utils.decodeFromString(clientConfig.getTrustServerCert());
+            trustStore.load(new ByteArrayInputStream(trustCertBytes), clientConfig.getTrustKeyPwd().toCharArray());
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(trustStore);
+            sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
         } catch (Exception e) {
             throw new HttpException(e.getMessage(), e);
         }

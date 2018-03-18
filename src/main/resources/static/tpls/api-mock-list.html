@@ -1,0 +1,89 @@
+<div style="margin-left:20px;margin-right:20px;">
+
+    <div style="border: 1px solid #ccc; padding:5px; border-radius: 4px;">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="apiName">接口名称</label>
+                    <input type="text" class="form-control" placeholder="支持模糊搜索" id="apiName" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="method">方法</label>
+                    <select id="method" class="form-control">
+                        <option value="">请选择</option>
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="operator">更新人</label>
+                    <input type="text" class="form-control" id="operator" />
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" style="width:100px; margin-right:50px;" ng-click="search()">查询</button>
+            <button class="btn btn-info" ng-click="reset()">重置</button>
+        </div>
+    </div>
+
+
+    <div style="overflow:hidden;margin-top:10px;margin-bottom:10px;">
+        <lable>每页</lable>
+        <select style="display:inline;width:50px;" id="pageLimit">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+
+        <!--<button class="btn btn-primary" style="float:right!important;width:100px;" ng-click="createWithDoc()">文档创建</button>-->
+        <button class="btn btn-success" style="float:right!important;width:100px;" ng-click="create()">快速创建</button>
+    </div>
+
+    <div>
+        <table class="table table-bordered table-hover table-wrap">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>接口名称</td>
+                <td>方法</td>
+                <td>Mock地址</td>
+                <td>API返回值</td>
+                <td>创建人</td>
+                <td>更新人</td>
+                <td>更新时间</td>
+                <td ng-show="username">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="list.length==0">
+                <td colspan="9">没有找到任何数据</td>
+            </tr>
+            <tr ng-repeat="obj in list">
+                <td style="width: 5%">{{obj.id}}</td>
+                <td style="width:10%">{{obj.apiName}}</td>
+                <td style="width: 5%">{{obj.method}}</td>
+                <td style="width:10%"><a href="javascript:void(0);" ng-click="callMockApi(uriPrefix + obj.apiName, obj.method)">{{uriPrefix}}{{obj.apiName}}</a></td>
+                <td style="width:40%"><textarea class="form-control" readonly>{{obj.retResult}}</textarea></td>
+                <td style="width: 5%">{{obj.createdBy}}</td>
+                <td style="width: 5%">{{obj.updatedBy}}</td>
+                <td style="width:10%">{{obj.updatedAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td style="width:10%" ng-show="username">
+                    <a href="javascript:void(0)" ng-click="edit(obj.id)">编辑</a>
+                    <a href="javascript:void(0)" ng-show="username=='admin' || username==obj.createdBy" ng-click="delete(obj.id)">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <custom-pagination size="10" method="load"></custom-pagination>
+    </div>
+
+    <div ng-include="'tpls/api-mock-edit-modal.html'"></div>
+</div>
+

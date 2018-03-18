@@ -1,5 +1,8 @@
 package org.allen.imocker.dto;
 
+import lombok.Data;
+
+@Data
 public class ApiResponse {
 
     private String retCode;

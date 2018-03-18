@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApiParameter">
+    <insert id="insert" parameterType="org.allen.imocker.entity.ApiParameter">
+        insert into api_parameter(
+            api_doc_id,
+            param_key,
+            param_type,
+            param_required,
+            param_parent,
+            param_desc
+        ) values (
+            #{apiDocId},
+            #{paramKey},
+            #{paramType},
+            #{paramRequired},
+            #{paramParent},
+            #{paramDesc}
+        )
+    </insert>
+
+    <sql id="all_columns">
+        id id,
+        api_doc_id apiDocId,
+        param_key paramKey,
+        param_type paramType,
+        param_required paramRequired,
+        param_parent paramParent,
+        param_desc paramDesc
+    </sql>
+
+    <select id="getByApiDocId" resultType="org.allen.imocker.entity.ApiParameter">
+        select
+        <include refid="all_columns"/>
+        from api_parameter where api_doc_id = #{apiDocId}
+    </select>
+
+    <delete id="deleteByApiDocId">
+        delete from api_parameter where api_doc_id = #{apiDocId}
+    </delete>
+</mapper>

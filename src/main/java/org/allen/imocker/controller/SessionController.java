@@ -1,12 +1,12 @@
 package org.allen.imocker.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.allen.imocker.common.AppProperties;
 import org.allen.imocker.dto.SessionInfo;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dto.Constants;
 import org.allen.imocker.dto.User;
-import org.allen.imocker.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@RequestMapping(value = "/user")
+@Slf4j
 public class SessionController {
 
     @Autowired
@@ -25,10 +27,10 @@ public class SessionController {
         if (!appProperties.getAppAdminUser().equals(user.getUsername()) ||
                 (appProperties.getAppAdminUser().equals(user.getUsername()) && appProperties.getAppAdminPassword().equals(user.getPassword()))) {
             httpSession.setAttribute(Constants.SESSION_KEY, user);
-            LoggerUtil.info(this, String.format("user: %s login succeed.", user.getUsername()));
+            log.info(String.format("user: %s login succeed.", user.getUsername()));
             return new ApiResponse(ApiResponseCode.SUCCESS).setData(Constants.RET_CODE_SUCCESS);
         }
-        LoggerUtil.info(this, String.format("user: %s login failed, pw: %s", user.getUsername(), user.getPassword()));
+        log.info(String.format("user: %s login failed, pw: %s", user.getUsername(), user.getPassword()));
         return new ApiResponse(ApiResponseCode.SUCCESS).setData(Constants.RET_CODE_ERROR);
     }
 
@@ -37,7 +39,7 @@ public class SessionController {
     public void logout(HttpSession httpSession) {
         User user = (User) httpSession.getAttribute(Constants.SESSION_KEY);
         httpSession.removeAttribute(Constants.SESSION_KEY);
-        LoggerUtil.info(this, String.format("user: %s logout succeed.", user.getUsername()));
+        log.info(String.format("user: %s logout succeed.", user.getUsername()));
     }
 
     @RequestMapping(value = "/check-session", method = RequestMethod.GET)

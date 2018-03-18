@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal fade" data-backdrop="false" id="api-mock-edit-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:80%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Mock API</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="method">HTTP方法</label>
+                                        <select id="method" class="form-control validate-inp-template" ng-model="apiInfo.method">
+                                            <option value="GET">GET</option>
+                                            <option value="POST">POST</option>
+                                            <option value="PUT">PUT</option>
+                                            <option value="DELETE">DELETE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="contentType">Content-Type</label>
+                                        <select id="contentType" class="form-control validate-inp-template" ng-model="apiInfo.contentType">
+                                            <option value="application/json">application/*+json</option>
+                                            <option value="form-data">form-data</option>
+                                            <option value="urlencoded">x-www-form-urlencoded</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="apiNameEdit">接口名称</label>
+                                        <input id="apiNameEdit" type="text" placeholder="/users或/users/{userId}" required="true" class="form-control validate-inp-template" ng-model="apiInfo.apiName" />
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="method">项目</label>
+                                        <select id="" class="form-control" ng-model="apiInfo.project">
+                                            <option value="dfp">dfp</option>
+                                            <option value="earth">earth</option>
+                                        </select>
+                                    </div>
+                                </div>-->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="retResultEdit">默认返回值</label>
+                                        <textarea class="form-control validate-inp-template" rows="5" id="retResultEdit" ng-model="apiInfo.retResult"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div>
+                                        <button ng-click="addCondition()" class="btn btn-default glyphicon glyphicon-plus">按条件返回</button>
+                                        <div id="conditionContainer" style="margin-top: 10px;">
+                                            <div class="condition-mock" ng-repeat="apiCondition in apiInfo.apiConditionList" style="display: flex;align-items: center;margin-top: 10px;">
+                                                <input type='text' style='width:200px;display: inline;' ng-model="apiCondition.condKey" class='form-control validate-inp-template cond-key' />
+                                                <select class='form-control cond-type' ng-model="apiCondition.condType" style='width:150px;margin-left:5px;display: inline;'>
+                                                    <option value='String'>String</option>
+                                                    <option value='Integer'>Integer</option>
+                                                    <option value='Long'>Long</option>
+                                                    <option value='BigDecimal'>BigDecimal</option>
+                                                    <option value='Boolean'>Boolean</option>
+                                                </select>
+                                                <select class='form-control validate-inp-template cond-expression' style='width:150px;margin-left:5px;display: inline;' ng-model="apiCondition.condExpression">
+                                                    <option value='=='>等于</option>
+                                                    <option value='>'>大于</option>
+                                                    <option value='<'>小于</option>
+                                                    <option value='>='>大于等于</option>
+                                                    <option value='<='>小于等于</option>
+                                                    <option value='!='>不等于</option>
+                                                </select>
+                                                <input type='text' style='width:200px;margin-left:5px;display: inline;' ng-model="apiCondition.condValue" class='form-control validate-inp-template cond-value' />
+                                                <textarea style='margin-left:5px;width:400px;display: inline;' class='form-control validate-inp-template mock-ret-value' ng-model="apiCondition.mockRetValue"></textarea>
+                                                <button style='margin-left: 5px;' ng-click="removeCondition($event.target)" class='btn btn-default glyphicon glyphicon-minus condition-minus'></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" id="apiInfoOpsBtn" style="margin-top:10px;">
+                            <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" ng-click="save()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

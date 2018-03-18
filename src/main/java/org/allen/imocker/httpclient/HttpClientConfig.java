@@ -19,6 +19,12 @@ public class HttpClientConfig {
     private int socketLinger = -1;
     //
     private int connTimeToLive = -1;
+    // client key certificate base64 text
+    private String clientKeyCert;
+    // trust server certificate base64 text
+    private String trustServerCert;
+    private String clientKeyPwd;
+    private String trustKeyPwd;
 
     public int getMaxConnTotal() {
         return maxConnTotal;
@@ -74,5 +80,37 @@ public class HttpClientConfig {
 
     public void setConnTimeToLive(int connTimeToLive) {
         this.connTimeToLive = connTimeToLive;
+    }
+
+    public String getClientKeyCert() {
+        return clientKeyCert;
+    }
+
+    public void setClientKeyCert(String clientKeyCert) {
+        this.clientKeyCert = clientKeyCert;
+    }
+
+    public String getTrustServerCert() {
+        return trustServerCert;
+    }
+
+    public void setTrustServerCert(String trustServerCert) {
+        this.trustServerCert = trustServerCert;
+    }
+
+    public String getClientKeyPwd() {
+        return clientKeyPwd;
+    }
+
+    public void setClientKeyPwd(String clientKeyPwd) {
+        this.clientKeyPwd = clientKeyPwd;
+    }
+
+    public String getTrustKeyPwd() {
+        return trustKeyPwd;
+    }
+
+    public void setTrustKeyPwd(String trustKeyPwd) {
+        this.trustKeyPwd = trustKeyPwd;
     }
 }

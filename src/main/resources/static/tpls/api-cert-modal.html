@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal fade" data-backdrop="false" id="api-cert-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="margin-top:10%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">证书</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>证书名称</label>
+                                        <input ng-model="apiCert.certName" type="text" required="true" class="form-control validate-inp-template" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Client Store</label>
+                                        <input type="file" id="clientStore" class="form-control validate-inp-template">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Client Key Password</label>
+                                        <input type="text" class="form-control validate-inp-template" ng-model="apiCert.clientKeyPwd" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Trust Store</label>
+                                        <input type="file" id="trustStore" class="form-control validate-inp-template">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Trust Key Password</label>
+                                        <input type="text" class="form-control validate-inp-template" ng-model="apiCert.trustKeyPwd" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="margin-top:10px;">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" ng-click="save()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

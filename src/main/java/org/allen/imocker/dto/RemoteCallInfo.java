@@ -5,9 +5,13 @@ import java.util.Map;
 
 public class RemoteCallInfo {
 
+    private Integer certId;
+
     private String url;
 
     private String method;
+
+    private Integer postType;
 
     private List<Map<String, Object>> headers;
 
@@ -16,6 +20,14 @@ public class RemoteCallInfo {
     private List<String> paramList;
 
     private String jsonBody;
+
+    public Integer getCertId() {
+        return certId;
+    }
+
+    public void setCertId(Integer certId) {
+        this.certId = certId;
+    }
 
     public String getUrl() {
         return url;
@@ -63,5 +75,13 @@ public class RemoteCallInfo {
 
     public void setJsonBody(String jsonBody) {
         this.jsonBody = jsonBody;
+    }
+
+    public Integer getPostType() {
+        return postType;
+    }
+
+    public void setPostType(Integer postType) {
+        this.postType = postType;
     }
 }

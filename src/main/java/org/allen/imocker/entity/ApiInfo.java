@@ -1,8 +1,7 @@
 package org.allen.imocker.entity;
 
-import org.allen.imocker.dto.StatusEnum;
-
 import java.util.Date;
+import java.util.List;
 
 /**
  * API信息
@@ -15,6 +14,10 @@ public class ApiInfo {
 
     private String method;
 
+    private String contentType;
+
+    private Boolean hasCondition;
+
     private String retResult;
 
     private String uriVariable;
@@ -25,7 +28,9 @@ public class ApiInfo {
 
     private String prdUrl;
 
-    private StatusEnum status;
+    private Boolean status;
+
+    private List<ApiCondition> apiConditionList;
 
     private Date createdAt;
 
@@ -75,14 +80,6 @@ public class ApiInfo {
         this.uriVariable = uriVariable;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDesc(String description) {
-        this.description = description;
-    }
-
     public String getQaUrl() {
         return qaUrl;
     }
@@ -97,22 +94,6 @@ public class ApiInfo {
 
     public void setPrdUrl(String prdUrl) {
         this.prdUrl = prdUrl;
-    }
-
-    public int getStatus() {
-        return status.ordinal();
-    }
-
-    public StatusEnum getStatusEnum() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = StatusEnum.getStatusEnumByValue(status);
-    }
-
-    public void setStatusEnum(StatusEnum statusEnum) {
-        this.status = statusEnum;
     }
 
     public Date getCreatedAt() {
@@ -147,18 +128,61 @@ public class ApiInfo {
         this.updatedBy = updatedBy;
     }
 
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public Boolean getHasCondition() {
+        return hasCondition;
+    }
+
+    public void setHasCondition(Boolean hasCondition) {
+        this.hasCondition = hasCondition;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<ApiCondition> getApiConditionList() {
+        return apiConditionList;
+    }
+
+    public void setApiConditionList(List<ApiCondition> apiConditionList) {
+        this.apiConditionList = apiConditionList;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "ApiInfo{" +
                 "id=" + id +
                 ", apiName='" + apiName + '\'' +
                 ", method='" + method + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", hasCondition=" + hasCondition +
                 ", retResult='" + retResult + '\'' +
                 ", uriVariable='" + uriVariable + '\'' +
                 ", description='" + description + '\'' +
                 ", qaUrl='" + qaUrl + '\'' +
                 ", prdUrl='" + prdUrl + '\'' +
                 ", status=" + status +
+                ", apiConditionList=" + apiConditionList +
                 ", createdAt=" + createdAt +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedAt=" + updatedAt +

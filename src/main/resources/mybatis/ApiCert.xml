@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApiCert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="org.allen.imocker.entity.ApiCert">
+        insert into api_cert(
+            cert_name,
+            client_store,
+            trust_store,
+            client_key_pwd,
+            trust_key_pwd,
+            created_at,
+            created_by
+        ) values (
+            #{certName},
+            #{clientStore},
+            #{trustStore},
+            #{clientKeyPwd},
+            #{trustKeyPwd},
+            now(),
+            #{createdBy}
+        )
+    </insert>
+
+    <sql id="all_columns">
+        id id,
+        client_store clientStore,
+        trust_store trustStore,
+        client_key_pwd clientKeyPwd,
+        trust_key_pwd trustKeyPwd,
+        created_at createdAt,
+        created_by creatdBy
+    </sql>
+
+    <select id="getByCond" parameterType="map" resultType="org.allen.imocker.entity.ApiCert">
+        select
+        <include refid="all_columns"/>
+        from api_cert
+    </select>
+
+    <select id="queryAllCerts" resultType="org.allen.imocker.entity.ApiCert">
+        select
+          id id,
+          cert_name certName
+        from api_cert
+    </select>
+
+    <select id="queryFullCerts" resultType="org.allen.imocker.entity.ApiCert">
+        select
+        <include refid="all_columns"/>
+        from api_cert
+    </select>
+
+</mapper>

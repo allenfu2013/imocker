@@ -1,0 +1,170 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal" role="form">
+
+                <div class="form-group">
+                    <label for="inpProject" class="col-sm-1 control-label">项目</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" ng-model="apiDoc.project" id="inpProject"
+                               style="width: 100px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inpApiName" class="col-sm-1 control-label">接口名称</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" ng-model="apiDoc.apiName" id="inpApiName"
+                               placeholder="比如：/users或/users/{userId}" style="width: 50%;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inpApiDesc" class="col-sm-1 control-label">接口描述</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" ng-model="apiDoc.apiDesc" id="inpApiDesc"
+                               placeholder="比如：获取所有用户信息" style="width: 50%;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="selMethod" class="col-sm-1 control-label">Method</label>
+
+                    <div class="col-sm-11">
+                        <select id="selMethod" class="form-control validate-inp-template" ng-model="apiDoc.apiMethod" style="width:100px;">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Header</label>
+
+                    <div class="col-sm-11">
+                        <button ng-click="addHeaders()" class="btn btn-default glyphicon glyphicon-plus"></button>
+                        <div id="headersContainer">
+                            <div class="api-header" ng-repeat="apiHeader in apiDoc.apiHeaders" style="margin-top: 10px;">
+                                <input type="text" class="form-control header-key" value="{{apiHeader.headerKey}}" style="width:200px;display: inline;">
+                                <input type="text" class="form-control header-value" value="{{apiHeader.headerValue}}" style="width:400px;margin-left:5px;display: inline;">
+                                <button style="margin-left: 5px;" class="btn btn-default glyphicon glyphicon-minus" ng-click="removeHeader($event.target)"></button>
+                                <button style="margin-left: 5px;" class="btn btn-default glyphicon glyphicon-plus" ng-click="addHeaderAfter($event.target)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Parameter</label>
+
+                    <div class="col-sm-11">
+                        <button ng-click="addParams()" class="btn btn-default glyphicon glyphicon-plus"></button>
+                        <div style="margin-top: 10px;" id="paramsContainer">
+                            <div class='api-param' ng-repeat="apiParameter in apiDoc.apiParameters" style='margin-top: 10px;'>
+                                <input type='text' class='form-control param-key' ng-model="apiParameter.paramKey" style='width:200px;display: inline;'>
+                                <select class='form-control param-type' ng-model="apiParameter.paramType" style='width:100px;margin-left:5px;display: inline;'>
+                                    <option value='String'>String</option>
+                                    <option value='Integer'>Integer</option>
+                                    <option value='Long'>Long</option>
+                                    <option value='BigDecimal'>BigDecimal</option>
+                                    <option value='Boolean'>Boolean</option>
+                                    <option value='Object'>Object</option>
+                                    <option value='Array'>Array</option>
+                                </select>
+                                <select class='form-control param-required' ng-model="apiParameter.paramRequired" style='width:100px;margin-left:5px;display: inline;'>
+                                    <option value='1'>必须</option>
+                                    <option value='0'>非必须</option>
+                                </select>
+                                <input type='text' class='form-control param-parent' value="{{apiParameter.paramParent}}" style='width:250px;margin-left:5px;display: inline;'>
+                                <input type='text' class='form-control param-desc' value="{{apiParameter.paramDesc}}" style='width:250px;margin-left:5px;display: inline;'>
+                                <button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-minus' ng-click="removeParam($event.target)"></button>
+                                <button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-plus' ng-click="addParamAfter($event.target)"></button>
+                            </div>
+                        </div>
+                        <textarea class="form-control" ng-model="apiDoc.apiParamExample" style="margin-top: 10px; width: 50%;"
+                                  rows="3" placeholder="参数举例说明"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Response</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" ng-model="apiDoc.apiResponseStatus"
+                               style="width: 100px;display: inline;" placeholder="http status">
+                        <button ng-click="addResponse()" class="btn btn-default glyphicon glyphicon-plus"></button>
+                        <div style="margin-top: 10px;" id="responseContainer">
+                            <div class='api-response' ng-repeat="apiResponse in apiDoc.apiResponseBodies" style='margin-top: 10px;'>
+                                <input type='text' class='form-control response-key' value="{{apiResponse.responseKey}}" style='width:200px;display: inline;'>
+                                <select class='form-control response-type' ng-model="apiResponse.responseType" style='width:100px;margin-left:5px;display: inline;'>
+                                    <option value='String'>String</option>
+                                    <option value='Integer'>Integer</option>
+                                    <option value='Long'>Long</option>
+                                    <option value='BigDecimal'>BigDecimal</option>
+                                    <option value='Boolean'>Boolean</option>
+                                    <option value='Object'>Object</option>
+                                    <option value='Array'>Array</option>
+                                </select>
+                                <select class='form-control response-required' ng-model="apiResponse.responseRequired" style='width:100px;margin-left:5px;display: inline;'>
+                                    <option value='1'>必须</option>
+                                    <option value='0'>非必须</option>
+                                </select>
+                                <input type='text' class='form-control response-parent' value="{{apiResponse.responseParent}}" style='width:250px;margin-left:5px;display: inline;'>
+                                <input type='text' class='form-control response-desc' value="{{apiResponse.responseDesc}}" style='width:250px;margin-left:5px;display: inline;'>
+                                <button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-minus' ng-click="removeResponse($event.target)"></button>
+                                <button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-plus' ng-click="addResponseAfter($event.target)"></button>
+                            </div>
+                        </div>
+                        <textarea class="form-control" ng-model="apiDoc.apiResponseExample" style="margin-top: 10px;width: 50%;"
+                                  rows="3" placeholder="返回值举例说明"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">Error</label>
+
+                    <div class="col-sm-11">
+                        <button ng-click="addError()" class="btn btn-default glyphicon glyphicon-plus"></button>
+                        <div style="margin-top: 10px;" id="errorContainer">
+                            <div class='api-error' ng-repeat="apiError in apiDoc.apiErrors" style='margin-top: 10px;'>
+                                <input type='text' class='form-control http-status' value="{{apiError.httpStatus}}" style='width:200px;display: inline;'>
+                                <input type='text' class='form-control business-code' value="{{apiError.businessCode}}" style='width:200px;margin-left:5px;display: inline;'>
+                                <input type='text' class='form-control error-msg' value="{{apiError.errorMsg}}" style='width:200px;margin-left:5px;display: inline;'>
+                                <button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-minus' ng-click="removeError($event.target)"></button>
+                                <button style='margin-left: 5px;' class='btn btn-default glyphicon glyphicon-plus' ng-click="addErrorAfter($event.target)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">测试URL</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" ng-model="apiDoc.testUrl" class="form-control" style="width: 50%;"
+                               placeholder="http://127.0.0.1:8080/users"/>
+                    </div>
+                </div>
+
+                <!--<div class="form-group">
+                    <label class="col-sm-1 control-label">Mock</label>
+
+                    <div class="col-sm-11">
+                        <button ng-click="addMock()" class="btn btn-default glyphicon glyphicon-plus"></button>
+                    </div>
+                </div>-->
+                <div class="form-group">
+                    <label class="col-sm-1 control-label"></label>
+
+                    <div class="col-sm-11">
+                        <button class="btn btn-success" ng-click="saveDoc()">保存文档</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--<div ng-include="'tpls/api-doc-mock-edit-modal.html'"></div>-->
+</div>

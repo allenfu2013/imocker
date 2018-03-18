@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApiCondition">
+    <insert id="insert" parameterType="org.allen.imocker.entity.ApiCondition">
+        insert into api_condition(
+            api_info_id,
+            cond_key,
+            cond_type,
+            cond_expression,
+            cond_value,
+            mock_ret_value
+        ) values (
+            #{apiInfoId},
+            #{condKey},
+            #{condType},
+            #{condExpression},
+            #{condValue},
+            #{mockRetValue}
+        )
+    </insert>
+
+    <sql id="all_columns">
+        id id,
+        api_info_id apiInfoId,
+        cond_key condKey,
+        cond_type condType,
+        cond_expression condExpression,
+        cond_value condValue,
+        mock_ret_value mockRetValue
+    </sql>
+
+    <select id="getByApiInfoId" resultType="org.allen.imocker.entity.ApiCondition">
+        select
+        <include refid="all_columns"/>
+        from api_condition where api_info_id = #{apiInfoId}
+    </select>
+
+    <delete id="deleteByApiInfoId">
+        delete from api_condition where api_info_id = #{apiInfoId}
+    </delete>
+</mapper>
