@@ -181,19 +181,6 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
-        <repository>
-            <id>fincloud-release</id>
-            <name>fincloud release repository</name>
-            <url>http://nexus.jiayincloud.com:8881/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>fincloud-snapshots</id>
-            <name>fincloud snapshots repository</name>
-            <url>http://nexus.jiayincloud.com:8881/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <build>
         <finalName>imocker</finalName>
         <plugins>
