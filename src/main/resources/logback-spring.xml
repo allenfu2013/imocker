@@ -34,32 +34,6 @@
         </encoder>
     </appender>
 
-    <appender name="dubboAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_PATH}/imocker-dubbo.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_PATH}/imocker-dubbo.%d{yyyy-MM-dd}.log</FileNamePattern>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <Pattern>${FILE_LOG_PATTERN}</Pattern>
-        </encoder>
-    </appender>
-
-    <logger name="com.alibaba.dubbo" level="WARN" additivity="false">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="dubboAppender"/>
-    </logger>
-
-    <logger name="com.fincloud.common.requestlogging.RequestLoggingInterceptor" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="requestResponseAppender"/>
-    </logger>
-
-    <logger name="com.fincloud.common.requestlogging.RequestLoggingFilter" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT"/>
-        <appender-ref ref="requestResponseAppender"/>
-    </logger>
-
     <root level="info">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="appDailyRollingFileAppender"/>

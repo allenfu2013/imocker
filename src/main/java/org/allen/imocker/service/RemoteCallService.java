@@ -119,10 +119,10 @@ public class RemoteCallService {
 
     @PostConstruct
     public void init() {
-        List<ApiCert> apiCertList = baseDao.queryForList("ApiCert.queryFullCerts", null);
+        /*List<ApiCert> apiCertList = baseDao.queryForList("ApiCert.queryFullCerts", null);
         for (ApiCert apiCert : apiCertList) {
             httpRemoteServiceMap.put(apiCert.getId(), createHttpClient(apiCert));
-        }
+        }*/
     }
 
     private HttpRemoteService createHttpClient(ApiCert apiCert) {

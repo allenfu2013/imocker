@@ -18,6 +18,16 @@ spring:
     minimum-idle: 5
     maximum-pool-size: 20
     connection-test-query: SELECT 1
+  jpa:
+      database: mysql
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+        naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        jdbc:
+          batch_size: 0
+      properties:
+        dialect: org.hibernate.dialect.MySQL5Dialect
   aop:
     auto: true
     proxy-target-class: true
