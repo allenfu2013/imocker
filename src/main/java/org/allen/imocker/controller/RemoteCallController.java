@@ -47,7 +47,7 @@ public class RemoteCallController {
         log.info(String.format("[%s] start, apiName: %s, queryString: %s, para: %s",
                 pathInfo, apiName, queryString, JSON.toJSONString(paraMap)));
 
-        List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(apiName);
+        List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(1L, apiName);
         if (!CollectionUtils.isEmpty(apiInfoList)) {
             ApiInfo apiInfo = apiInfoList.get(0);
             if (method.equalsIgnoreCase(apiInfo.getMethod())) {

@@ -18,7 +18,7 @@
             var pageSize = $("#pageLimit").val();
             $scope.pageSize = pageSize;
 
-            var url = "manage/list?pageNo=" + page + "&pageSize=" + pageSize +
+            var url = "api-mocks/page-query?pageNo=" + page + "&pageSize=" + pageSize +
                 "&apiName=" + apiName + "&method=" + method + "&operator=" + operator ;
             $http.get(url).success(function (ret) {
                 if (ret.retCode == "00") {
@@ -87,7 +87,7 @@
                         /*创建*/
                         $scope.apiInfo.createdBy = $rootScope.username;
                         $scope.apiInfo.status = 1;
-                        $http.post("manage/add", $scope.apiInfo).success(function (ret) {
+                        $http.post("api-mocks", $scope.apiInfo).success(function (ret) {
                             if (ret.retCode == "00") {
                                 $("#api-mock-edit-modal").modal('hide');
                                 $window.location.reload();
@@ -99,7 +99,7 @@
                         /*编辑*/
                         $scope.apiInfo.createdAt = null;
                         $scope.apiInfo.updatedAt = null;
-                        $http.post("manage/edit", $scope.apiInfo).success(function (ret) {
+                        $http.post("api-mocks/" + id, $scope.apiInfo).success(function (ret) {
                             if (ret.retCode == "00") {
                                 $("#api-mock-edit-modal").modal('hide');
                                 $window.location.reload();
@@ -119,7 +119,7 @@
             } else {
                 $scope.apiInfo = {};
                 $rootScope.clearInputWarn();
-                $http.get("manage/get-by-id?id=" + id).success(function (ret) {
+                $http.get("api-mocks/" + id).success(function (ret) {
                     if (ret.retCode == "00") {
                         $scope.apiInfo = ret.data;
                         $("#api-mock-edit-modal").modal();
@@ -136,7 +136,7 @@
                 $("#login-modal").modal();
             } else {
                 if (confirm("确定执行?")) {
-                    $http.delete("manage/delete/" + id).success(function (ret) {
+                    $http.delete("api-mocks/" + id).success(function (ret) {
                         if (ret.retCode == "00") {
                             $window.location.reload();
                         } else {

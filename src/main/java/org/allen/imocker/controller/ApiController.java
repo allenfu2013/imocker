@@ -45,7 +45,7 @@ public class ApiController {
         String method = request.getMethod();
         log.info(String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
         try {
-            List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(apiName);
+            List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(1L, apiName);
             if (!CollectionUtils.isEmpty(apiInfoList)) {
                 if (method.equalsIgnoreCase(apiInfoList.get(0).getMethod())) {
                     try {
