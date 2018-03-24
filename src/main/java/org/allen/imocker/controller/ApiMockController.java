@@ -37,13 +37,12 @@ public class ApiMockController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse createApiMock(@RequestBody CreateApiInfoRequest request) {
-        Long tenantId = 1l;
         log.info("[/api-mocks] start, request:{}", JSON.toJSONString(request));
         ApiResponse apiResponse = null;
         if (StringUtils.isEmpty(request.getApiName()) || StringUtils.isEmpty(request.getRetResult())) {
             apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
         } else {
-            List<ApiInfo> list = apiInfoService.findApiInfoByName(tenantId, request.getApiName());
+            List<ApiInfo> list = apiInfoService.findApiInfoByName(request.getApiName());
             if (list != null && list.size() > 0) {
                 apiResponse = new ApiResponse(ApiResponseCode.API_EXIST);
             } else {

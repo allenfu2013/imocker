@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface ApiInfoRepository extends JpaRepository<ApiInfo, Long>, JpaSpecificationExecutor<ApiInfo> {
 
-    List<ApiInfo> findByTenantIdAndApiName(Long tenantId, String apiName);
+    List<ApiInfo> findAllByApiName(String apiName);
+
+    List<ApiInfo> findAllByUriVariableIsNotNull();
 }

@@ -21,7 +21,7 @@
 
         var apiDocId = $location.url().substr(14);
         if (apiDocId) {
-            $http.get("manage/api-docs/" + apiDocId).success(function (ret) {
+            $http.get("api-docs/" + apiDocId).success(function (ret) {
                 if (ret.retCode == "00") {
                     $scope.apiDoc = ret.data;
                 } else {
@@ -278,7 +278,7 @@
                 var apiDocId = $scope.apiDoc.id;
                 if (!apiDocId) {
                     //创建
-                    $http.post("manage/api-docs", $scope.apiDoc).success(function (ret) {
+                    $http.post("api-docs", $scope.apiDoc).success(function (ret) {
                         if (ret.retCode == "00") {
                             $location.path("/api-docs/" + ret.data.id);
                         } else {
@@ -287,7 +287,7 @@
                     });
                 } else {
                     //编辑
-                    $http.post("manage/api-docs/" + apiDocId, $scope.apiDoc).success(function (ret) {
+                    $http.post("api-docs/" + apiDocId, $scope.apiDoc).success(function (ret) {
                         if (ret.retCode == "00") {
                             $location.path("/api-docs/" + ret.data.id);
                         } else {
@@ -306,7 +306,7 @@
     app.controller('ApiDocDetailsCtrl', function ($scope, $rootScope, $http, $filter, $location) {
         var apiDocId = $location.url().substr(10);
         if (apiDocId) {
-            $http.get("manage/api-docs/" + apiDocId).success(function (ret) {
+            $http.get("api-docs/" + apiDocId).success(function (ret) {
                 if (ret.retCode == "00") {
                     $scope.apiDoc = ret.data;
                 } else {
@@ -329,7 +329,7 @@
             var pageSize = $("#pageLimit").val();
             $scope.pageSize = pageSize;
 
-            var url = "manage/api-docs/page-query?pageNo=" + page + "&pageSize=" + pageSize +
+            var url = "api-docs/page-query?pageNo=" + page + "&pageSize=" + pageSize +
                 "&project=" + project + "&apiName=" + apiName + "&operator=" + operator ;
             $http.get(url).success(function (ret) {
                 if (ret.retCode == "00") {
@@ -365,7 +365,7 @@
         };
 
         $scope.show = function (id) {
-            $http.get("manage/api-docs/" + id).success(function (retObj) {
+            $http.get("api-docs/" + id).success(function (retObj) {
                 if (retObj.retCode == "00") {
                     $scope.apiDoc = retObj.data;
                     $("#api-docs-details-modal").modal();
@@ -381,7 +381,7 @@
                 $("#login-modal").modal();
             } else {
                 if (confirm("确定执行?")) {
-                    $http.delete("manage/api-docs/" + id).success(function (ret) {
+                    $http.delete("api-docs/" + id).success(function (ret) {
                         if (ret.retCode == "00") {
                             $scope.getData(1);
                         } else {
@@ -402,12 +402,12 @@
         $scope.apiDoc = {};
 
         var project = $location.url().substr(20);
-        $http.get("manage/api-docs?project=" + project).success(function (retList) {
+        $http.get("api-docs?project=" + project).success(function (retList) {
             if (retList.retCode == "00") {
                 $scope.apiDocList = retList.data;
                 if ($scope.apiDocList.length > 0) {
                     var apiDocId = $scope.apiDocList[0].id;
-                    $http.get("manage/api-docs/" + apiDocId).success(function (retObj) {
+                    $http.get("api-docs/" + apiDocId).success(function (retObj) {
                         if (retObj.retCode == "00") {
                             $scope.apiDoc = retObj.data;
                         } else {
@@ -423,7 +423,7 @@
         $scope.show = function (id) {
             $(this).addClass("active");
             console.log($(this));
-            $http.get("manage/api-docs/" + id).success(function (retObj) {
+            $http.get("api-docs/" + id).success(function (retObj) {
                 if (retObj.retCode == "00") {
                     $scope.apiDoc = retObj.data;
                 } else {

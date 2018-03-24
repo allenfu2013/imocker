@@ -1,87 +1,36 @@
 package org.allen.imocker.entity;
 
+import lombok.Data;
+import lombok.ToString;
+
+import javax.persistence.*;
+
+@Data
+@Entity
+@ToString(exclude = "apiDoc")
 public class ApiResponseBody {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
-    private Long apiDocId;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private ApiDoc apiDoc;
 
+    @Column
     private String responseKey;
 
+    @Column
     private String responseType;
 
+    @Column
     private String responseRequired;
 
+    @Column
     private String responseParent;
 
+    @Column
     private String responseDesc;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getApiDocId() {
-        return apiDocId;
-    }
-
-    public void setApiDocId(Long apiDocId) {
-        this.apiDocId = apiDocId;
-    }
-
-    public String getResponseKey() {
-        return responseKey;
-    }
-
-    public void setResponseKey(String responseKey) {
-        this.responseKey = responseKey;
-    }
-
-    public String getResponseType() {
-        return responseType;
-    }
-
-    public void setResponseType(String responseType) {
-        this.responseType = responseType;
-    }
-
-    public String getResponseRequired() {
-        return responseRequired;
-    }
-
-    public void setResponseRequired(String responseRequired) {
-        this.responseRequired = responseRequired;
-    }
-
-    public String getResponseParent() {
-        return responseParent;
-    }
-
-    public void setResponseParent(String responseParent) {
-        this.responseParent = responseParent;
-    }
-
-    public String getResponseDesc() {
-        return responseDesc;
-    }
-
-    public void setResponseDesc(String responseDesc) {
-        this.responseDesc = responseDesc;
-    }
-
-    @Override
-    public String toString() {
-        return "ApiResponseBody{" +
-                "id=" + id +
-                ", apiDocId=" + apiDocId +
-                ", responseKey='" + responseKey + '\'' +
-                ", responseType='" + responseType + '\'' +
-                ", responseRequired='" + responseRequired + '\'' +
-                ", responseParent='" + responseParent + '\'' +
-                ", responseDesc='" + responseDesc + '\'' +
-                '}';
-    }
 }

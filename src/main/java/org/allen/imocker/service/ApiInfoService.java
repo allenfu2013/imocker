@@ -3,18 +3,14 @@ package org.allen.imocker.service;
 import org.allen.imocker.controller.request.QueryApiInfoRequest;
 import org.allen.imocker.dao.ApiConditionRepository;
 import org.allen.imocker.dao.ApiInfoRepository;
-import org.allen.imocker.dao.BaseDao;
-import org.allen.imocker.dto.RemoteCallInfo;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
-import org.allen.imocker.entity.ParaInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -29,43 +25,10 @@ import java.util.Map;
 public class ApiInfoService {
 
     @Autowired
-    private BaseDao baseDao;
-
-    @Autowired
     private ApiInfoRepository apiInfoRepository;
 
     @Autowired
     private ApiConditionRepository apiConditionRepository;
-
-    public RemoteCallInfo getApiInfoWithParams(long id) {
-        RemoteCallInfo remoteCallInfo = null;
-        ApiInfo apiInfo = getApiInfoById(id);
-        if (apiInfo != null) {
-            remoteCallInfo = new RemoteCallInfo();
-            remoteCallInfo.setMethod(apiInfo.getMethod());
-
-            List<ParaInfo> paraInfos = baseDao.queryForList("ParaInfo.findParaInfoById", apiInfo.getId());
-            if (paraInfos != null && !paraInfos.isEmpty()) {
-                List<String> paramList = new ArrayList<>();
-                remoteCallInfo.setParamList(paramList);
-                for (ParaInfo paraInfo : paraInfos) {
-                    paramList.add(paraInfo.getParaName());
-                }
-            }
-        }
-        return remoteCallInfo;
-    }
-
-    public ApiInfo getApiInfoById(long id) {
-        ApiInfo apiInfo = baseDao.queryForObject("ApiInfo.getById", id);
-        List<ApiCondition> apiConditionList = baseDao.queryForList("ApiCondition.getByApiInfoId", id);
-        apiInfo.setApiConditionList(apiConditionList);
-        return apiInfo;
-    }
-
-    public List<ApiInfo> findByCondition(Map<String, Object> cond) {
-        return baseDao.queryForList("ApiInfo.findByCondition", cond);
-    }
 
     @Transactional
     public void insertApiInfo(ApiInfo apiInfo) {
@@ -99,16 +62,12 @@ public class ApiInfoService {
         }, pageable);
     }
 
-    public List<ApiInfo> findApiInfoByName(Long tenantId, String apiName) {
-        return apiInfoRepository.findByTenantIdAndApiName(tenantId, apiName);
+    public List<ApiInfo> findApiInfoByName(String apiName) {
+        return apiInfoRepository.findAllByApiName(apiName);
     }
 
-    public List<ApiCondition> getApiConditionList(Long apiInfoId) {
-        return baseDao.queryForList("ApiCondition.getByApiInfoId", apiInfoId);
-    }
-
-    public Long countByCondition(Map<String, Object> cond) {
-        return baseDao.queryForObject("ApiInfo.countByCondition", cond);
+    public List<ApiCondition> getApiConditionList(ApiInfo apiInfo) {
+        return apiConditionRepository.findAllByApiInfo(apiInfo);
     }
 
     public ApiInfo getById(long id) {
@@ -117,12 +76,12 @@ public class ApiInfoService {
 
     @Transactional
     public void update(ApiInfo apiInfo) {
-        apiConditionRepository.deleteApiConditionByApiInfo(apiInfo);
+        apiConditionRepository.deleteApiConditionsByApiInfo(apiInfo);
         apiInfoRepository.save(apiInfo);
     }
 
     public List<ApiInfo> findUriVariableApi() {
-        return baseDao.queryForList("ApiInfo.findUriVariableApi", null);
+        return apiInfoRepository.findAllByUriVariableIsNotNull();
     }
 
     @Transactional
