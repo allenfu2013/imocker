@@ -1,7 +1,7 @@
 package org.allen.imocker.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.allen.imocker.dao.BaseDao;
+import org.allen.imocker.dao.ApiCertRepository;
 import org.allen.imocker.dto.RemoteCallInfo;
 import org.allen.imocker.entity.ApiCert;
 import org.allen.imocker.entity.ApiInfo;
@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class RemoteCallService {
     private HttpRemoteService httpRemoteService;
 
     @Autowired
-    private BaseDao baseDao;
+    private ApiCertRepository apiCertRepository;
 
     public String apiCall(HttpServletRequest request, ApiInfo apiInfo) {
         String method = request.getMethod();
@@ -95,14 +96,13 @@ public class RemoteCallService {
     }
 
     public List<ApiCert> queryAllCerts() {
-        return baseDao.queryForList("ApiCert.queryAllCerts", null);
+        return apiCertRepository.findAll();
     }
 
+    @Transactional
     public void createApiCert(ApiCert apiCert) {
-        boolean flag = baseDao.insert("ApiCert.insert", apiCert) > 0 ? true : false;
-        if (flag) {
-            httpRemoteServiceMap.put(apiCert.getId(), createHttpClient(apiCert));
-        }
+        apiCertRepository.save(apiCert);
+        httpRemoteServiceMap.put(apiCert.getId(), createHttpClient(apiCert));
     }
 
     private boolean isApplicationJson(Map<String, Object> headers) {
@@ -119,10 +119,10 @@ public class RemoteCallService {
 
     @PostConstruct
     public void init() {
-        /*List<ApiCert> apiCertList = baseDao.queryForList("ApiCert.queryFullCerts", null);
+        List<ApiCert> apiCertList = queryAllCerts();
         for (ApiCert apiCert : apiCertList) {
             httpRemoteServiceMap.put(apiCert.getId(), createHttpClient(apiCert));
-        }*/
+        }
     }
 
     private HttpRemoteService createHttpClient(ApiCert apiCert) {
