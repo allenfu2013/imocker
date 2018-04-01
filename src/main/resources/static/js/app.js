@@ -29,9 +29,15 @@
         }).when('/api-test/:id', {
             controller: 'ApiTestCtrl',
             templateUrl: 'tpls/api-test.html'
-        }).when('/int-test', {
-            controller: 'ApiIntTestCtrl',
-            templateUrl: 'tpls/int-test.html'
+        }).when('/tenant', {
+            controller: 'TenantCtrl',
+            templateUrl: 'tpls/tenant-edit.html'
+        }).when('/tenant/:id', {
+            controller: 'TenantCtrl',
+            templateUrl: 'tpls/tenant-edit.html'
+        }).when('/tenant/details/:id', {
+            controller: 'TenantDetailsCtrl',
+            templateUrl: 'tpls/tenant-detail.html'
         }).otherwise({
             templateUrl: 'tpls/404.html'
         });

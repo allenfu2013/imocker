@@ -33,7 +33,7 @@ public class Tenant extends BaseEntity {
     private String phone;
 
     @Column
-    private Boolean status;
+    private Boolean status = true;
 
 
 }

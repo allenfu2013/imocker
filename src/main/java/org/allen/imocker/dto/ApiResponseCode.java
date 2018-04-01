@@ -10,7 +10,9 @@ public enum ApiResponseCode {
     DELETE_API_FAIL("06", "删除api失败"),
     RET_INVALID_JSON("07", "返回值json格式不正确"),
     QA_URL_EMPTY("08", "测试URL为空"),
-    API_EXIST("09", "api已存在");
+    API_EXIST("09", "api已存在"),
+    TENANT_EXIST("10", "机构已存在"),
+    TENANT_NOT_FOUND("11", "机构未找到");
 
     private String code;
 

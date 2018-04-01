@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="col-sm-6">
+                <label class="form-control-static">机构简称</label>
+            </div>
+            <div class="col-sm-6">
+                <p class="form-control-static">{{tenant.abbrName}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="col-sm-6">
+                <label class="form-control-static">机构名称</label>
+            </div>
+
+            <div class="col-sm-6">
+                <p class="form-control-static">{{tenant.displayName}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="col-sm-6">
+                <label class="form-control-static">邮箱地址</label>
+            </div>
+            <div class="col-sm-6">
+                <p class="form-control-static">{{tenant.email}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="col-sm-6">
+                <label class="form-control-static">手机号</label>
+            </div>
+
+            <div class="col-sm-6">
+                <p class="form-control-static">{{tenant.phone}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="col-sm-4">
+                <label class="form-control-static">AccessKey</label>
+            </div>
+
+            <div class="col-sm-8">
+                <p class="form-control-static">{{tenant.accessKey}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="col-sm-1 control-label"></label>
+
+                <div class="col-sm-11">
+                    <button class="btn btn-success" ng-click="editTenant()">编辑</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
