@@ -9,6 +9,7 @@ import org.allen.imocker.controller.vo.ApiConditionVo;
 import org.allen.imocker.controller.vo.ApiInfoVo;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.dto.Constants;
 import org.allen.imocker.dto.Pagination;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
@@ -36,8 +37,11 @@ public class ApiMockController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse createApiMock(@RequestBody CreateApiInfoRequest request) {
-        log.info("[/api-mocks] start, request:{}", JSON.toJSONString(request));
+    public ApiResponse createApiMock(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+                                     @RequestAttribute(Constants.ATTR_USER_ID) Long userId,
+                                     @RequestBody CreateApiInfoRequest request) {
+        log.info("[/api-mocks] start, tenantId:{}, userId:{} request:{}",
+                tenantId, userId, JSON.toJSONString(request));
         ApiResponse apiResponse = null;
         if (StringUtils.isEmpty(request.getApiName()) || StringUtils.isEmpty(request.getRetResult())) {
             apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
@@ -66,14 +70,16 @@ public class ApiMockController {
 
     @RequestMapping(value = "/page-query", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+    public ApiResponse list(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+                            @RequestAttribute(Constants.ATTR_USER_ID) Long userId,
+                            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                             @RequestParam(value = "apiName", required = false) String apiName,
                             @RequestParam(value = "method", required = false) String method,
                             @RequestParam(value = "operator", required = false) String operator,
                             @RequestParam(value = "status", required = false) Integer status) {
-        log.info("[/api-mocks/page-query] start, pageNo:{}, pageSize:{}, apiName:{}, method:{}, operator:{}, status:{}",
-                pageNo, pageSize, apiName, method, operator, status);
+        log.info("[/api-mocks/page-query] start, tenantId:{}, userId:{}, pageNo:{}, pageSize:{}, apiName:{}, method:{}, operator:{}, status:{}",
+                tenantId, userId, pageNo, pageSize, apiName, method, operator, status);
         ApiResponse apiResponse = null;
 
         try {
@@ -89,9 +95,9 @@ public class ApiMockController {
 
             List<ApiInfoVo> apiInfoVos = new ArrayList<>();
             if (apiInfoPage.getTotalPages() > 0) {
-                apiInfoPage.getContent().forEach(apiInfo -> {
-                    apiInfoVos.add(convert(apiInfo));
-                });
+                apiInfoPage.getContent().forEach(apiInfo ->
+                    apiInfoVos.add(convert(apiInfo, false))
+                );
             }
 
             Pagination pagination = new Pagination(pageSize, apiInfoPage.getTotalElements(), pageNo);
@@ -111,7 +117,7 @@ public class ApiMockController {
     public ApiResponse getById(@PathVariable("api-mock-id") Long id) {
         log.info("[/api-mocker/{}] start", id);
         ApiInfo apiInfo = apiInfoService.getById(id);
-        ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(convert(apiInfo));
+        ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(convert(apiInfo, true));
         log.info("[/api-mocks/{}] end, result:{}", id, JSON.toJSONString(apiResponse));
         return apiResponse;
     }
@@ -168,11 +174,18 @@ public class ApiMockController {
         return apiConditionList;
     }
 
-
-    private ApiInfoVo convert(ApiInfo apiInfo) {
+    private ApiInfoVo convert(ApiInfo apiInfo, boolean retCondition) {
         ApiInfoVo apiInfoVo = new ApiInfoVo();
-        BeanUtils.copyProperties(apiInfo, apiInfoVo);
-        if (apiInfo.getHasCondition()) {
+        apiInfoVo.setId(apiInfo.getId());
+        apiInfoVo.setApiName(apiInfo.getApiName());
+        apiInfoVo.setMethod(apiInfo.getMethod());
+        apiInfoVo.setContentType(apiInfo.getContentType());
+        apiInfoVo.setRetResult(apiInfo.getRetResult());
+        apiInfoVo.setCreatedBy(apiInfo.getCreatedBy());
+        apiInfoVo.setUpdatedBy(apiInfo.getUpdatedBy());
+        apiInfoVo.setUpdatedAt(apiInfo.getUpdatedAt());
+
+        if (retCondition && apiInfo.getHasCondition()) {
             List<ApiConditionVo> apiConditionVos = new ArrayList<>();
             apiInfo.getApiConditionList().forEach(apiCondition -> {
                 ApiConditionVo apiConditionVo = new ApiConditionVo();

@@ -28,6 +28,7 @@ spring:
           batch_size: 0
       properties:
         dialect: org.hibernate.dialect.MySQL5Dialect
+        hibernate.format_sql: true
   aop:
     auto: true
     proxy-target-class: true

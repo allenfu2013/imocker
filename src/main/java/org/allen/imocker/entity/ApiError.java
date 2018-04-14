@@ -1,6 +1,7 @@
 package org.allen.imocker.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @ToString(exclude = "apiDoc")
+@EqualsAndHashCode(exclude = "apiDoc")
 public class ApiError {
 
     @Id
@@ -15,7 +17,7 @@ public class ApiError {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "api_doc_id")
     private ApiDoc apiDoc;
 
     @Column

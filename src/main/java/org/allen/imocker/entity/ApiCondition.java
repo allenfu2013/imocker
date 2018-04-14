@@ -15,7 +15,7 @@ public class ApiCondition {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "api_info_id")
     private ApiInfo apiInfo;
 
     @Column

@@ -6,15 +6,10 @@ import org.allen.imocker.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,29 +37,25 @@ public class ApiDocService {
     }
 
     public ApiDoc findById(Long id) {
-        return apiDocRepository.findOne(id);
+        return apiDocRepository.findOneById(id);
     }
 
     public Page<ApiDoc> pageQuery(final QueryApiDocRequest request, Pageable pageable) {
-        return apiDocRepository.findAll(new Specification<ApiDoc>() {
-            @Override
-            public Predicate toPredicate(Root<ApiDoc> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                List<Predicate> list = new ArrayList<>();
-                if (!StringUtils.isEmpty(request.getProject())) {
-                    list.add(cb.equal(root.get("project").as(String.class), request.getProject()));
-                }
-
-                if (!StringUtils.isEmpty(request.getApiName())) {
-                    list.add(cb.like(root.get("apiName").as(String.class), "%" + request.getApiName() + "%"));
-                }
-
-                if (!StringUtils.isEmpty(request.getUpdatedBy())) {
-                    list.add(cb.equal(root.get("updatedBy").as(String.class), request.getUpdatedBy()));
-                }
-
-
-                return cb.and(list.toArray(new Predicate[list.size()]));
+        return apiDocRepository.findAll((root, cq, cb) -> {
+            List<Predicate> list = new ArrayList<>();
+            if (!StringUtils.isEmpty(request.getProject())) {
+                list.add(cb.equal(root.get("project").as(String.class), request.getProject()));
             }
+
+            if (!StringUtils.isEmpty(request.getApiName())) {
+                list.add(cb.like(root.get("apiName").as(String.class), "%" + request.getApiName() + "%"));
+            }
+
+            if (!StringUtils.isEmpty(request.getUpdatedBy())) {
+                list.add(cb.equal(root.get("updatedBy").as(String.class), request.getUpdatedBy()));
+            }
+
+            return cb.and(list.toArray(new Predicate[list.size()]));
         }, pageable);
     }
 

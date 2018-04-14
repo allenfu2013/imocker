@@ -9,6 +9,9 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@NamedEntityGraph(name = "apiInfo.condition", attributeNodes = {
+        @NamedAttributeNode("apiConditionList")
+})
 public class ApiInfo extends BaseEntity {
 
     @Id
@@ -16,7 +19,7 @@ public class ApiInfo extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "tenant_id")
     private Tenant tenant;
 
     @Column
@@ -49,7 +52,7 @@ public class ApiInfo extends BaseEntity {
     @Column
     private Boolean status = true;
 
-    @OneToMany(mappedBy = "apiInfo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "apiInfo",  cascade = CascadeType.ALL)
     private List<ApiCondition> apiConditionList;
 
 }

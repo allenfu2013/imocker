@@ -2,14 +2,18 @@ package org.allen.imocker.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @Entity
+@NamedEntityGraph(name = "apiDoc.header.parameter.responseBody.error", attributeNodes = {
+        @NamedAttributeNode("apiHeaders"),
+        @NamedAttributeNode("apiParameters"),
+        @NamedAttributeNode("apiResponseBodies"),
+        @NamedAttributeNode("apiErrors")
+}, includeAllAttributes = true)
 public class ApiDoc extends BaseEntity {
 
     @Id
@@ -17,7 +21,7 @@ public class ApiDoc extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "tenant_id")
     private Tenant tenant;
 
     @Column
@@ -33,16 +37,16 @@ public class ApiDoc extends BaseEntity {
     private String apiDesc;
 
     @OneToMany(mappedBy = "apiDoc", cascade = CascadeType.ALL)
-    private List<ApiHeader> apiHeaders;
+    private Set<ApiHeader> apiHeaders;
 
     @OneToMany(mappedBy = "apiDoc", cascade = CascadeType.ALL)
-    private List<ApiParameter> apiParameters;
+    private Set<ApiParameter> apiParameters;
 
     @Column
     private String apiParamExample;
 
     @OneToMany(mappedBy = "apiDoc", cascade = CascadeType.ALL)
-    private List<ApiResponseBody> apiResponseBodies;
+    private Set<ApiResponseBody> apiResponseBodies;
 
     @Column
     private String apiResponseStatus;
@@ -51,7 +55,7 @@ public class ApiDoc extends BaseEntity {
     private String apiResponseExample;
 
     @OneToMany(mappedBy = "apiDoc", cascade = CascadeType.ALL)
-    private List<ApiError> apiErrors;
+    private Set<ApiError> apiErrors;
 
     @Column
     private String testUrl;

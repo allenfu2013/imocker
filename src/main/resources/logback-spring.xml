@@ -12,7 +12,7 @@
     </appender>
 
     <appender name="appDailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_PATH}/imocker.log</File>
+        <File>/tmp/logs/imocker.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_PATH}/imocker.%d{yyyy-MM-dd}.log</FileNamePattern>
             <maxHistory>30</maxHistory>
@@ -24,7 +24,7 @@
     </appender>
 
     <appender name="requestResponseAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_PATH}/access.log</File>
+        <File>/tmp/logs/access.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${LOG_PATH}/access.%d{yyyy-MM-dd}.log</FileNamePattern>
             <maxHistory>30</maxHistory>

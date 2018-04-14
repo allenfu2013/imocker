@@ -3,6 +3,7 @@ package org.allen.imocker.controller;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.allen.imocker.controller.request.QueryApiDocRequest;
+import org.allen.imocker.controller.vo.ApiDocVo;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dto.Pagination;
@@ -65,12 +66,13 @@ public class ApiDocController {
             PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
 
             Page<ApiDoc> apiDocs = apiDocService.pageQuery(request, pageRequest);
+            List<ApiDocVo> apiDocVoList = new ArrayList<>();
             if (apiDocs.getTotalElements() > 0) {
-                apiDocs.forEach(apiDoc -> setRelation(apiDoc, false));
+                apiDocs.forEach(apiDoc -> apiDocVoList.add(convert(apiDoc)));
             }
 
             Pagination pagination = new Pagination(pageSize, apiDocs.getTotalElements(), pageNo);
-            pagination.setData(apiDocs.getContent());
+            pagination.setData(apiDocVoList);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             apiResponse.setData(pagination);
         } catch (Exception e) {
@@ -172,5 +174,18 @@ public class ApiDocController {
         Map<String, Object> ret = new HashMap<>();
         ret.put("id", id);
         return ret;
+    }
+
+    private ApiDocVo convert(ApiDoc apiDoc) {
+        ApiDocVo apiDocVo = new ApiDocVo();
+        apiDocVo.setId(apiDoc.getId());
+        apiDocVo.setProject(apiDoc.getProject());
+        apiDocVo.setApiName(apiDoc.getApiName());
+        apiDocVo.setApiMethod(apiDoc.getApiMethod());
+        apiDocVo.setApiDesc(apiDoc.getApiDesc());
+        apiDocVo.setCreatedBy(apiDoc.getCreatedBy());
+        apiDocVo.setUpdatedBy(apiDoc.getUpdatedBy());
+        apiDocVo.setUpdatedAt(apiDoc.getUpdatedAt());
+        return apiDocVo;
     }
 }
