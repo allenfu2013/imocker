@@ -11,13 +11,31 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
-    connection-timeout: 10000
-    idle-timeout: 12000
-    max-lifetime: 900000
-    minimum-idle: 5
-    maximum-pool-size: 20
-    connection-test-query: SELECT 1
+#    type: com.zaxxer.hikari.HikariDataSource
+#    connection-timeout: 10000
+#    idle-timeout: 12000
+#    max-lifetime: 900000
+#    minimum-idle: 5
+#    maximum-pool-size: 20
+#    connection-test-query: SELECT 1
+
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: true
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    useGlobalDataSourceStat: true
+    logSlowSql: true
   jpa:
       database: mysql
       show-sql: true
@@ -28,7 +46,7 @@ spring:
           batch_size: 0
       properties:
         dialect: org.hibernate.dialect.MySQL5Dialect
-        hibernate.format_sql: true
+        hibernate.format_sql: false
   aop:
     auto: true
     proxy-target-class: true
@@ -39,3 +57,6 @@ app:
     password: password
   uri:
     prefix: http://localhost:8080/imocker/api
+  druid:
+    loginName: admin
+    loginPwd: admin
