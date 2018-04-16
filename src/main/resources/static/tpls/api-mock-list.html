@@ -69,7 +69,7 @@
                 <td style="width: 5%">{{obj.id}}</td>
                 <td style="width:10%">{{obj.apiName}}</td>
                 <td style="width: 5%">{{obj.method}}</td>
-                <td style="width:10%"><a href="javascript:void(0);" ng-click="callMockApi(uriPrefix + obj.apiName, obj.method)">{{uriPrefix}}{{obj.apiName}}</a></td>
+                <td style="width:10%"><a href="javascript:void(0);" ng-click="callMockApi(obj.mockUrl, obj.method)">{{obj.mockUrl}}</a></td>
                 <td style="width:40%"><textarea class="form-control" readonly>{{obj.retResult}}</textarea></td>
                 <td style="width: 5%">{{obj.createdBy}}</td>
                 <td style="width: 5%">{{obj.updatedBy}}</td>

@@ -2,12 +2,18 @@ package org.allen.imocker.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ToString(exclude = "tenant")
 @Entity
+@NamedEntityGraph(name = "TenantUser.tenant", attributeNodes = {
+        @NamedAttributeNode("tenant")
+})
 public class TenantUser extends BaseEntity {
 
     @Id
@@ -15,7 +21,7 @@ public class TenantUser extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "tenant_id")
     private Tenant tenant;
 
     @Column
@@ -25,13 +31,16 @@ public class TenantUser extends BaseEntity {
     private String loginPwd;
 
     @Column
+    private String nickName;
+
+    @Column
     private Integer maxRetryTimes = 5;
 
     @Column
-    private Integer retryTimes;
+    private Integer retryTimes = 0;
 
     @Column
-    private Boolean isLocked;
+    private Boolean isLocked = false;
 
 
 }

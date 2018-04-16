@@ -2,6 +2,7 @@ package org.allen.imocker.controller;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.allen.imocker.common.AppProperties;
 import org.allen.imocker.controller.request.CreateApiInfoRequest;
 import org.allen.imocker.controller.request.QueryApiInfoRequest;
 import org.allen.imocker.controller.request.UpdateApiInfoRequest;
@@ -34,6 +35,9 @@ public class ApiMockController {
 
     @Autowired
     private ApiInfoService apiInfoService;
+
+    @Autowired
+    private AppProperties appProperties;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
@@ -179,6 +183,7 @@ public class ApiMockController {
         apiInfoVo.setId(apiInfo.getId());
         apiInfoVo.setApiName(apiInfo.getApiName());
         apiInfoVo.setMethod(apiInfo.getMethod());
+        apiInfoVo.setMockUrl(appProperties.getAppUriPrefix() + apiInfo.getApiName());
         apiInfoVo.setContentType(apiInfo.getContentType());
         apiInfoVo.setRetResult(apiInfo.getRetResult());
         apiInfoVo.setCreatedBy(apiInfo.getCreatedBy());

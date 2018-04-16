@@ -10,6 +10,8 @@ public class ApiInfoVo extends CreateApiInfoRequest {
 
     private Long id;
 
+    private String mockUrl;
+
     private String createdBy;
 
     private String updatedBy;

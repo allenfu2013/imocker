@@ -7,6 +7,7 @@
         $scope.apiInfo = {
             apiName : null,
             method : null,
+            mockUrl: null,
             retResult : null
         };
         $scope.list = [];

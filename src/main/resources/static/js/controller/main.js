@@ -4,9 +4,9 @@
     /********************************** 首页 **************************************************/
 
     app.controller('MainController', function ($scope, $rootScope, $http, $location, $cookieStore) {
-        var username = $cookieStore.get("username");
-        $rootScope.username = username;
-        $rootScope.uriPrefix = null;
+
+        $rootScope.username = null;
+
         $scope.activeWhen = function (value) {
             return value ? 'active' : '';
         };
@@ -23,14 +23,13 @@
         $scope.login = function () {
             var username = $("#username").val();
             var password = $("#password").val();
-            if (username) {
-                $http.post("user/login", {username: username, password: password}).success(function (ret) {
-                    if (ret.data == "00") {
-                        $rootScope.username = username;
-                        $cookieStore.put("username", username);
+            if (username && password) {
+                $http.post("login", {loginName: username, loginPwd: password}).success(function (ret) {
+                    if (ret.retCode == "00") {
+                        $rootScope.username = ret.data.nickName;
                         $("#login-modal").modal("hide");
                     } else {
-                        alert("密码不正确!");
+                        alert("用户名或密码不正确!");
                     }
                 }).error(function(data,header,config,status){
                     //处理响应失败
@@ -40,9 +39,8 @@
         };
 
         $scope.logout = function () {
-            $http.post("user/logout").success(function () {
+            $http.post("logout").success(function () {
                 $rootScope.username = null;
-                $cookieStore.remove("username");
             }).error(function(data,header,config,status){
                 //处理响应失败
                 alert("服务器异常, 请联系系统管理员");
@@ -56,26 +54,6 @@
             }
         };
 
-        var checkSession = function () {
-            $http.get("user/check-session").success(function (ret) {
-                if(ret.retCode=="00") {
-                    var sessionInfo = ret.data;
-                    $rootScope.uriPrefix = sessionInfo.uriPrefix;
-                    var user = sessionInfo.user;
-                    if (user) {
-                        $rootScope.username = user.username;
-                    } else {
-                        $rootScope.username = null;
-                        $cookieStore.remove("username");
-                    }
-                }
-            }).error(function(data,header,config,status){
-                //处理响应失败
-                alert("服务器异常, 请联系系统管理员");
-            });;
-        }
-
-        checkSession();
 
         $rootScope.checkStatus = true;
 

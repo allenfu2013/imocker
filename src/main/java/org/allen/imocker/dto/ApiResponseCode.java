@@ -12,7 +12,9 @@ public enum ApiResponseCode {
     QA_URL_EMPTY("08", "测试URL为空"),
     API_EXIST("09", "api已存在"),
     TENANT_EXIST("10", "机构已存在"),
-    TENANT_NOT_FOUND("11", "机构未找到");
+    TENANT_NOT_FOUND("11", "机构未找到"),
+    LOGIN_FAILED("12", "用户名或密码错误"),
+    NEED_LOGIN("13", "请先登录后使用");
 
     private String code;
 
