@@ -1,7 +1,7 @@
 (function () {
     var app = angular.module('imocker-app');
 
-    /********************************** API文档 **************************************************/
+    /********************************** Tenant Details Controller **************************************************/
 
     app.controller('TenantCtrl', function ($scope, $rootScope, $http, $filter, $location) {
 

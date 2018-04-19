@@ -2,6 +2,33 @@
 
     var app = angular.module('imocker-app', ['ngCookies']);
 
+
+    app.factory('httpInterceptor', ["$rootScope", '$q', '$injector', '$location',
+        function ($rootScope, $q, $injector, $location) {
+            return {
+
+                responseError: function (response) {
+                    console.log($rootScope.currUrl);
+                    if (response.status == 401) {
+                        $location.path('/login');
+                    } else if (response.status == 403) {
+                        alert("你没有权限进行此操作!");
+                        return $q.reject(response);
+                    } else if (response.status == 404) {
+                        alert("操作不存在!");
+                        return $q.reject(response);
+                    } else if (response.status == 500) {
+                        alert("系统错误，请联系管理员(付勇)处理!");
+                    }
+                    return $q.reject(response);
+                },
+                response: function (response) {
+                    return response;
+                }
+            };
+        }
+    ]);
+
     app.config(function ($routeProvider, $httpProvider) {
         $routeProvider.when('/', {
             templateUrl: 'tpls/home.html'
@@ -38,35 +65,14 @@
         }).when('/tenant/details/:id', {
             controller: 'TenantDetailsCtrl',
             templateUrl: 'tpls/tenant-detail.html'
+        }).when('/login', {
+            controller: 'MainController',
+            templateUrl: 'tpls/login.html'
         }).otherwise({
             templateUrl: 'tpls/404.html'
         });
 
         $httpProvider.interceptors.push('httpInterceptor');
     });
-
-    app.factory('httpInterceptor', ['$q', '$injector', function ($q, $injector) {
-        var httpInterceptor = {
-            'responseError': function (response) {
-                if (response.status == 401) {
-                    alert("请先登录后再操作!");
-                    return $q.reject(response);
-                } else if (response.status == 403) {
-                    alert("你没有权限进行此操作!");
-                    return $q.reject(response);
-                } else if (response.status == 404) {
-                    alert("操作不存在!");
-                    return $q.reject(response);
-                } else if (response.status == 500) {
-                    alert("系统错误，请联系管理员(付勇)处理!");
-                }
-            },
-            'response': function (response) {
-                return response;
-            }
-        };
-        return httpInterceptor;
-    }
-    ]);
 
 }());
