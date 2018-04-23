@@ -13,4 +13,6 @@ public class Constants {
 
     public static final String ATTR_USER_ID = "userId";
 
+    public static final String ATTR_NICK_NAME = "nickName";
+
 }

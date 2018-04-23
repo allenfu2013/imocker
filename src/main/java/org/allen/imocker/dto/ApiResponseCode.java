@@ -14,7 +14,8 @@ public enum ApiResponseCode {
     TENANT_EXIST("10", "机构已存在"),
     TENANT_NOT_FOUND("11", "机构未找到"),
     LOGIN_FAILED("12", "用户名或密码错误"),
-    NEED_LOGIN("13", "请先登录后使用");
+    NEED_LOGIN("13", "请先登录"),
+    UNABLE_UPDATE_API_NAME("14", "不允许更新API名称");
 
     private String code;
 

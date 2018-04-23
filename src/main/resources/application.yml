@@ -60,3 +60,5 @@ app:
   druid:
     loginName: admin
     loginPwd: admin
+logging:
+  config: classpath:logback-spring.xml

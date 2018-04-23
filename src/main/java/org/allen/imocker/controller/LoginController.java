@@ -37,7 +37,9 @@ public class LoginController {
                 return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
             }
 
-            SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenantUser.getId());
+            // TODO 检查tenant是否有效
+
+            SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenantUser.getId(), tenantUser.getNickName());
             session.setAttribute(Constants.SESSION_KEY, sessionObj);
 
             LoginResponse loginResponse = new LoginResponse();

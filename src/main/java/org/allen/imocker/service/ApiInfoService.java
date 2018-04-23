@@ -59,6 +59,10 @@ public class ApiInfoService {
         return apiInfoRepository.findAllByApiName(apiName);
     }
 
+    public boolean existByShortApiNameAndMethod(Long tenantId, String shortApiName, String method) {
+        return apiInfoRepository.existByShortApiNameAndMethod(tenantId, shortApiName, method);
+    }
+
     public List<ApiCondition> getApiConditionList(ApiInfo apiInfo) {
         return apiConditionRepository.findAllByApiInfo(apiInfo);
     }
@@ -69,7 +73,6 @@ public class ApiInfoService {
 
     @Transactional
     public void update(ApiInfo apiInfo) {
-        apiConditionRepository.deleteApiConditionsByApiInfo(apiInfo);
         apiInfoRepository.save(apiInfo);
     }
 

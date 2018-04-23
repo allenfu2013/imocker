@@ -11,4 +11,6 @@ public class SessionObj {
 
     private Long userId;
 
+    private String nickName;
+
 }

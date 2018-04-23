@@ -14,6 +14,7 @@ import org.allen.imocker.dto.Constants;
 import org.allen.imocker.dto.Pagination;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
+import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.service.ApiInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,32 +44,43 @@ public class ApiMockController {
     @ResponseBody
     public ApiResponse createApiMock(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
                                      @RequestAttribute(Constants.ATTR_USER_ID) Long userId,
+                                     @RequestAttribute(Constants.ATTR_NICK_NAME) String nickName,
                                      @RequestBody CreateApiInfoRequest request) {
-        log.info("[/api-mocks] start, tenantId:{}, userId:{} request:{}",
+        log.info("create api mock start, tenantId:{}, userId:{} request:{}",
                 tenantId, userId, JSON.toJSONString(request));
+
         ApiResponse apiResponse = null;
-        if (StringUtils.isEmpty(request.getApiName()) || StringUtils.isEmpty(request.getRetResult())) {
-            apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
+
+        String shortApiName = request.getApiName();
+        if (request.getApiName().contains("{") && request.getApiName().contains("}")) {
+            shortApiName = buildShortApiName(request.getApiName());
+        }
+
+        boolean existed = apiInfoService.existByShortApiNameAndMethod(tenantId, shortApiName, request.getMethod());
+        if (existed) {
+            apiResponse = new ApiResponse(ApiResponseCode.API_EXIST);
         } else {
-            List<ApiInfo> list = apiInfoService.findApiInfoByName(request.getApiName());
-            if (list != null && list.size() > 0) {
-                apiResponse = new ApiResponse(ApiResponseCode.API_EXIST);
-            } else {
-                ApiInfo apiInfo = new ApiInfo();
-                BeanUtils.copyProperties(request, apiInfo);
-                try {
-                    apiInfo.setUriVariable(parseUriVariable(apiInfo.getApiName()));
-                    apiInfo.setApiConditionList(buildApiConditions(apiInfo, request.getApiConditionList()));
-                    apiInfo.setHasCondition(!CollectionUtils.isEmpty(apiInfo.getApiConditionList()));
-                    apiInfoService.insertApiInfo(apiInfo);
-                    apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
-                } catch (Exception e) {
-                    log.error(String.format("insert api_info failed, error:%s", e.getMessage()), e);
-                    apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
-                }
+            ApiInfo apiInfo = new ApiInfo();
+            BeanUtils.copyProperties(request, apiInfo);
+            try {
+                Tenant tenant = new Tenant();
+                tenant.setId(tenantId);
+                apiInfo.setTenant(tenant);
+                apiInfo.setShortApiName(shortApiName);
+                List<String> uriVariables = parseUriVariable(request.getApiName());
+                apiInfo.setUriVariable(uriVariables.isEmpty() ? null : uriVariables.toString());
+                apiInfo.setApiConditionList(buildApiConditions(apiInfo, request.getApiConditionList()));
+                apiInfo.setHasCondition(!CollectionUtils.isEmpty(apiInfo.getApiConditionList()));
+                apiInfo.setCreatedBy(nickName);
+                apiInfo.setUpdatedBy(nickName);
+                apiInfoService.insertApiInfo(apiInfo);
+                apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
+            } catch (Exception e) {
+                log.error(String.format("insert api_info failed, error:%s", e.getMessage()), e);
+                apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
             }
         }
-        log.info("[/api-mocks] end, result:{}", JSON.toJSONString(apiResponse));
+        log.info("create api mock end, result:{}", JSON.toJSONString(apiResponse));
         return apiResponse;
     }
 
@@ -82,7 +94,7 @@ public class ApiMockController {
                             @RequestParam(value = "method", required = false) String method,
                             @RequestParam(value = "operator", required = false) String operator,
                             @RequestParam(value = "status", required = false) Integer status) {
-        log.info("[/api-mocks/page-query] start, tenantId:{}, userId:{}, pageNo:{}, pageSize:{}, apiName:{}, method:{}, operator:{}, status:{}",
+        log.info("query api mock start, tenantId:{}, userId:{}, pageNo:{}, pageSize:{}, apiName:{}, method:{}, operator:{}, status:{}",
                 tenantId, userId, pageNo, pageSize, apiName, method, operator, status);
         ApiResponse apiResponse = null;
 
@@ -112,37 +124,58 @@ public class ApiMockController {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
             log.error("query all api failed", e);
         }
-        log.info("[/api-mocks/page-query] end, result:{}", JSON.toJSONString(apiResponse));
+        log.info("query api mock end, result:{}", JSON.toJSONString(apiResponse));
         return apiResponse;
     }
 
     @RequestMapping(value = "/{api-mock-id}", method = RequestMethod.GET)
     @ResponseBody
-    public ApiResponse getById(@PathVariable("api-mock-id") Long id) {
-        log.info("[/api-mocker/{}] start", id);
+    public ApiResponse getById(
+            @RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+            @PathVariable("api-mock-id") Long id) {
+        log.info("get api mock start, id: {}", id);
         ApiInfo apiInfo = apiInfoService.getById(id);
+        if (apiInfo == null) {
+            return new ApiResponse(ApiResponseCode.API_NOT_FOUND);
+        }
+
+        //TODO API是否属于租户
+
         ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(convert(apiInfo, true));
-        log.info("[/api-mocks/{}] end, result:{}", id, JSON.toJSONString(apiResponse));
+        log.info("get api mock end, id: {}, result:{}", id, JSON.toJSONString(apiResponse));
         return apiResponse;
     }
 
     @RequestMapping(value = "/{api-mock-id}", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse edit(@PathVariable("api-mock-id") Long id,
+                            @RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+                            @RequestAttribute(Constants.ATTR_USER_ID) Long userId,
+                            @RequestAttribute(Constants.ATTR_NICK_NAME) String nickName,
                             @RequestBody UpdateApiInfoRequest request) {
-        log.info("[/api-mocks/{}] start, request:{}", id, request);
+        log.info("edit api mock start, id:{}, userId:{} request:{}", id, userId, request);
         ApiResponse apiResponse = null;
-        if (StringUtils.isEmpty(request.getApiName())
-                || StringUtils.isEmpty(request.getRetResult())
-                || StringUtils.isEmpty(request.getMethod())) {
-            apiResponse = new ApiResponse(ApiResponseCode.MISS_PARAMETER);
+
+        ApiInfo apiInfoExist = apiInfoService.getById(id);
+        if (apiInfoExist == null) {
+            return new ApiResponse(ApiResponseCode.API_NOT_FOUND);
+        } else if (!apiInfoExist.getApiName().equals(request.getApiName())) {
+            return new ApiResponse(ApiResponseCode.UNABLE_UPDATE_API_NAME);
+        }
+
+        // TODO API是否属于租户
+
+        boolean exist = apiInfoService.existByShortApiNameAndMethod(tenantId, request.getApiName(), request.getMethod());
+        if (exist) {
+            return new ApiResponse(ApiResponseCode.API_EXIST);
         } else {
-            ApiInfo apiInfo = new ApiInfo();
-            BeanUtils.copyProperties(request, apiInfo);
-            apiInfo.setUriVariable(parseUriVariable(apiInfo.getApiName()));
-            apiInfo.setApiConditionList(buildApiConditions(apiInfo, request.getApiConditionList()));
-            apiInfo.setHasCondition(!CollectionUtils.isEmpty(apiInfo.getApiConditionList()));
-            apiInfoService.update(apiInfo);
+            apiInfoExist.setMethod(request.getMethod());
+            apiInfoExist.setContentType(StringUtils.isEmpty(request.getContentType()) ? null : request.getContentType());
+            apiInfoExist.setRetResult(request.getRetResult());
+            apiInfoExist.setHasCondition(!CollectionUtils.isEmpty(request.getApiConditionList()));
+            apiInfoExist.setApiConditionList(buildApiConditions(apiInfoExist, request.getApiConditionList()));
+            apiInfoExist.setUpdatedBy(nickName);
+            apiInfoService.update(apiInfoExist);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
         }
         log.info("[/api-mocks/{}] end, result:{}", id, JSON.toJSONString(apiResponse));
@@ -151,18 +184,29 @@ public class ApiMockController {
 
     @RequestMapping(value = "/{api-mock-id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ApiResponse deleteApiMock(@PathVariable("api-mock-id") Long id) {
+    public ApiResponse deleteApiMock(
+            @RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+            @PathVariable("api-mock-id") Long id) {
         log.info("delete [/api-mocks/{}]", id);
+        // TODO 检查API是否属于租户
         apiInfoService.deleteById(id);
         ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
         log.info("delete [/api-mocks/{}] result:{}", id, JSON.toJSONString(apiResponse));
         return apiResponse;
     }
 
-    private String parseUriVariable(String apiName) {
+    private List<String> parseUriVariable(String apiName) {
         UriTemplate uriTemplate = new UriTemplate(apiName);
-        List<String> variableNames = uriTemplate.getVariableNames();
-        return variableNames.isEmpty() ? null : variableNames.toString();
+        return uriTemplate.getVariableNames();
+    }
+
+    private String buildShortApiName(String apiName) {
+        List<String> uriVariableNames = parseUriVariable(apiName);
+        String shortApiName = apiName;
+        for (String variableName : uriVariableNames) {
+            shortApiName = shortApiName.replaceAll(variableName, "");
+        }
+        return shortApiName;
     }
 
     private List<ApiCondition> buildApiConditions(ApiInfo apiInfo, List<ApiConditionVo> apiConditionVos) {

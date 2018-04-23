@@ -7,12 +7,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface ApiInfoRepository extends JpaRepository<ApiInfo, Long>, JpaSpecificationExecutor<ApiInfo> {
 
     List<ApiInfo> findAllByApiName(String apiName);
+
+    @Query("select count(id) > 0 from ApiInfo where tenant.id = ?1 and shortApiName = ?2 and method = ?3")
+    boolean existByShortApiNameAndMethod(Long tenantId, String shortApiName, String method);
 
     List<ApiInfo> findAllByUriVariableIsNotNull();
 

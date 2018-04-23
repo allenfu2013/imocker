@@ -29,6 +29,9 @@ public class ApiInfo extends BaseEntity {
     private String apiName;
 
     @Column
+    private String shortApiName;
+
+    @Column
     private String method;
 
     @Column
