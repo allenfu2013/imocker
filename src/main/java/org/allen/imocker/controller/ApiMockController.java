@@ -165,13 +165,21 @@ public class ApiMockController {
 
         // TODO API是否属于租户
 
-        apiInfoExist.setMethod(request.getMethod());
-        apiInfoExist.setContentType(StringUtils.isEmpty(request.getContentType()) ? null : request.getContentType());
-        apiInfoExist.setRetResult(request.getRetResult());
-        apiInfoExist.setHasCondition(!CollectionUtils.isEmpty(request.getApiConditionList()));
-        apiInfoExist.setApiConditionList(buildApiConditions(apiInfoExist, request.getApiConditionList()));
-        apiInfoExist.setUpdatedBy(nickName);
-        apiInfoService.update(apiInfoExist);
+        ApiInfo apiInfo = apiInfoService.findByShortApiNameAndMethod(tenantId, apiInfoExist.getShortApiName(), request.getMethod());
+        if (apiInfo.getId() != id) {
+            return new ApiResponse(ApiResponseCode.API_EXIST);
+        }
+
+        ApiInfo updateObj = new ApiInfo();
+        BeanUtils.copyProperties(apiInfoExist, updateObj);
+
+        updateObj.setMethod(request.getMethod());
+        updateObj.setContentType(StringUtils.isEmpty(request.getContentType()) ? null : request.getContentType());
+        updateObj.setRetResult(request.getRetResult());
+        updateObj.setHasCondition(!CollectionUtils.isEmpty(request.getApiConditionList()));
+        updateObj.setApiConditionList(buildApiConditions(updateObj, request.getApiConditionList()));
+        updateObj.setUpdatedBy(nickName);
+        apiInfoService.update(updateObj);
         apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
         log.info("[/api-mocks/{}] end, result:{}", id, JSON.toJSONString(apiResponse));
         return apiResponse;

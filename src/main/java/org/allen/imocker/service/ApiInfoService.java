@@ -81,6 +81,7 @@ public class ApiInfoService {
 
     @Transactional
     public void update(ApiInfo apiInfo) {
+        apiConditionRepository.deleteApiConditionsByApiInfo(apiInfo.getId());
         apiInfoRepository.save(apiInfo);
     }
 
