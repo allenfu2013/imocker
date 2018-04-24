@@ -3,17 +3,20 @@ package org.allen.imocker.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.allen.imocker.dao.TenantRepository;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
+import org.allen.imocker.entity.Tenant;
+import org.allen.imocker.exception.BadAccessKeyException;
 import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.util.CalcUtil;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriTemplate;
@@ -31,31 +34,39 @@ public class ApiController {
     private static final String CONTENT_TYPE_FORM_DATA = "form-data";
     private static final String CONTENT_TYPE_URLENCODED = "urlencoded";
     private static final String CONTENT_TYPE_JSON = "application/json";
+    private static final String API_PREFIX = "/api/";
 
     @Autowired
     private ApiInfoService apiInfoService;
 
-    @RequestMapping(value = "/api/**")
+    @Autowired
+    private TenantRepository tenantRepository;
+
+    @RequestMapping(value = "/api/{accessKey}/**")
     @ResponseBody
-    public Object mockApi(HttpServletRequest request) {
+    public Object mockApi(HttpServletRequest request,
+                          @PathVariable String accessKey) {
         Object apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);
-        // /api/{custom-path}
         String servletPath = request.getServletPath();
-        String apiName = servletPath.substring(4);
+        String apiName = servletPath.substring(servletPath.indexOf("/", API_PREFIX.length()));
         String method = request.getMethod();
         log.info(String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
+
+        Tenant tenant = tenantRepository.findOneByAccessKey(accessKey);
+        if (tenant == null) {
+            throw new BadAccessKeyException(ApiResponseCode.INVALID_ACCESS_KEY);
+        } else if (!tenant.getStatus()) {
+            throw new BadAccessKeyException(ApiResponseCode.TENANT_LOCKED);
+        }
+
         try {
-            List<ApiInfo> apiInfoList = apiInfoService.findApiInfoByName(apiName);
-            if (!CollectionUtils.isEmpty(apiInfoList)) {
-                if (method.equalsIgnoreCase(apiInfoList.get(0).getMethod())) {
-                    try {
-                        apiResponse = toApiResponse(apiInfoList.get(0), request);
-                    } catch (Exception e) {
-                        log.error("parse response failed", e);
-                        apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
-                    }
-                } else {
-                    apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
+            ApiInfo existApiInfo = apiInfoService.findByShortApiNameAndMethod(tenant.getId(), apiName, method);
+            if (existApiInfo != null) {
+                try {
+                    apiResponse = toApiResponse(existApiInfo, request);
+                } catch (Exception e) {
+                    log.error("parse response failed", e);
+                    apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
                 }
             } else {
                 List<ApiInfo> regexApiList = apiInfoService.findUriVariableApi();
@@ -75,6 +86,7 @@ public class ApiController {
                         }
                     }
                 }
+
             }
         } catch (Exception e) {
             apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);

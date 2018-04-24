@@ -6,6 +6,7 @@ import org.allen.imocker.dao.ApiConditionRepository;
 import org.allen.imocker.dao.ApiInfoRepository;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
+import org.allen.imocker.entity.Tenant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +58,13 @@ public class ApiInfoService {
 
     public List<ApiInfo> findApiInfoByName(String apiName) {
         return apiInfoRepository.findAllByApiName(apiName);
+    }
+
+
+    public ApiInfo findByShortApiNameAndMethod(Long tenantId, String shortApiName, String method) {
+        Tenant tenant = new Tenant();
+        tenant.setId(tenantId);
+        return apiInfoRepository.findOneByTenantAndShortApiNameAndMethod(tenant, shortApiName, method);
     }
 
     public boolean existByShortApiNameAndMethod(Long tenantId, String shortApiName, String method) {

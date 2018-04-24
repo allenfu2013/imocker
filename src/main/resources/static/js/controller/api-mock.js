@@ -45,7 +45,7 @@
                 $("#username").val("");
                 $("#login-modal").modal();
             } else {
-                $scope.apiInfo = {"method": "GET","contentType":"application/json"};
+                $scope.apiInfo = {"method": "GET","contentType":""};
                 $("#api-mock-edit-modal").modal();
             }
         };
@@ -155,6 +155,7 @@
             form.attr('action', url);
             form.attr('method', method);
             form.attr('target', '_blank');
+            $(document.body).append(form);
             // 提交表单
             form.submit();
         };

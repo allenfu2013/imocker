@@ -3,13 +3,14 @@
     var app = angular.module('imocker-app', ['ngCookies']);
 
 
-    app.factory('httpInterceptor', ["$rootScope", '$q', '$injector', '$location',
-        function ($rootScope, $q, $injector, $location) {
+    app.factory('httpInterceptor', ["$rootScope", '$q', '$injector', '$location', '$cookieStore',
+        function ($rootScope, $q, $injector, $location, $cookieStore) {
             return {
 
                 responseError: function (response) {
                     console.log($rootScope.currUrl);
                     if (response.status == 401) {
+                        $cookieStore.remove("username");
                         $location.path('/login');
                     } else if (response.status == 403) {
                         alert("你没有权限进行此操作!");

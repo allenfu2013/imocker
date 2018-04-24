@@ -3,6 +3,7 @@ package org.allen.imocker.advice;
 import lombok.extern.slf4j.Slf4j;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.exception.BadAccessKeyException;
 import org.allen.imocker.exception.BadCredentialsException;
 import org.allen.imocker.exception.NoCredentialsException;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,11 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResponse handleBadCredentialsException(BadCredentialsException e) {
         return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
+    }
+
+    @ExceptionHandler(BadAccessKeyException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiResponse handleBadAccessKeyException(BadAccessKeyException e) {
+        return new ApiResponse(e.getCode());
     }
 }
