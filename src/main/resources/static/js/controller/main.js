@@ -43,6 +43,7 @@
             $http.post("logout").success(function () {
                 $rootScope.username = null;
                 $cookieStore.remove("username");
+                $location.path("/login");
             }).error(function(data,header,config,status){
                 //处理响应失败
                 alert("服务器异常, 请联系系统管理员");

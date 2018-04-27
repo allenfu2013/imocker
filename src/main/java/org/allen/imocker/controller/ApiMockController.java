@@ -100,6 +100,7 @@ public class ApiMockController {
 
         try {
             QueryApiInfoRequest request = new QueryApiInfoRequest();
+            request.setTenantId(tenantId);
 //            request.setProject();
             request.setApiName(apiName);
             request.setMethod(method);

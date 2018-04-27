@@ -36,6 +36,11 @@ public class ApiInfoService {
     public Page<ApiInfo> pageQuery(final QueryApiInfoRequest request, Pageable pageable) {
         return apiInfoRepository.findAll((root, cq, cb) -> {
                 List<Predicate> list = new ArrayList<>();
+
+                if (request.getTenantId() != null) {
+                    list.add(cb.equal(root.get("tenant").get("id").as(Long.class), request.getTenantId()));
+                }
+
                 if (!StringUtils.isEmpty(request.getProject())) {
                     list.add(cb.equal(root.get("project").as(String.class), request.getProject()));
                 }
