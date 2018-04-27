@@ -7,7 +7,9 @@ import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dto.Constants;
 import org.allen.imocker.dto.SessionObj;
+import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.entity.TenantUser;
+import org.allen.imocker.entity.type.TenantStatus;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,28 +27,38 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ApiResponse login(@RequestBody LoginRequest request, HttpSession session) {
-        String[] names = request.getLoginName().split("@");
-        if (names.length == 2) {
-            String loginName = names[0];
-            String tenantAbbrName = names[1];
-
-            TenantUser tenantUser = tenantUserRepository.findOneByLoginNameAndLoginPwdAndTenant_AbbrName(
-                    loginName, DigestUtils.md5Hex(request.getLoginPwd()), tenantAbbrName);
-
-            if (tenantUser == null) {
+        String loginName = null;
+        String tenantAbbrName = null;
+        if (request.getLoginName().contains("@")) {
+            String[] names = request.getLoginName().split("@");
+            if (names.length == 2) {
+                loginName = names[0];
+                tenantAbbrName = names[1];
+            } else {
                 return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
             }
-
-            // TODO 检查tenant是否有效
-
-            SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenantUser.getId(), tenantUser.getNickName());
-            session.setAttribute(Constants.SESSION_KEY, sessionObj);
-
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setNickName(tenantUser.getNickName());
-            return new ApiResponse(ApiResponseCode.SUCCESS).setData(loginResponse);
+        } else {
+            loginName = request.getLoginName();
+            tenantAbbrName = Constants.DEFAULT_TENANT;
         }
 
-        return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
+        TenantUser tenantUser = tenantUserRepository.findOneByLoginNameAndLoginPwdAndTenant_AbbrName(
+                loginName, DigestUtils.md5Hex(request.getLoginPwd()), tenantAbbrName);
+
+        Tenant tenant = tenantUser.getTenant();
+        if (TenantStatus.NORMAL != tenant.getStatus()) {
+            return new ApiResponse(ApiResponseCode.TENANT_LOCKED);
+        }
+
+        if (tenantUser == null) {
+            return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
+        }
+
+        SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenant.getType(), tenantUser.getId(), tenantUser.getNickName());
+        session.setAttribute(Constants.SESSION_KEY, sessionObj);
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setNickName(tenantUser.getNickName());
+        return new ApiResponse(ApiResponseCode.SUCCESS).setData(loginResponse);
     }
 }

@@ -21,6 +21,7 @@ public class TenantUserInterceptor extends HandlerInterceptorAdapter {
             request.setAttribute(Constants.ATTR_TENANT_ID, sessionObj.getTenantId());
             request.setAttribute(Constants.ATTR_USER_ID, sessionObj.getUserId());
             request.setAttribute(Constants.ATTR_NICK_NAME, sessionObj.getNickName());
+            request.setAttribute(Constants.TENANT_TYPE, sessionObj.getType());
         } else {
             throw new NoCredentialsException();
         }

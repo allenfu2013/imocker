@@ -9,6 +9,7 @@ import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.entity.Tenant;
+import org.allen.imocker.entity.type.TenantStatus;
 import org.allen.imocker.exception.BadAccessKeyException;
 import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.util.CalcUtil;
@@ -55,7 +56,7 @@ public class ApiController {
         Tenant tenant = tenantRepository.findOneByAccessKey(accessKey);
         if (tenant == null) {
             throw new BadAccessKeyException(ApiResponseCode.INVALID_ACCESS_KEY);
-        } else if (!tenant.getStatus()) {
+        } else if (TenantStatus.NORMAL != tenant.getStatus()) {
             throw new BadAccessKeyException(ApiResponseCode.TENANT_LOCKED);
         }
 

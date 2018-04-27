@@ -15,4 +15,7 @@ public class Constants {
 
     public static final String ATTR_NICK_NAME = "nickName";
 
+    public static final String DEFAULT_TENANT = "default";
+
+    public static final String TENANT_TYPE = "tenantType";
 }

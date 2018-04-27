@@ -5,6 +5,7 @@ import org.allen.imocker.dao.TenantRepository;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.entity.Tenant;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class TenantController {
         ApiResponse apiResponse = null;
         if (tenantInDB == null) {
             String uuid = UUID.randomUUID().toString();
-            tenant.setAccessKey(uuid);
+            tenant.setAccessKey(DigestUtils.md5Hex(uuid));
             tenantRepository.save(tenant);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             apiResponse.setData(tenant);

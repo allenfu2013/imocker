@@ -15,6 +15,7 @@ import org.allen.imocker.dto.Pagination;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.entity.Tenant;
+import org.allen.imocker.entity.type.TenantType;
 import org.allen.imocker.service.ApiInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,9 @@ public class ApiMockController {
     @RequestMapping(value = "/page-query", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse list(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+                            @RequestAttribute(Constants.TENANT_TYPE) TenantType type,
                             @RequestAttribute(Constants.ATTR_USER_ID) Long userId,
+                            @RequestAttribute(Constants.ATTR_NICK_NAME) String nickName,
                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                             @RequestParam(value = "apiName", required = false) String apiName,
@@ -105,6 +108,10 @@ public class ApiMockController {
             request.setApiName(apiName);
             request.setMethod(method);
             request.setUpdatedBy(operator);
+
+            if (TenantType.DEFAULT == type) {
+                request.setCreatedBy(nickName);
+            }
 
             Sort sort = new Sort(Sort.Direction.DESC, "updatedAt");
             PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);

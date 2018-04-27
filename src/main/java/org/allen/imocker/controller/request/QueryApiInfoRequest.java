@@ -15,4 +15,6 @@ public class QueryApiInfoRequest {
 
     private String updatedBy;
 
+    private String createdBy;
+
 }

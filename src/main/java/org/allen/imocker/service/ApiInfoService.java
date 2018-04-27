@@ -57,6 +57,10 @@ public class ApiInfoService {
                     list.add(cb.equal(root.get("updatedBy").as(String.class), request.getUpdatedBy()));
                 }
 
+                if (!StringUtils.isEmpty(request.getCreatedBy())) {
+                    list.add(cb.equal(root.get("createdBy").as(String.class), request.getCreatedBy()));
+                }
+
                 return cb.and(list.toArray(new Predicate[list.size()]));
             }, pageable);
     }
