@@ -43,6 +43,11 @@ public class ApiDocService {
     public Page<ApiDoc> pageQuery(final QueryApiDocRequest request, Pageable pageable) {
         return apiDocRepository.findAll((root, cq, cb) -> {
             List<Predicate> list = new ArrayList<>();
+
+            if (request.getTenantId() != null) {
+                list.add(cb.equal(root.get("tenant").get("id").as(Long.class), request.getTenantId()));
+            }
+
             if (!StringUtils.isEmpty(request.getProject())) {
                 list.add(cb.equal(root.get("project").as(String.class), request.getProject()));
             }

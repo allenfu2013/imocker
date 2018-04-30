@@ -6,8 +6,10 @@ import org.allen.imocker.controller.request.QueryApiDocRequest;
 import org.allen.imocker.controller.vo.ApiDocVo;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.dto.Constants;
 import org.allen.imocker.dto.Pagination;
 import org.allen.imocker.entity.ApiDoc;
+import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.service.ApiDocService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,11 +32,18 @@ public class ApiDocController {
     private ApiDocService apiDocService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ApiResponse createApiDoc(@RequestBody ApiDoc apiDoc) {
-        log.info("[/api-docs] start, apiDoc:{}", apiDoc);
+    public ApiResponse createApiDoc(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+                                    @RequestAttribute(Constants.ATTR_NICK_NAME) String nickName,
+                                    @RequestBody ApiDoc apiDoc) {
+        log.info("[/api-docs] start, tenantId:{}, apiDoc:{}", tenantId, apiDoc);
         ApiResponse apiResponse = null;
         try {
             setRelation(apiDoc, true);
+            Tenant tenant = new Tenant();
+            tenant.setId(tenantId);
+            apiDoc.setTenant(tenant);
+            apiDoc.setCreatedBy(nickName);
+            apiDoc.setUpdatedBy(nickName);
             apiDocService.createApiDoc(apiDoc);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             apiResponse.setData(buildIdResult(apiDoc.getId()));
@@ -47,17 +56,19 @@ public class ApiDocController {
     }
 
     @RequestMapping(value = "/page-query", method = RequestMethod.GET)
-    public ApiResponse queryApiDocList(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+    public ApiResponse queryApiDocList(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+                                       @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                        @RequestParam(value = "apiName", required = false) String apiName,
                                        @RequestParam(value = "project", required = false) String project,
                                        @RequestParam(value = "operator", required = false) String operator) {
-        log.info("[/api-docs] pageNo:{}, pageSize:{}, apiName:{}, project:{}, operator:{}",
-                pageNo, pageSize, apiName, project, operator);
+        log.info("[/api-docs] request, tenantId:{}, pageNo:{}, pageSize:{}, apiName:{}, project:{}, operator:{}",
+                tenantId, pageNo, pageSize, apiName, project, operator);
         ApiResponse apiResponse = null;
         try {
 
             QueryApiDocRequest request = new QueryApiDocRequest();
+            request.setTenantId(tenantId);
             request.setProject(project);
             request.setApiName(apiName);
             request.setUpdatedBy(operator);
@@ -120,11 +131,14 @@ public class ApiDocController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public ApiResponse update(@PathVariable Long id, @RequestBody ApiDoc apiDoc) {
-        log.info("[/api-docs/%s] update start", id);
+    public ApiResponse update(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+                              @RequestAttribute(Constants.ATTR_NICK_NAME) String nickName,
+                              @PathVariable Long id, @RequestBody ApiDoc apiDoc) {
+        log.info("[/api-docs/%s] update start， tenantId:{}", id, tenantId);
         ApiResponse apiResponse = null;
         try {
             setRelation(apiDoc, true);
+            apiDoc.setUpdatedBy(nickName);
             apiDocService.update(apiDoc);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             apiResponse.setData(buildIdResult(apiDoc.getId()));
