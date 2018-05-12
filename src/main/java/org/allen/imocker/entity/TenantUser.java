@@ -3,7 +3,6 @@ package org.allen.imocker.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
 

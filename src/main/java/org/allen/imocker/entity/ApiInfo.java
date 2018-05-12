@@ -18,6 +18,9 @@ public class ApiInfo extends BaseEntity {
     @GeneratedValue
     private Long id;
 
+    @Column
+    private Long userId;
+
     @ManyToOne
     @JoinColumn(name = "tenant_id")
     private Tenant tenant;

@@ -3,13 +3,13 @@ package org.allen.imocker.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.allen.imocker.dao.AccessKeyRepository;
 import org.allen.imocker.dao.TenantRepository;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.entity.AccessKey;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
-import org.allen.imocker.entity.Tenant;
-import org.allen.imocker.entity.type.TenantStatus;
 import org.allen.imocker.exception.BadAccessKeyException;
 import org.allen.imocker.service.ApiInfoService;
 import org.allen.imocker.util.CalcUtil;
@@ -43,6 +43,9 @@ public class ApiController {
     @Autowired
     private TenantRepository tenantRepository;
 
+    @Autowired
+    private AccessKeyRepository accessKeyRepository;
+
     @RequestMapping(value = "/api/{accessKey}/**")
     @ResponseBody
     public Object mockApi(HttpServletRequest request,
@@ -53,15 +56,15 @@ public class ApiController {
         String method = request.getMethod();
         log.info(String.format("[imocker] api request, apiName: %s, method: %s", apiName, method));
 
-        Tenant tenant = tenantRepository.findOneByAccessKey(accessKey);
-        if (tenant == null) {
+        AccessKey accessKeyEntity = accessKeyRepository.findOneByAccessKey(accessKey);
+        if (accessKeyEntity == null) {
             throw new BadAccessKeyException(ApiResponseCode.INVALID_ACCESS_KEY);
-        } else if (TenantStatus.NORMAL != tenant.getStatus()) {
+        } else if (accessKeyEntity.isLocked()) {
             throw new BadAccessKeyException(ApiResponseCode.TENANT_LOCKED);
         }
 
         try {
-            ApiInfo existApiInfo = apiInfoService.findByShortApiNameAndMethod(tenant.getId(), apiName, method);
+            ApiInfo existApiInfo = apiInfoService.findByShortApiNameAndMethod(accessKeyEntity.getTenantId(), apiName, method);
             if (existApiInfo != null) {
                 try {
                     apiResponse = toApiResponse(existApiInfo, request);

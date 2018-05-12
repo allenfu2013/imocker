@@ -23,9 +23,12 @@
 
         var apiId = $location.url().substr(10);
         if (apiId) {
-            $http.get("manage/params/" + apiId).success(function (ret) {
+            $http.get("api-mocks/" + apiId).success(function (ret) {
                 if (ret.retCode == "00") {
-                    $scope.remoteCallInfo = ret.data;
+                    var data = ret.data;
+                    $scope.remoteCallInfo.url = data.mockUrl;
+                    $scope.remoteCallInfo.method = data.method;
+
                 } else {
                     alert("服务器异常, 请联系系统管理员");
                 }

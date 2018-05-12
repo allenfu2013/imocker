@@ -61,6 +61,10 @@ public class ApiInfoService {
                     list.add(cb.equal(root.get("createdBy").as(String.class), request.getCreatedBy()));
                 }
 
+                if (request.getUserId() != null) {
+                    list.add(cb.equal(root.get("userId").as(Long.class), request.getUserId()));
+                }
+
                 return cb.and(list.toArray(new Predicate[list.size()]));
             }, pageable);
     }

@@ -17,7 +17,8 @@ public enum ApiResponseCode {
     NEED_LOGIN("13", "请先登录"),
     UNABLE_UPDATE_API_NAME("14", "不允许更新API名称"),
     INVALID_ACCESS_KEY("15", "accessKey无效"),
-    TENANT_LOCKED("16", "机构被锁定，请联系管理员解锁");
+    TENANT_LOCKED("16", "机构被锁定，请联系管理员解锁"),
+    API_NO_PERMISSION("17", "无权限访问此API");
 
     private String code;
 

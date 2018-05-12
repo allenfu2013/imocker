@@ -17,5 +17,6 @@ public class Constants {
 
     public static final String DEFAULT_TENANT = "default";
 
-    public static final String TENANT_TYPE = "tenantType";
+    public static final String ATTR_USER_TYPE = "userType";
+
 }

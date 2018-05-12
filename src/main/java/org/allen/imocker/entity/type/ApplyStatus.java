@@ -1,6 +1,6 @@
 package org.allen.imocker.entity.type;
 
-public enum TenantStatus {
+public enum ApplyStatus {
 
     // 申请中
     APPLYING,

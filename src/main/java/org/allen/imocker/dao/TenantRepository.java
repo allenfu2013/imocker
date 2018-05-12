@@ -7,5 +7,4 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
 
     Tenant findOneByAbbrName(String abbrName);
 
-    Tenant findOneByAccessKey(String accessKey);
 }

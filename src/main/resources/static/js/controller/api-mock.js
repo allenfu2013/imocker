@@ -196,6 +196,9 @@
             $window.location.reload();
         };
 
+        $scope.mock = function (id) {
+            $location.path("/api-test/" + id);
+        }
     });
 
 }());

@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <label class="radio-inline">
+                <input type="radio" name="tenantType" ng-model="tenantType" ng-value="1"> 个人
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="tenantType" ng-model="tenantType" ng-value="2"> 组织
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="defaultContainer" ng-show="tenantType == 1">
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <label>个人账号仅供申请人使用</label>
+            </div>
+
+            <form class="form-horizontal" role="form">
+
+                <div class="form-group">
+                    <label for="loginName" class="col-sm-1 control-label">用户名</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" placeholder=""
+                               id="loginName"
+                               style="width: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nickName" class="col-sm-1 control-label">昵称</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template"
+                               id="nickName"
+                               placeholder="" style="width:200px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12" id="orgContainer" ng-show="tenantType == 2">
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <label>组织账号可以在申请成功后为组织中的人创建个人账号</label>
+            </div>
+
+            <form class="form-horizontal" role="form">
+
+                <div class="form-group">
+                    <label for="abbrName" class="col-sm-1 control-label">组织简称</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" placeholder="4位(a~z)英文字母"
+                               ng-model="tenant.abbrName" id="abbrName"
+                               style="width: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="displayName" class="col-sm-1 control-label">组织名称</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" ng-model="tenant.displayName"
+                               id="displayName"
+                               placeholder="" style="width:200px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-12">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="email" class="col-sm-1 control-label">邮箱地址</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" ng-model="tenant.email" id="email"
+                               placeholder="" style="width: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="col-sm-1 control-label">手机号</label>
+
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control validate-inp-template" ng-model="tenant.phone" id="phone"
+                               placeholder="" style="width: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-1 control-label"></label>
+
+                    <div class="col-sm-11">
+                        <button class="btn btn-success" ng-click="saveTenant()">确定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -8,14 +8,12 @@ import org.allen.imocker.controller.request.QueryApiInfoRequest;
 import org.allen.imocker.controller.request.UpdateApiInfoRequest;
 import org.allen.imocker.controller.vo.ApiConditionVo;
 import org.allen.imocker.controller.vo.ApiInfoVo;
-import org.allen.imocker.dto.ApiResponse;
-import org.allen.imocker.dto.ApiResponseCode;
-import org.allen.imocker.dto.Constants;
-import org.allen.imocker.dto.Pagination;
+import org.allen.imocker.dao.AccessKeyRepository;
+import org.allen.imocker.dto.*;
+import org.allen.imocker.entity.AccessKey;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.entity.Tenant;
-import org.allen.imocker.entity.type.TenantType;
 import org.allen.imocker.service.ApiInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +38,9 @@ public class ApiMockController {
 
     @Autowired
     private AppProperties appProperties;
+
+    @Autowired
+    private AccessKeyRepository accessKeyRepository;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
@@ -74,6 +75,7 @@ public class ApiMockController {
                 apiInfo.setHasCondition(!CollectionUtils.isEmpty(apiInfo.getApiConditionList()));
                 apiInfo.setCreatedBy(nickName);
                 apiInfo.setUpdatedBy(nickName);
+                apiInfo.setUserId(userId);
                 apiInfoService.insertApiInfo(apiInfo);
                 apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             } catch (Exception e) {
@@ -88,9 +90,8 @@ public class ApiMockController {
     @RequestMapping(value = "/page-query", method = RequestMethod.GET)
     @ResponseBody
     public ApiResponse list(@RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
-                            @RequestAttribute(Constants.TENANT_TYPE) TenantType type,
                             @RequestAttribute(Constants.ATTR_USER_ID) Long userId,
-                            @RequestAttribute(Constants.ATTR_NICK_NAME) String nickName,
+                            @RequestAttribute(Constants.ATTR_USER_TYPE) UserType userType,
                             @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                             @RequestParam(value = "apiName", required = false) String apiName,
@@ -109,8 +110,8 @@ public class ApiMockController {
             request.setMethod(method);
             request.setUpdatedBy(operator);
 
-            if (TenantType.DEFAULT == type) {
-                request.setCreatedBy(nickName);
+            if (UserType.PERSONAL == userType) {
+                request.setUserId(userId);
             }
 
             Sort sort = new Sort(Sort.Direction.DESC, "updatedAt");
@@ -140,6 +141,7 @@ public class ApiMockController {
     @ResponseBody
     public ApiResponse getById(
             @RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
+            @RequestAttribute(Constants.ATTR_USER_TYPE) UserType userType,
             @PathVariable("api-mock-id") Long id) {
         log.info("get api mock start, id: {}", id);
         ApiInfo apiInfo = apiInfoService.getById(id);
@@ -147,9 +149,16 @@ public class ApiMockController {
             return new ApiResponse(ApiResponseCode.API_NOT_FOUND);
         }
 
-        //TODO API是否属于租户
+        if (!apiInfo.getTenant().getId().equals(tenantId)) {
+            return new ApiResponse(ApiResponseCode.API_NO_PERMISSION);
+        }
 
-        ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(convert(apiInfo, true));
+        ApiInfoVo apiInfoVo = convert(apiInfo, true);
+        List<AccessKey> accessKeys = accessKeyRepository.findByTenantIdAndRefId(tenantId , UserType.ORG.equals(userType) ? tenantId : apiInfo.getUserId());
+        if (!accessKeys.isEmpty()) {
+            apiInfoVo.setMockUrl(appProperties.getAppUriPrefix() + "/" + accessKeys.get(0).getAccessKey() + apiInfo.getApiName());
+        }
+        ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(apiInfoVo);
         log.info("get api mock end, id: {}, result:{}", id, JSON.toJSONString(apiResponse));
         return apiResponse;
     }
@@ -171,7 +180,9 @@ public class ApiMockController {
             return new ApiResponse(ApiResponseCode.UNABLE_UPDATE_API_NAME);
         }
 
-        // TODO API是否属于租户
+        if (!apiInfoExist.getTenant().getId().equals(tenantId)) {
+            return new ApiResponse(ApiResponseCode.API_NO_PERMISSION);
+        }
 
         ApiInfo apiInfo = apiInfoService.findByShortApiNameAndMethod(tenantId, apiInfoExist.getShortApiName(), request.getMethod());
         if (apiInfo.getId() != id) {
@@ -199,7 +210,14 @@ public class ApiMockController {
             @RequestAttribute(Constants.ATTR_TENANT_ID) Long tenantId,
             @PathVariable("api-mock-id") Long id) {
         log.info("delete [/api-mocks/{}]", id);
-        // TODO 检查API是否属于租户
+
+        ApiInfo apiInfoExist = apiInfoService.getById(id);
+        if (apiInfoExist == null) {
+            return new ApiResponse(ApiResponseCode.API_NOT_FOUND);
+        } else if (!apiInfoExist.getTenant().getId().equals(tenantId)) {
+            return new ApiResponse(ApiResponseCode.API_NO_PERMISSION);
+        }
+
         apiInfoService.deleteById(id);
         ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
         log.info("delete [/api-mocks/{}] result:{}", id, JSON.toJSONString(apiResponse));
@@ -238,7 +256,6 @@ public class ApiMockController {
         apiInfoVo.setId(apiInfo.getId());
         apiInfoVo.setApiName(apiInfo.getApiName());
         apiInfoVo.setMethod(apiInfo.getMethod());
-        apiInfoVo.setMockUrl(appProperties.getAppUriPrefix() + apiInfo.getApiName());
         apiInfoVo.setContentType(apiInfo.getContentType());
         apiInfoVo.setRetResult(apiInfo.getRetResult());
         apiInfoVo.setCreatedBy(apiInfo.getCreatedBy());

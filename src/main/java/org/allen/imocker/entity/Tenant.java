@@ -2,7 +2,7 @@ package org.allen.imocker.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.allen.imocker.entity.type.TenantStatus;
+import org.allen.imocker.entity.type.ApplyStatus;
 import org.allen.imocker.entity.type.TenantType;
 
 import javax.persistence.*;
@@ -18,7 +18,7 @@ public class Tenant extends BaseEntity {
 
     @Column
     @Enumerated(value = EnumType.STRING)
-    private TenantType type = TenantType.ORG;
+    private TenantType type;
 
     @Column
     private String abbrName;
@@ -27,16 +27,10 @@ public class Tenant extends BaseEntity {
     private String displayName;
 
     @Column
-    private String accessKey;
-
-    @Column
     private String email;
 
     @Column
-    private String phone;
-
-    @Column
     @Enumerated(value = EnumType.STRING)
-    private TenantStatus status = TenantStatus.APPLYING;
+    private ApplyStatus status = ApplyStatus.APPLYING;
 
 }

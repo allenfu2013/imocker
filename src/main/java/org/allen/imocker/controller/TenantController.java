@@ -25,8 +25,6 @@ public class TenantController {
         Tenant tenantInDB = tenantRepository.findOneByAbbrName(tenant.getAbbrName());
         ApiResponse apiResponse = null;
         if (tenantInDB == null) {
-            String uuid = UUID.randomUUID().toString();
-            tenant.setAccessKey(DigestUtils.md5Hex(uuid));
             tenantRepository.save(tenant);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             apiResponse.setData(tenant);
@@ -60,7 +58,6 @@ public class TenantController {
             tenantInDB.setAbbrName(tenant.getAbbrName());
             tenantInDB.setDisplayName(tenant.getDisplayName());
             tenantInDB.setEmail(tenant.getEmail());
-            tenantInDB.setPhone(tenant.getPhone());
             tenantRepository.save(tenantInDB);
             apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
             apiResponse.setData(tenantInDB);

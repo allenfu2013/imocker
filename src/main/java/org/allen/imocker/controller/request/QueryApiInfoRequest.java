@@ -17,4 +17,6 @@ public class QueryApiInfoRequest {
 
     private String createdBy;
 
+    private Long userId;
+
 }

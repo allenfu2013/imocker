@@ -7,11 +7,18 @@
 
         $scope.tenant = {
             id: null,
+            tenantType: 1,
             abbrName: null,
             displayName: null,
             email: null,
             phone: null
-        }
+        };
+
+        $scope.tenantUser ={
+            loginName: null,
+            nickName: null,
+
+        };
 
         var tenantId = $location.url().substr(8);
         if (tenantId) {

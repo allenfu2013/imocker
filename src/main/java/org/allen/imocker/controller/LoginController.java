@@ -3,13 +3,11 @@ package org.allen.imocker.controller;
 import org.allen.imocker.controller.request.LoginRequest;
 import org.allen.imocker.controller.response.LoginResponse;
 import org.allen.imocker.dao.TenantUserRepository;
-import org.allen.imocker.dto.ApiResponse;
-import org.allen.imocker.dto.ApiResponseCode;
-import org.allen.imocker.dto.Constants;
-import org.allen.imocker.dto.SessionObj;
+import org.allen.imocker.dto.*;
 import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.entity.TenantUser;
-import org.allen.imocker.entity.type.TenantStatus;
+import org.allen.imocker.entity.type.ApplyStatus;
+import org.allen.imocker.entity.type.TenantType;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +44,7 @@ public class LoginController {
                 loginName, DigestUtils.md5Hex(request.getLoginPwd()), tenantAbbrName);
 
         Tenant tenant = tenantUser.getTenant();
-        if (TenantStatus.NORMAL != tenant.getStatus()) {
+        if (ApplyStatus.NORMAL != tenant.getStatus()) {
             return new ApiResponse(ApiResponseCode.TENANT_LOCKED);
         }
 
@@ -54,7 +52,9 @@ public class LoginController {
             return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
         }
 
-        SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenant.getType(), tenantUser.getId(), tenantUser.getNickName());
+        UserType userType = TenantType.ORG.equals(tenant.getType()) ? UserType.ORG : UserType.PERSONAL;
+
+        SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenantUser.getId(), tenantUser.getNickName(), userType);
         session.setAttribute(Constants.SESSION_KEY, sessionObj);
 
         LoginResponse loginResponse = new LoginResponse();
