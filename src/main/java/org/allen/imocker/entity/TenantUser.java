@@ -3,6 +3,7 @@ package org.allen.imocker.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.allen.imocker.entity.type.ApplyStatus;
 
 import javax.persistence.*;
 
@@ -33,13 +34,15 @@ public class TenantUser extends BaseEntity {
     private String nickName;
 
     @Column
+    private String email;
+
+    @Column
     private Integer maxRetryTimes = 5;
 
     @Column
     private Integer retryTimes = 0;
 
     @Column
-    private Boolean isLocked = false;
-
-
+    @Enumerated(value = EnumType.STRING)
+    private ApplyStatus status;
 }

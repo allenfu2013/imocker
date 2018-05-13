@@ -57,9 +57,9 @@
         }).when('/api-test/:id', {
             controller: 'ApiTestCtrl',
             templateUrl: 'tpls/api-test.html'
-        }).when("/apply", {
-            controller: 'TenantCtrl',
-            templateUrl: 'tpls/apply.html'
+        }).when("/register", {
+            controller: 'RegisterCtrl',
+            templateUrl: 'tpls/register.html'
         }).when('/tenant', {
             controller: 'TenantCtrl',
             templateUrl: 'tpls/tenant-edit.html'

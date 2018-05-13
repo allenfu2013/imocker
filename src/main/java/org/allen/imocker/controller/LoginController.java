@@ -52,6 +52,22 @@ public class LoginController {
             return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
         }
 
+        if (ApplyStatus.NORMAL != tenantUser.getStatus()) {
+            ApiResponseCode code = null;
+            switch (tenantUser.getStatus()) {
+                case APPLYING:
+                    code = ApiResponseCode.ACCOUNT_APPLYING;
+                    break;
+                case FROZEN:
+                    code = ApiResponseCode.ACCOUNT_FROZEN;
+                    break;
+                case REJECTED:
+                    code = ApiResponseCode.ACCOUNT_REJECT;
+                    break;
+            }
+            return new ApiResponse(code);
+        }
+
         UserType userType = TenantType.ORG.equals(tenant.getType()) ? UserType.ORG : UserType.PERSONAL;
 
         SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenantUser.getId(), tenantUser.getNickName(), userType);

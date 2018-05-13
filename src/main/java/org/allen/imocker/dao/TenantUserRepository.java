@@ -10,4 +10,7 @@ public interface TenantUserRepository extends JpaRepository<TenantUser, Long> {
     TenantUser findOneByLoginNameAndLoginPwdAndTenant_AbbrName(String loginName,
                                                                String loginPwd,
                                                                String abbrName);
+
+
+
 }

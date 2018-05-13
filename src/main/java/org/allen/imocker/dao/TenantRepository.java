@@ -7,4 +7,6 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
 
     Tenant findOneByAbbrName(String abbrName);
 
+    Tenant findOneByEmail(String email);
+
 }
