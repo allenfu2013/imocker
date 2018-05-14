@@ -1,14 +1,25 @@
 package org.allen.imocker.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.allen.imocker.controller.request.QueryTenantRequest;
 import org.allen.imocker.dao.TenantRepository;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.dto.Pagination;
 import org.allen.imocker.entity.Tenant;
+import org.allen.imocker.entity.type.ApplyStatus;
+import org.allen.imocker.entity.type.TenantType;
+import org.allen.imocker.service.TenantService;
+import org.allen.imocker.service.TenantUserService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -18,6 +29,12 @@ public class TenantController {
 
     @Autowired
     private TenantRepository tenantRepository;
+
+    @Autowired
+    private TenantService tenantService;
+
+    @Autowired
+    private TenantUserService tenantUserService;
 
 
     @RequestMapping(method = RequestMethod.POST)
@@ -65,6 +82,36 @@ public class TenantController {
         }
 
         apiResponse = new ApiResponse(ApiResponseCode.TENANT_NOT_FOUND);
+        return apiResponse;
+    }
+
+    @RequestMapping(value = "/page-query", method = RequestMethod.GET)
+    public ApiResponse pageQuery(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                 @RequestParam(value = "tenantType") TenantType tenantType,
+                                 @RequestParam(value = "status", required = false) String status) {
+        log.info("page-query start, tenantType:{}, status:{}, pageNo:{}, pageSize:{}",
+                tenantType, status, pageNo, pageSize);
+
+        QueryTenantRequest request = new QueryTenantRequest();
+        request.setTenantType(tenantType);
+        if (!StringUtils.isEmpty(status)) {
+            request.setApplyStatus(ApplyStatus.valueOf(status));
+        }
+
+        Sort sort = new Sort(Sort.Direction.DESC, "updatedAt");
+        PageRequest pageRequest = new PageRequest(pageNo - 1, pageSize, sort);
+
+        Page pageResult = null;
+        if (TenantType.DEFAULT.equals(tenantType)) {
+            pageResult = tenantUserService.pageQuery(request, pageRequest);
+        } else if (TenantType.ORG.equals(tenantType)) {
+            pageResult = tenantService.pageQuery(request, pageRequest);
+        }
+
+        Pagination pagination = new Pagination(pageSize, pageResult.getTotalElements(), pageNo);
+        pagination.setData(pageResult.getContent());
+        ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(pagination);
         return apiResponse;
     }
 }

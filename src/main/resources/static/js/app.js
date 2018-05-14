@@ -60,6 +60,9 @@
         }).when("/register", {
             controller: 'RegisterCtrl',
             templateUrl: 'tpls/register.html'
+        }).when("/verification", {
+            controller: 'VerificationCtrl',
+            templateUrl: 'tpls/verification.html'
         }).when('/tenant', {
             controller: 'TenantCtrl',
             templateUrl: 'tpls/tenant-edit.html'

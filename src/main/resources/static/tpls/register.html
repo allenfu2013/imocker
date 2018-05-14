@@ -1,101 +1,109 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <label class="radio-inline">
-                <input type="radio" name="tenantType" ng-model="registerReq.tenantType" ng-value="1"> 个人
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="tenantType" ng-model="registerReq.tenantType" ng-value="2"> 组织
-            </label>
+    <div ng-show="!registerStatus">
+        <div class="row">
+            <div class="col-md-12">
+                <label class="radio-inline">
+                    <input type="radio" name="tenantType" ng-model="tenantType" ng-value="1"> 个人
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="tenantType" ng-model="tenantType" ng-value="2"> 组织
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="defaultContainer" ng-show="tenantType == 1">
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <label>个人账号仅供申请人使用</label>
+                </div>
+
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label for="loginName" class="col-sm-1 control-label">用户名</label>
+
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control validate-inp-template" placeholder=""
+                                   id="loginName" ng-model="registerReq.loginName"
+                                   style="width: 200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPwd" class="col-sm-1 control-label">密码</label>
+
+                        <div class="col-sm-11">
+                            <input type="password" class="form-control validate-inp-template" placeholder=""
+                                   id="loginPwd" ng-model="registerReq.loginPwd"
+                                   style="width: 200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nickName" class="col-sm-1 control-label">昵称</label>
+
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control validate-inp-template"
+                                   ng-model="registerReq.nickName"
+                                   id="nickName"
+                                   placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-12" id="orgContainer" ng-show="tenantType == 2">
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <label>组织账号可以在申请成功后为组织中的人创建个人账号</label>
+                </div>
+
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label for="abbrName" class="col-sm-1 control-label">组织简称</label>
+
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control validate-inp-template" placeholder="4位(a~z)英文字母"
+                                   ng-model="registerReq.tenantAbbrName" id="abbrName"
+                                   style="width: 200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="displayName" class="col-sm-1 control-label">组织名称</label>
+
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control validate-inp-template"
+                                   ng-model="registerReq.tenantDisplayName"
+                                   id="displayName"
+                                   placeholder="" style="width:200px;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-12">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="email" class="col-sm-1 control-label">邮箱地址</label>
+
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control validate-inp-template" ng-model="registerReq.email"
+                                   id="email"
+                                   placeholder="" style="width: 200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label"></label>
+
+                        <div class="col-sm-11">
+                            <button class="btn btn-default" ng-click="register()">确定</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12" id="defaultContainer" ng-show="registerReq.tenantType == 1">
-            <div style="margin-top: 10px; margin-bottom: 10px;">
-                <label>个人账号仅供申请人使用</label>
-            </div>
-
-            <form class="form-horizontal" role="form">
-
-                <div class="form-group">
-                    <label for="loginName" class="col-sm-1 control-label">用户名</label>
-
-                    <div class="col-sm-11">
-                        <input type="text" class="form-control validate-inp-template" placeholder=""
-                               id="loginName" ng-model="registerReq.loginName"
-                               style="width: 200px;">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="loginPwd" class="col-sm-1 control-label">密码</label>
-
-                    <div class="col-sm-11">
-                        <input type="password" class="form-control validate-inp-template" placeholder=""
-                               id="loginPwd" ng-model="registerReq.loginPwd"
-                               style="width: 200px;">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="nickName" class="col-sm-1 control-label">昵称</label>
-
-                    <div class="col-sm-11">
-                        <input type="text" class="form-control validate-inp-template" ng-model="registerReq.nickName"
-                               id="nickName"
-                               placeholder="" style="width:200px;">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-md-12" id="orgContainer" ng-show="registerReq.tenantType == 2">
-            <div style="margin-top: 10px; margin-bottom: 10px;">
-                <label>组织账号可以在申请成功后为组织中的人创建个人账号</label>
-            </div>
-
-            <form class="form-horizontal" role="form">
-
-                <div class="form-group">
-                    <label for="abbrName" class="col-sm-1 control-label">组织简称</label>
-
-                    <div class="col-sm-11">
-                        <input type="text" class="form-control validate-inp-template" placeholder="4位(a~z)英文字母"
-                               ng-model="registerReq.tenantAbbrName" id="abbrName"
-                               style="width: 200px;">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="displayName" class="col-sm-1 control-label">组织名称</label>
-
-                    <div class="col-sm-11">
-                        <input type="text" class="form-control validate-inp-template" ng-model="registerReq.tenantDisplayName"
-                               id="displayName"
-                               placeholder="" style="width:200px;">
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="col-md-12">
-            <form class="form-horizontal" role="form">
-                <div class="form-group">
-                    <label for="email" class="col-sm-1 control-label">邮箱地址</label>
-
-                    <div class="col-sm-11">
-                        <input type="text" class="form-control validate-inp-template" ng-model="registerReq.email" id="email"
-                               placeholder="" style="width: 200px;">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-1 control-label"></label>
-
-                    <div class="col-sm-11">
-                        <button class="btn btn-default" ng-click="register()">确定</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <div ng-show="registerStatus">
+        <label>申请已经提交，我们会立即处理，申请结果会以邮件通知到您，感谢您对本站的支持。</label>
     </div>
 </div>

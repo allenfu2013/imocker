@@ -1,0 +1,109 @@
+<div style="margin-left:20px;margin-right:20px;">
+
+    <div style="border: 1px solid #ccc; padding:5px; border-radius: 4px;">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="tenantType">租户类型</label>
+                    <select id="tenantType" ng-model="tenantType" class="form-control">
+                        <option value="DEFAULT">个人</option>
+                        <option value="ORG">组织</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="applyStatus">账号状态</label>
+                    <select id="applyStatus" ng-model="applyStatus" class="form-control">
+                        <option value="">请选择</option>
+                        <option value="APPLYING">申请中</option>
+                        <option value="NORMAL">使用中</option>
+                        <option value="REJECTED">已拒绝</option>
+                        <option value="FROZEN">已冻结</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" style="width:100px; margin-right:50px;" ng-click="search()">查询</button>
+            <button class="btn btn-info" ng-click="reset()">重置</button>
+        </div>
+    </div>
+
+
+    <div style="overflow:hidden;margin-top:10px;margin-bottom:10px;">
+        <lable>每页</lable>
+        <select style="display:inline;width:50px;" id="pageLimit">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+
+    <div>
+        <table class="table table-bordered table-hover table-wrap">
+            <thead>
+            <tr ng-show="type == 'ORG'">
+                <td>#</td>
+                <td>类型</td>
+                <td>状态</td>
+                <td>租户简称</td>
+                <td>租户全称</td>
+                <td>邮箱</td>
+                <td>创建时间</td>
+                <td>操作</td>
+            </tr>
+
+            <tr ng-show="type == 'DEFAULT'">
+                <td>#</td>
+                <td>类型</td>
+                <td>状态</td>
+                <td>用户名</td>
+                <td>昵称</td>
+                <td>邮箱</td>
+                <td>创建时间</td>
+                <td>操作</td>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr ng-show="list.length==0">
+                <td colspan="8">没有找到任何数据</td>
+            </tr>
+            <tr ng-repeat="obj in list" ng-show="type == 'ORG'">
+                <td style="width: 5%">{{obj.id}}</td>
+                <td style="width: 5%">组织</td>
+                <td style="width: 10%">{{obj.status}}</td>
+                <td style="width: 15%">{{obj.abbrName}}</td>
+                <td style="width: 15%">{{obj.displayName}}</td>
+                <td>{{obj.email}}</td>
+                <td style="width:10%">{{obj.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td style="width:10%">
+                    <a href="javascript:void(0)" ng-show="obj.status == 'APPLYING'" ng-click="approve(obj.id)">通过</a>
+                    <a href="javascript:void(0)" ng-show="obj.status == 'APPLYING'" ng-click="reject(obj.id)">拒绝</a>
+                    <a href="javascript:void(0)" ng-show="obj.status == 'NORMAL'" ng-click="frozen(obj.id)">冻结</a>
+                    <a href="javascript:void(0)" ng-show="obj.status == 'FROZEN'" ng-click="unfreeze(obj.id)">解冻</a>
+                </td>
+            </tr>
+
+            <tr ng-repeat="obj in list" ng-show="type == 'DEFAULT'">
+                <td style="width: 5%">{{obj.id}}</td>
+                <td style="width: 5%">个人</td>
+                <td style="width: 10%">{{obj.status}}</td>
+                <td style="width: 15%">{{obj.loginName}}</td>
+                <td style="width: 15%">{{obj.nickName}}</td>
+                <td>{{obj.email}}</td>
+                <td style="width:10%">{{obj.createdAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td style="width:10%">
+                    <a href="javascript:void(0)" ng-show="obj.status == 'APPLYING'" ng-click="approve(obj.id)">通过</a>
+                    <a href="javascript:void(0)" ng-show="obj.status == 'APPLYING'" ng-click="reject(obj.id)">拒绝</a>
+                    <a href="javascript:void(0)" ng-show="obj.status == 'NORMAL'" ng-click="frozen(obj.id)">冻结</a>
+                    <a href="javascript:void(0)" ng-show="obj.status == 'FROZEN'" ng-click="unfreeze(obj.id)">解冻</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <custom-pagination size="10" method="load"></custom-pagination>
+    </div>
+
+</div>
