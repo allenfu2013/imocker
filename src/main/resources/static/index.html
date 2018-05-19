@@ -49,8 +49,14 @@
                         <li ng-show="!userInfo">
                             <a href="#/login">登录</a>
                         </li>
-                        <li ng-show="userInfo">
-                            <a href="javascript:void(0)" ng-click="logout()">退出</a>
+                        <li ng-show="userInfo" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/change-password">修改密码</a></li>
+                                <li ng-show="userInfo.roleType != 'PLATFORM_ADMIN'"><a href="javascript:void(0)" ng-click="showAccessKey()">查看AccessKey</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="javascript:void(0)" ng-click="logout()">退出</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

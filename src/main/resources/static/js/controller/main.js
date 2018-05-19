@@ -7,6 +7,16 @@
         var userInfo = $cookieStore.get("userInfo");
         $rootScope.userInfo = userInfo;
 
+        $scope.loginRequest = {
+            loginName : null,
+            loginPwd : null
+        };
+
+        $scope.newPwd = null;
+        $scope.confirmPwd = null;
+
+        $scope.alertMsg = null;
+
         $scope.activeWhen = function (value) {
             return value ? 'active' : '';
         };
@@ -15,26 +25,19 @@
             return $location.url();
         };
 
-        $scope.showLoginModal = function () {
-            $("#username").val("");
-            $("#login-modal").modal();
-        };
-
         $scope.login = function () {
-            var username = $("#username").val();
-            var password = $("#password").val();
-            if (username && password) {
-                $http.post("login", {loginName: username, loginPwd: password}).success(function (ret) {
+            if ($scope.loginRequest.loginName && $scope.loginRequest.loginPwd) {
+                $http.post("login", $scope.loginRequest).success(function (ret) {
                     if (ret.retCode == "00") {
                         $rootScope.userInfo = ret.data;
                         $cookieStore.put("userInfo", ret.data);
                         $location.path("/");
                     } else {
-                        alert("用户名或密码不正确!");
+                        $scope.alertMsg = "用户名或密码不正确!";
                     }
-                }).error(function(data,header,config,status){
+                }).error(function (data, header, config, status) {
                     //处理响应失败
-                    alert("服务器异常, 请联系系统管理员");
+                    $scope.alertMsg = "服务器异常, 请联系系统管理员";
                 });
             }
         };
@@ -57,6 +60,22 @@
             }
         };
 
+        $scope.changePwd = function () {
+            if ($scope.newPwd != $scope.confirmPwd) {
+                $scope.alertMsg = "两次密码输入不一致";
+            } else {
+                $http.post("tenants/users/change-password", {newPwd : $scope.newPwd}).success(function (ret) {
+                    if (ret.retCode == "00") {
+                        $scope.logout();
+                        $location.path("/login");
+                    }
+                }).error(function (data, header, config, status) {
+                    //处理响应失败
+                    $scope.alertMsg = "服务器异常, 请联系系统管理员";
+                });
+
+            }
+        };
 
         $rootScope.checkStatus = true;
 

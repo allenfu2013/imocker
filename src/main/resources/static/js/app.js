@@ -78,6 +78,9 @@
         }).when('/login', {
             controller: 'MainController',
             templateUrl: 'tpls/login.html'
+        }).when('/change-password', {
+            controller: 'MainController',
+            templateUrl: 'tpls/change-password.html'
         }).otherwise({
             templateUrl: 'tpls/404.html'
         });
