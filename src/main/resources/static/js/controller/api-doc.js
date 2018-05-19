@@ -185,12 +185,6 @@
         };
 
         $scope.saveDoc = function () {
-            if (!$rootScope.username) {
-                $("#username").val("");
-                $("#login-modal").modal();
-                return;
-            }
-
             $rootScope.validateInput("validate-inp-template");
             if ($rootScope.checkStatus) {
 
@@ -272,8 +266,6 @@
                     errors.push(errorObj);
                 });
                 $scope.apiDoc.apiErrors = errors;
-                $scope.apiDoc.createdBy = $rootScope.username;
-                $scope.apiDoc.updatedBy = $rootScope.username;
 
                 var apiDocId = $scope.apiDoc.id;
                 if (!apiDocId) {
@@ -351,13 +343,7 @@
         };
 
         $scope.createDoc = function () {
-            if (!$rootScope.username) {
-                $("#username").val("");
-                $("#login-modal").modal();
-            } else {
-                $location.path("/api-doc-edit");
-            }
-
+            $location.path("/api-doc-edit");
         };
 
         $scope.edit = function (id) {
@@ -376,19 +362,14 @@
         };
 
         $scope.delete = function (id) {
-            if (!$rootScope.username) {
-                $("#username").val("");
-                $("#login-modal").modal();
-            } else {
-                if (confirm("确定执行?")) {
-                    $http.delete("api-docs/" + id).success(function (ret) {
-                        if (ret.retCode == "00") {
-                            $scope.getData(1);
-                        } else {
-                            alert(ret.retMsg);
-                        }
-                    });
-                }
+            if (confirm("确定执行?")) {
+                $http.delete("api-docs/" + id).success(function (ret) {
+                    if (ret.retCode == "00") {
+                        $scope.getData(1);
+                    } else {
+                        alert(ret.retMsg);
+                    }
+                });
             }
         };
 

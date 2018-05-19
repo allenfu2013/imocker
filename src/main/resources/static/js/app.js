@@ -19,7 +19,7 @@
                         alert("操作不存在!");
                         return $q.reject(response);
                     } else if (response.status == 500) {
-                        alert("系统错误，请联系管理员(付勇)处理!");
+                        alert("系统错误，请联系管理员处理!");
                     }
                     return $q.reject(response);
                 },

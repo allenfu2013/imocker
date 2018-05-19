@@ -4,6 +4,7 @@ import org.allen.imocker.controller.request.QueryTenantRequest;
 import org.allen.imocker.dao.TenantUserRepository;
 import org.allen.imocker.entity.TenantUser;
 import org.allen.imocker.entity.type.ApplyStatus;
+import org.allen.imocker.entity.type.TenantType;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,8 @@ public class TenantUserService {
             if (request.getApplyStatus() != null) {
                 list.add(cb.equal(root.get("status").as(ApplyStatus.class), request.getApplyStatus()));
             }
+
+            list.add(cb.equal(root.get("tenant").get("type").as(TenantType.class), TenantType.DEFAULT));
 
             return cb.and(list.toArray(new Predicate[list.size()]));
         }, pageRequest);

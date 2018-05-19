@@ -42,13 +42,13 @@ public class LoginController {
         TenantUser tenantUser = tenantUserRepository.findOneByLoginNameAndLoginPwdAndTenant_AbbrName(
                 loginName, DigestUtils.md5Hex(request.getLoginPwd()), tenantAbbrName);
 
+        if (tenantUser == null) {
+            return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
+        }
+
         Tenant tenant = tenantUser.getTenant();
         if (ApplyStatus.NORMAL != tenant.getStatus()) {
             return new ApiResponse(ApiResponseCode.TENANT_LOCKED);
-        }
-
-        if (tenantUser == null) {
-            return new ApiResponse(ApiResponseCode.LOGIN_FAILED);
         }
 
         if (ApplyStatus.NORMAL != tenantUser.getStatus()) {

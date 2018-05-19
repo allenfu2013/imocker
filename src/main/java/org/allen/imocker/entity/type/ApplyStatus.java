@@ -14,8 +14,7 @@ public enum ApplyStatus {
     // 冻结
     FROZEN,
 
-    // 等待用户确认
+    // 等待确认
     CONFIRMATION;
-
 
 }

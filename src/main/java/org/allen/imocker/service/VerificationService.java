@@ -57,13 +57,15 @@ public class VerificationService {
 
         TenantType tenantType = request.getTenantType();
         String email = null;
+        Tenant tenant = null;
+        TenantUser tenantUser = null;
         if (TenantType.ORG == tenantType) {
-            Tenant tenant = tenantRepository.findOne(request.getRefId());
+            tenant = tenantRepository.findOne(request.getRefId());
             if (tenant != null) {
                 email = tenant.getEmail();
             }
         } else if (TenantType.DEFAULT == tenantType) {
-            TenantUser tenantUser = tenantUserRepository.findOne(request.getRefId());
+            tenantUser = tenantUserRepository.findOne(request.getRefId());
             if (tenantUser != null) {
                 email = tenantUser.getEmail();
             }
@@ -80,8 +82,18 @@ public class VerificationService {
 
         Map<String, Object> data = Maps.newHashMap();
         data.put("activationUrl", String.format(activationUrl, uuid));
-        emailSender.send(SUBJECT, emailFrom, new String[]{email}, TEMPLATE_NAME, data);
-        log.info("Successfully send activation email {}", email);
+        boolean sendStatus = emailSender.send(SUBJECT, emailFrom, new String[]{email}, TEMPLATE_NAME, data);
+        log.info("Send activation email to {}, status {}", email, sendStatus);
+
+        if (sendStatus) {
+            if (TenantType.ORG == tenantType) {
+                tenant.setStatus(ApplyStatus.CONFIRMATION);
+                tenantRepository.save(tenant);
+            } else if (TenantType.DEFAULT == tenantType) {
+                tenantUser.setStatus(ApplyStatus.CONFIRMATION);
+                tenantUserRepository.save(tenantUser);
+            }
+        }
     }
 
 

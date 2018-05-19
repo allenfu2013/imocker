@@ -182,14 +182,9 @@ public class ApiMockController {
             return new ApiResponse(ApiResponseCode.UNABLE_UPDATE_API_NAME);
         }
 
-        if (!apiInfoExist.getTenant().getId().equals(tenantId)) {
+        if ((TenantType.DEFAULT == tenantType && apiInfoExist.getUserId() != userId)
+                || (TenantType.ORG == tenantType && !apiInfoExist.getTenant().getId().equals(tenantId))) {
             return new ApiResponse(ApiResponseCode.API_NO_PERMISSION);
-        }
-
-        Long refId = TenantType.ORG == tenantType ? tenantId : userId;
-        ApiInfo apiInfo = apiInfoService.findByShortApiNameAndMethod(tenantType, refId, apiInfoExist.getShortApiName(), request.getMethod());
-        if (apiInfo.getId() != id) {
-            return new ApiResponse(ApiResponseCode.API_EXIST);
         }
 
         ApiInfo updateObj = new ApiInfo();

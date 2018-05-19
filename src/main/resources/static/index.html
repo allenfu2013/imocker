@@ -46,6 +46,9 @@
                         <li ng-show="userInfo">
                             <a href="javascript:void(0)"><span ng-bind="userInfo.nickName"></span></a>
                         </li>
+                        <li ng-show="!userInfo">
+                            <a href="#/login">登录</a>
+                        </li>
                         <li ng-show="userInfo">
                             <a href="javascript:void(0)" ng-click="logout()">退出</a>
                         </li>
