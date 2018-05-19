@@ -7,7 +7,6 @@ import org.allen.imocker.dto.*;
 import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.entity.TenantUser;
 import org.allen.imocker.entity.type.ApplyStatus;
-import org.allen.imocker.entity.type.TenantType;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,13 +67,15 @@ public class LoginController {
             return new ApiResponse(code);
         }
 
-        UserType userType = TenantType.ORG.equals(tenant.getType()) ? UserType.ORG : UserType.PERSONAL;
 
-        SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenantUser.getId(), tenantUser.getNickName(), userType);
+        SessionObj sessionObj = new SessionObj(tenantUser.getTenant().getId(), tenant.getType(),
+                tenantUser.getId(), tenantUser.getNickName(), tenantUser.getRoleType());
         session.setAttribute(Constants.SESSION_KEY, sessionObj);
 
         LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setUserId(tenantUser.getId());
         loginResponse.setNickName(tenantUser.getNickName());
+        loginResponse.setRoleType(tenantUser.getRoleType());
         return new ApiResponse(ApiResponseCode.SUCCESS).setData(loginResponse);
     }
 }

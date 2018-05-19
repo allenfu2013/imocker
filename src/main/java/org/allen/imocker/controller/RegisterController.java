@@ -7,6 +7,7 @@ import org.allen.imocker.dao.TenantUserRepository;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
 import org.allen.imocker.dto.Constants;
+import org.allen.imocker.dto.RoleType;
 import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.entity.TenantUser;
 import org.allen.imocker.entity.type.ApplyStatus;
@@ -45,6 +46,7 @@ public class RegisterController {
             tenantUser.setNickName(request.getNickName());
             tenantUser.setEmail(request.getEmail());
             tenantUser.setStatus(ApplyStatus.APPLYING);
+            tenantUser.setRoleType(RoleType.PERSONAL_USER);
             tenantUserRepository.save(tenantUser);
         } else {
             Tenant tenant = new Tenant();

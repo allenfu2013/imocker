@@ -10,7 +10,7 @@
                 responseError: function (response) {
                     console.log($rootScope.currUrl);
                     if (response.status == 401) {
-                        $cookieStore.remove("username");
+                        $cookieStore.remove("userInfo");
                         $location.path('/login');
                     } else if (response.status == 403) {
                         alert("你没有权限进行此操作!");
@@ -63,6 +63,9 @@
         }).when("/verification", {
             controller: 'VerificationCtrl',
             templateUrl: 'tpls/verification.html'
+        }).when("/activation", {
+            controller: 'ActivationCtrl',
+            templateUrl: 'tpls/activation.html'
         }).when('/tenant', {
             controller: 'TenantCtrl',
             templateUrl: 'tpls/tenant-edit.html'

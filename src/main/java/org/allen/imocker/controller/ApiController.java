@@ -64,7 +64,7 @@ public class ApiController {
         }
 
         try {
-            ApiInfo existApiInfo = apiInfoService.findByShortApiNameAndMethod(accessKeyEntity.getTenantId(), apiName, method);
+            ApiInfo existApiInfo = apiInfoService.findByShortApiNameAndMethod(accessKeyEntity.getType(), accessKeyEntity.getRefId(), apiName, method);
             if (existApiInfo != null) {
                 try {
                     apiResponse = toApiResponse(existApiInfo, request);

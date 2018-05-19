@@ -50,6 +50,15 @@ spring:
   aop:
     auto: true
     proxy-target-class: true
+  mail:
+    host: smtp.ym.163.com
+    username: noreply@imocker.cn
+    password: Noreply@123
+    port: 25
+    properties:
+      mail.smtp.auth: ture
+      mail.smtp.ssl.enable: ture
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
 
 app:
   admin:
@@ -57,6 +66,9 @@ app:
     password: password
   uri:
     prefix: http://localhost:8080/imocker/api
+  activation:
+    url: http://localhost:8080/imocker/#/activation?token=%s
+    sender: noreply@imocker.cn
   druid:
     loginName: admin
     loginPwd: admin

@@ -34,16 +34,19 @@
                         <li ng-class="activeWhen(path()=='/api-test')">
                             <a href="#/api-test">API测试</a>
                         </li>
-                        <li ng-class="activeWhen(path()=='/verification')">
+                        <li ng-show="userInfo.roleType == 'TENANT_ADMIN'" ng-class="activeWhen(path()=='/user-management')">
+                            <a href="#/user-management">用户管理</a>
+                        </li>
+                        <li ng-show="userInfo.roleType == 'PLATFORM_ADMIN'" ng-class="activeWhen(path()=='/verification')">
                             <a href="#/verification">账号审核</a>
                         </li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li ng-show="username">
-                            <a href="javascript:void(0)"><span ng-bind="username"></span></a>
+                        <li ng-show="userInfo">
+                            <a href="javascript:void(0)"><span ng-bind="userInfo.nickName"></span></a>
                         </li>
-                        <li ng-show="username">
+                        <li ng-show="userInfo">
                             <a href="javascript:void(0)" ng-click="logout()">退出</a>
                         </li>
                     </ul>

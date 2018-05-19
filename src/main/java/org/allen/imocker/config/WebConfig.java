@@ -17,6 +17,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration ir = registry.addInterceptor(tenantUserInterceptor);
         ir.addPathPatterns("/**");
-        ir.excludePathPatterns("/login", "/register", "/api/**", "/test/**");
+        ir.excludePathPatterns("/login", "/register", "/activation", "/welcome", "/api/**", "/test/**");
     }
 }

@@ -3,6 +3,7 @@ package org.allen.imocker.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.allen.imocker.dto.RoleType;
 import org.allen.imocker.entity.type.ApplyStatus;
 
 import javax.persistence.*;
@@ -45,4 +46,8 @@ public class TenantUser extends BaseEntity {
     @Column
     @Enumerated(value = EnumType.STRING)
     private ApplyStatus status;
+
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private RoleType roleType;
 }

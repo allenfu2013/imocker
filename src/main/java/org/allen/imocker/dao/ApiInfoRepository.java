@@ -19,6 +19,9 @@ public interface ApiInfoRepository extends JpaRepository<ApiInfo, Long>, JpaSpec
     @EntityGraph(value = "apiInfo.condition", type = EntityGraph.EntityGraphType.FETCH)
     ApiInfo findOneByTenantAndShortApiNameAndMethod(Tenant tenant, String shortApiName, String method);
 
+    @EntityGraph(value = "apiInfo.condition", type = EntityGraph.EntityGraphType.FETCH)
+    ApiInfo findOneByShortApiNameAndMethodAndUserId(String shortApiName, String method, Long userId);
+
     @Query("select count(id) > 0 from ApiInfo where tenant.id = ?1 and shortApiName = ?2 and method = ?3")
     boolean existByShortApiNameAndMethod(Long tenantId, String shortApiName, String method);
 

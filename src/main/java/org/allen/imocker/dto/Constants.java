@@ -11,12 +11,14 @@ public class Constants {
 
     public static final String ATTR_TENANT_ID = "tenantId";
 
+    public static final String ATTR_TENANT_TYPE = "tenantType";
+
     public static final String ATTR_USER_ID = "userId";
 
     public static final String ATTR_NICK_NAME = "nickName";
 
     public static final String DEFAULT_TENANT = "default";
 
-    public static final String ATTR_USER_TYPE = "userType";
+    public static final String ATTR_ROLE_TYPE = "roleType";
 
 }

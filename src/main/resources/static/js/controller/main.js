@@ -4,8 +4,8 @@
     /********************************** 首页 **************************************************/
 
     app.controller('MainController', function ($scope, $rootScope, $http, $location, $cookieStore) {
-        var username = $cookieStore.get("username");
-        $rootScope.username = username;
+        var userInfo = $cookieStore.get("userInfo");
+        $rootScope.userInfo = userInfo;
 
         $scope.activeWhen = function (value) {
             return value ? 'active' : '';
@@ -26,8 +26,8 @@
             if (username && password) {
                 $http.post("login", {loginName: username, loginPwd: password}).success(function (ret) {
                     if (ret.retCode == "00") {
-                        $rootScope.username = ret.data.nickName;
-                        $cookieStore.put("username", $rootScope.username);
+                        $rootScope.userInfo = ret.data;
+                        $cookieStore.put("userInfo", ret.data);
                         $location.path("/");
                     } else {
                         alert("用户名或密码不正确!");
@@ -41,8 +41,8 @@
 
         $scope.logout = function () {
             $http.post("logout").success(function () {
-                $rootScope.username = null;
-                $cookieStore.remove("username");
+                $rootScope.userInfo = null;
+                $cookieStore.remove("userInfo");
                 $location.path("/login");
             }).error(function(data,header,config,status){
                 //处理响应失败

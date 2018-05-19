@@ -1,14 +1,15 @@
 package org.allen.imocker.entity;
 
 import lombok.Data;
-import org.allen.imocker.entity.type.AccessKeyType;
+import org.allen.imocker.entity.type.ActivateStatus;
 import org.allen.imocker.entity.type.TenantType;
 
 import javax.persistence.*;
+import java.util.Date;
 
-@Entity
 @Data
-public class AccessKey extends BaseEntity{
+@Entity
+public class ActivationCode extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -18,17 +19,17 @@ public class AccessKey extends BaseEntity{
     @Enumerated(value = EnumType.STRING)
     private TenantType type;
 
-    /**
-     * Reference to Tenant or TenantUser according to AccessKeyType
-     */
     @Column
     private Long refId;
 
     @Column
-    private String accessKey;
+    private String activateCode;
 
     @Column
-    private boolean locked;
+    private Date expiredDate;
 
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private ActivateStatus status;
 
 }

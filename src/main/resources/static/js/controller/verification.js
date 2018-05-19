@@ -33,6 +33,67 @@
             $scope.getData(1);
         };
 
+
+        $scope.approve = function (id) {
+            var verificationReq = {tenantType:$scope.type, refId:id};
+
+            $http.post("verification/approve", verificationReq).success(function (ret) {
+                if (ret.retCode == "00") {
+                } else {
+                    alert(ret.retMsg);
+                }
+            });
+        };
+
+        $scope.reject = function (id) {
+            var verificationReq = {tenantType:$scope.type, refId:id};
+
+            $http.post("verification/reject", verificationReq).success(function (ret) {
+                if (ret.retCode == "00") {
+                } else {
+                    alert(ret.retMsg);
+                }
+            });
+        };
+
+        $scope.frozen = function (id) {
+            var verificationReq = {tenantType:$scope.type, refId:id};
+
+            $http.post("verification/frozen", verificationReq).success(function (ret) {
+                if (ret.retCode == "00") {
+                } else {
+                    alert(ret.retMsg);
+                }
+            });
+        };
+
+        $scope.unfreeze = function (id) {
+            var verificationReq = {tenantType:$scope.type, refId:id};
+
+            $http.post("verification/unfreeze", verificationReq).success(function (ret) {
+                if (ret.retCode == "00") {
+                } else {
+                    alert(ret.retMsg);
+                }
+            });
+        };
+    });
+
+    /********************************** Activation Controller **************************************************/
+
+    app.controller('ActivationCtrl', function ($scope, $rootScope, $http, $filter, $location) {
+
+        if ($location.search().token) {
+            var token = $location.search().token;
+            $http.post("activation?token=" + token).success(function (ret) {
+                if (ret.retCode == "00") {
+                } else {
+                    alert(ret.retMsg);
+                }
+            });
+        }
+
+
     });
 
 }());

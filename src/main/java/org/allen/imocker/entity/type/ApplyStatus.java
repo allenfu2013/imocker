@@ -12,7 +12,10 @@ public enum ApplyStatus {
     NORMAL,
 
     // 冻结
-    FROZEN;
+    FROZEN,
+
+    // 等待用户确认
+    CONFIRMATION;
 
 
 }

@@ -7,6 +7,7 @@ import org.allen.imocker.dao.ApiInfoRepository;
 import org.allen.imocker.entity.ApiCondition;
 import org.allen.imocker.entity.ApiInfo;
 import org.allen.imocker.entity.Tenant;
+import org.allen.imocker.entity.type.TenantType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,10 +75,14 @@ public class ApiInfoService {
     }
 
 
-    public ApiInfo findByShortApiNameAndMethod(Long tenantId, String shortApiName, String method) {
-        Tenant tenant = new Tenant();
-        tenant.setId(tenantId);
-        return apiInfoRepository.findOneByTenantAndShortApiNameAndMethod(tenant, shortApiName, method);
+    public ApiInfo findByShortApiNameAndMethod(TenantType tenantType, Long refId, String shortApiName, String method) {
+        if (TenantType.ORG == tenantType) {
+            Tenant tenant = new Tenant();
+            tenant.setId(refId);
+            return apiInfoRepository.findOneByTenantAndShortApiNameAndMethod(tenant, shortApiName, method);
+        } {
+            return apiInfoRepository.findOneByShortApiNameAndMethodAndUserId(shortApiName, method, refId);
+        }
     }
 
     public boolean existByShortApiNameAndMethod(Long tenantId, String shortApiName, String method) {

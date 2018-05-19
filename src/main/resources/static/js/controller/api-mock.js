@@ -41,7 +41,7 @@
         };
 
         $scope.create = function () {
-            if (!$rootScope.username) {
+            if (!$rootScope.userInfo) {
                 $("#username").val("");
                 $("#login-modal").modal();
             } else {
@@ -57,7 +57,6 @@
 
             if ($rootScope.checkStatus) {
                 if (confirm("确定执行?")) {
-                    $scope.apiInfo.updatedBy = $rootScope.username;
 
                     var conditions = [];
 
@@ -86,7 +85,6 @@
 
                     if (!id) {
                         /*创建*/
-                        $scope.apiInfo.createdBy = $rootScope.username;
                         $scope.apiInfo.status = 1;
                         $http.post("api-mocks", $scope.apiInfo).success(function (ret) {
                             if (ret.retCode == "00") {
@@ -114,7 +112,7 @@
         };
 
         $scope.edit = function (id) {
-            if (!$rootScope.username) {
+            if (!$rootScope.userInfo) {
                 $("#username").val("");
                 $("#login-modal").modal();
             } else {
@@ -132,7 +130,7 @@
         };
 
         $scope.delete = function (id) {
-            if (!$rootScope.username) {
+            if (!$rootScope.userInfo) {
                 $("#username").val("");
                 $("#login-modal").modal();
             } else {
