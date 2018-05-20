@@ -18,6 +18,7 @@ import org.allen.imocker.entity.type.TenantType;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +53,7 @@ public class VerificationService {
     @Autowired
     private AccessKeyRepository accessKeyRepository;
 
-
+    @Async
     public void pass(VerificationRequest request) {
 
         TenantType tenantType = request.getTenantType();

@@ -29,7 +29,7 @@
         </div>
         <div>
             <button class="btn btn-primary" style="width:100px; margin-right:50px;" ng-click="search()">查询</button>
-            <button class="btn btn-info" ng-click="reset()">重置</button>
+            <!--<button class="btn btn-default" style="width:100px;" ng-click="reset()">重置</button>-->
         </div>
     </div>
 
@@ -74,7 +74,7 @@
                 <td style="width:10%" ng-show="userInfo">
                     <a href="javascript:void(0)" ng-click="edit(obj.id)">编辑</a>
                     <a href="javascript:void(0)" ng-click="mock(obj.id)">测试</a>
-                    <a href="javascript:void(0)" ng-show="userInfo.nickName=='admin' || userInfo.nickName==obj.createdBy" ng-click="delete(obj.id)">删除</a>
+                    <a href="javascript:void(0)" ng-click="delete(obj.id)">删除</a>
                 </td>
             </tr>
             </tbody>

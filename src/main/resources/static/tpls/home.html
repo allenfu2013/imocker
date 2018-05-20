@@ -2,12 +2,10 @@
     <div class="container">
         <h1>imocker</h1>
 
-        <p>目的：基于接口先行的原则，多个系统间依赖进行开发联调的时候，为了方便快速开发，上游系统可以先调用Mock API，待依赖系统接口Ready，再将地址切换即可。</p>
+        <p>目的：微服务架构近年来变得越来越流行，而服务之间的通信常常使用http，当我们开发某个接口的时候可能也依赖其他微服务的接口，而当进行开发、测试的时候我们又愿意过多依赖外部接口，或者外部接口还没有准备好，这个时候我们就需要一种替换的方案。</p>
 
-        <p>举例：假如依赖的获取所有用户信息的接口名称为“/users”，方法为“GET”，系统地址为“http://api.example.com”，调用地址为“http://api.example.com/users”；
-            那么可以在imocker中创建接口名为“/users”的api，并设置需要的返回值，此时Mock调用地址为“{{uriPrefix}}/users”。
-        </p>
+        <p>举例：假如你正在开发的接口依赖于外部还未完成的接口，而这个外部接口定义已经确定。这时你可以在imocker上定义相同的接口，开发测试时调用imocker接口，而等外部接口好了切换过去即可。又或者你在测试时需要外部接口返回各种情况下的结果，也可以在imocker上设置根据条件返回结果。</p>
 
-        <p><a class="btn btn-primary btn-lg" href="#/register" role="button">立即申请</a></p>
+        <p><a class="btn btn-success" style="width: 150px;" href="#/register" role="button">立即注册</a></p>
     </div>
 </div>

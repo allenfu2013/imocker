@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal fade" data-backdrop="false" id="tenant-user-modal" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:60%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">创建用户</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>用户名</label>
+                                        <input ng-model="tenantUser.loginName" type="text" required="true"
+                                               class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>昵称</label>
+                                        <input type="text" ng-model="tenantUser.nickName" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>邮件</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="tenantUser.email">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger" ng-show="alertMsg" role="alert">{{alertMsg}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="margin-top:10px;">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" ng-click="createUser()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

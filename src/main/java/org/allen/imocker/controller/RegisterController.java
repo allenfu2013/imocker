@@ -2,6 +2,7 @@ package org.allen.imocker.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.allen.imocker.controller.request.RegisterRequest;
+import org.allen.imocker.controller.request.VerificationRequest;
 import org.allen.imocker.dao.TenantRepository;
 import org.allen.imocker.dao.TenantUserRepository;
 import org.allen.imocker.dto.ApiResponse;
@@ -12,6 +13,7 @@ import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.entity.TenantUser;
 import org.allen.imocker.entity.type.ApplyStatus;
 import org.allen.imocker.entity.type.TenantType;
+import org.allen.imocker.service.VerificationService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,12 +31,16 @@ public class RegisterController {
     @Autowired
     private TenantUserRepository tenantUserRepository;
 
+    @Autowired
+    private VerificationService verificationService;
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ApiResponse register(@RequestBody RegisterRequest request) {
         log.info("Register apply request: {}", request);
 
         // TODO  一个邮箱只能注册一次
 
+        Long refId = null;
         TenantType tenantType = request.getTenantType();
         if (TenantType.DEFAULT.equals(tenantType)) {
             Tenant defaultTenant = tenantRepository.findOneByAbbrName(Constants.DEFAULT_TENANT);
@@ -48,6 +54,7 @@ public class RegisterController {
             tenantUser.setStatus(ApplyStatus.APPLYING);
             tenantUser.setRoleType(RoleType.PERSONAL_USER);
             tenantUserRepository.save(tenantUser);
+            refId = tenantUser.getId();
         } else {
             Tenant tenant = new Tenant();
             tenant.setType(tenantType);
@@ -56,7 +63,13 @@ public class RegisterController {
             tenant.setEmail(request.getEmail());
             tenant.setStatus(ApplyStatus.APPLYING);
             tenantRepository.saveAndFlush(tenant);
+            refId = tenant.getId();
         }
+
+        VerificationRequest verificationReq = new VerificationRequest();
+        verificationReq.setTenantType(tenantType);
+        verificationReq.setRefId(refId);
+        verificationService.pass(verificationReq);
 
         log.info("Process register application finished");
         return new ApiResponse(ApiResponseCode.SUCCESS);

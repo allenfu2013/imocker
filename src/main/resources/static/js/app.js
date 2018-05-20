@@ -75,6 +75,9 @@
         }).when('/tenant/details/:id', {
             controller: 'TenantDetailsCtrl',
             templateUrl: 'tpls/tenant-detail.html'
+        }).when('/tenant-management', {
+            controller: 'TenantCtrl',
+            templateUrl: 'tpls/tenant-management.html'
         }).when('/login', {
             controller: 'MainController',
             templateUrl: 'tpls/login.html'

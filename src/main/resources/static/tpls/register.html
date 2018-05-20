@@ -6,7 +6,7 @@
                     <input type="radio" name="tenantType" ng-model="tenantType" ng-value="1"> 个人
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="tenantType" ng-model="tenantType" ng-value="2"> 组织
+                    <input type="radio" name="tenantType" ng-model="tenantType" ng-value="2"> 机构
                 </label>
             </div>
         </div>
@@ -52,23 +52,23 @@
             </div>
             <div class="col-md-12" id="orgContainer" ng-show="tenantType == 2">
                 <div style="margin-top: 10px; margin-bottom: 10px;">
-                    <label>组织账号可以在申请成功后为组织中的人创建个人账号</label>
+                    <label>机构账号可以在申请成功后为机构中的人创建个人账号</label>
                 </div>
 
                 <form class="form-horizontal" role="form">
 
                     <div class="form-group">
-                        <label for="abbrName" class="col-sm-1 control-label">组织简称</label>
+                        <label for="abbrName" class="col-sm-1 control-label">机构简称</label>
 
                         <div class="col-sm-11">
-                            <input type="text" class="form-control validate-inp-template" placeholder="4位(a~z)英文字母"
+                            <input type="text" class="form-control validate-inp-template" placeholder="英文字母及数字组合"
                                    ng-model="registerReq.tenantAbbrName" id="abbrName"
                                    style="width: 200px;">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="displayName" class="col-sm-1 control-label">组织名称</label>
+                        <label for="displayName" class="col-sm-1 control-label">机构全称</label>
 
                         <div class="col-sm-11">
                             <input type="text" class="form-control validate-inp-template"
@@ -86,9 +86,8 @@
                         <label for="email" class="col-sm-1 control-label">邮箱地址</label>
 
                         <div class="col-sm-11">
-                            <input type="text" class="form-control validate-inp-template" ng-model="registerReq.email"
-                                   id="email"
-                                   placeholder="" style="width: 200px;">
+                            <input type="text" class="form-control" ng-model="registerReq.email"
+                                   id="email" placeholder="用于发送激活账号邮件" style="width: 200px;">
                         </div>
                     </div>
 
@@ -96,14 +95,20 @@
                         <label class="col-sm-1 control-label"></label>
 
                         <div class="col-sm-11">
-                            <button class="btn btn-default" ng-click="register()">确定</button>
+                            <button class="btn btn-success" style="width: 100px;" ng-click="register()">确定</button>
                         </div>
                     </div>
                 </form>
             </div>
+
+            <div class="col-md-12">
+                <div class="alert alert-danger" style="width: 50%; margin-top: 10px;" ng-show="alertMsg" role="alert">
+                    {{alertMsg}}
+                </div>
+            </div>
         </div>
     </div>
     <div ng-show="registerStatus">
-        <label>申请已经提交，我们会立即处理，申请结果会以邮件通知到您，感谢您对本站的支持。</label>
+        <label>我们已经发送激活账号到您的邮箱，请前往您的邮箱激活账号，感谢您对本站的支持。</label>
     </div>
 </div>

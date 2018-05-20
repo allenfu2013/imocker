@@ -34,8 +34,8 @@
                         <li ng-class="activeWhen(path()=='/api-test')">
                             <a href="#/api-test">API测试</a>
                         </li>
-                        <li ng-show="userInfo.roleType == 'TENANT_ADMIN'" ng-class="activeWhen(path()=='/user-management')">
-                            <a href="#/user-management">用户管理</a>
+                        <li ng-show="userInfo.roleType == 'TENANT_ADMIN'" ng-class="activeWhen(path()=='/-management')">
+                            <a href="#/tenant-management">租户管理</a>
                         </li>
                         <li ng-show="userInfo.roleType == 'PLATFORM_ADMIN'" ng-class="activeWhen(path()=='/verification')">
                             <a href="#/verification">账号审核</a>
@@ -70,7 +70,7 @@
         </div>
     </div>
 </div>
-
+<div ng-include="'tpls/accesskey-modal.html'"></div>
 <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="js/angular.min-1.1.4.js"></script>
 <!--<script src="https://code.angularjs.org/1.1.4/angular.min.js"></script>-->

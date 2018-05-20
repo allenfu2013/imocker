@@ -5,6 +5,7 @@ import org.allen.imocker.controller.request.QueryTenantRequest;
 import org.allen.imocker.dao.TenantRepository;
 import org.allen.imocker.dto.ApiResponse;
 import org.allen.imocker.dto.ApiResponseCode;
+import org.allen.imocker.dto.Constants;
 import org.allen.imocker.dto.Pagination;
 import org.allen.imocker.entity.Tenant;
 import org.allen.imocker.entity.type.ApplyStatus;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
+import static org.allen.imocker.dto.Constants.ATTR_TENANT_ID;
 
 @Slf4j
 @RestController
@@ -48,6 +51,14 @@ public class TenantController {
         } else {
             apiResponse = new ApiResponse(ApiResponseCode.TENANT_EXIST);
         }
+        return apiResponse;
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ApiResponse queryTenant(@RequestAttribute(ATTR_TENANT_ID) Long tenantId) {
+        Tenant tenant = tenantRepository.findOne(tenantId);
+        ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS);
+        apiResponse.setData(tenant);
         return apiResponse;
     }
 

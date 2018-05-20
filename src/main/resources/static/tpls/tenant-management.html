@@ -1,0 +1,103 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="col-sm-6">
+                <label class="form-control-static">机构简称</label>
+            </div>
+            <div class="col-sm-6">
+                <p class="form-control-static">{{tenant.abbrName}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="col-sm-6">
+                <label class="form-control-static">机构名称</label>
+            </div>
+
+            <div class="col-sm-6">
+                <p class="form-control-static">{{tenant.displayName}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="col-sm-6">
+                <label class="form-control-static">邮箱地址</label>
+            </div>
+            <div class="col-sm-6">
+                <p class="form-control-static">{{tenant.email}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="border: 1px solid #ccc; padding:5px; border-radius: 4px;">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" ng-model="loginNameReq" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>昵称</label>
+                    <input type="text" ng-model="nickNameReq" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="text" ng-model="emailReq" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" style="width:100px; margin-right:50px;" ng-click="search()">查询</button>
+        </div>
+    </div>
+
+    <div style="overflow:hidden;margin-top:10px;margin-bottom:10px;">
+        <lable>每页</lable>
+        <select style="display:inline;width:50px;" id="pageLimit">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+
+        <button class="btn btn-success" style="float:right!important;width:100px;" ng-click="showCreateUserModal()">创建用户</button>
+    </div>
+
+    <div>
+        <table class="table table-bordered table-hover table-wrap">
+            <thead>
+            <tr>
+                <td>#</td>
+                <td>用户名</td>
+                <td>昵称</td>
+                <td>邮箱</td>
+                <td>状态</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="list.length==0">
+                <td colspan="6">没有找到任何数据</td>
+            </tr>
+            <tr ng-repeat="obj in list">
+                <td style="width: 5%">{{obj.id}}</td>
+                <td style="width:10%">{{obj.loginName}}</td>
+                <td style="width: 5%">{{obj.nickName}}</td>
+                <td style="width: 5%">{{obj.email}}</td>
+                <td style="width: 5%">{{obj.status}}</td>
+                <td style="width:10%">
+                    <a href="javascript:void(0)" ng-click="edit(obj.id)">编辑</a>
+                    <a href="javascript:void(0)" ng-show="userInfo.nickName=='admin'" ng-click="delete(obj.id)">删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <custom-pagination size="10" method="load"></custom-pagination>
+    </div>
+    <div ng-include="'tpls/tenant-user-modal.html'"></div>
+</div>
