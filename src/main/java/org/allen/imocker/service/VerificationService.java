@@ -82,6 +82,7 @@ public class VerificationService {
         activationCodeRepository.save(activationCode);
 
         Map<String, Object> data = Maps.newHashMap();
+        data.put("email", email);
         data.put("activationUrl", String.format(activationUrl, uuid));
         boolean sendStatus = emailSender.send(SUBJECT, emailFrom, new String[]{email}, TEMPLATE_NAME, data);
         log.info("Send activation email to {}, status {}", email, sendStatus);

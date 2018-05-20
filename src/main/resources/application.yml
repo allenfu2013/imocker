@@ -61,9 +61,6 @@ spring:
       mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
 
 app:
-  admin:
-    user: admin
-    password: password
   uri:
     prefix: http://localhost:8080/imocker/api
   activation:

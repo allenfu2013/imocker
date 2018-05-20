@@ -2,7 +2,6 @@ package org.allen.imocker.controller;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.allen.imocker.common.AppProperties;
 import org.allen.imocker.controller.request.CreateApiInfoRequest;
 import org.allen.imocker.controller.request.QueryApiInfoRequest;
 import org.allen.imocker.controller.request.UpdateApiInfoRequest;
@@ -18,6 +17,7 @@ import org.allen.imocker.entity.type.TenantType;
 import org.allen.imocker.service.ApiInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -34,11 +34,11 @@ import java.util.List;
 @RequestMapping("/api-mocks")
 public class ApiMockController {
 
-    @Autowired
-    private ApiInfoService apiInfoService;
+    @Value("${app.uri.prefix}")
+    private String appUriPrefix;
 
     @Autowired
-    private AppProperties appProperties;
+    private ApiInfoService apiInfoService;
 
     @Autowired
     private AccessKeyRepository accessKeyRepository;
@@ -157,7 +157,7 @@ public class ApiMockController {
         ApiInfoVo apiInfoVo = convert(apiInfo, true);
         List<AccessKey> accessKeys = accessKeyRepository.findByTypeAndRefId(tenantType , TenantType.ORG == tenantType ? tenantId : apiInfo.getUserId());
         if (!accessKeys.isEmpty()) {
-            apiInfoVo.setMockUrl(appProperties.getAppUriPrefix() + "/" + accessKeys.get(0).getAccessKey() + apiInfo.getApiName());
+            apiInfoVo.setMockUrl(appUriPrefix + "/" + accessKeys.get(0).getAccessKey() + apiInfo.getApiName());
         }
         ApiResponse apiResponse = new ApiResponse(ApiResponseCode.SUCCESS).setData(apiInfoVo);
         log.info("get api mock end, id: {}, result:{}", id, JSON.toJSONString(apiResponse));
