@@ -107,7 +107,7 @@ public class ApiController {
     private String getConditionRetValue(ApiInfo apiInfo, HttpServletRequest request) {
         String contentType = apiInfo.getContentType();
         JSONObject jsonObject = null;
-        if (CONTENT_TYPE_JSON.equalsIgnoreCase(contentType)){
+        if (contentType.contains(CONTENT_TYPE_JSON)){
             try {
                 BufferedReader reader = request.getReader();
                 String content = IOUtils.toString(reader);
