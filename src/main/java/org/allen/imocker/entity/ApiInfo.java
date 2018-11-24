@@ -2,6 +2,7 @@ package org.allen.imocker.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.http.HttpStatus;
 
 import javax.persistence.*;
 import java.util.List;
@@ -42,6 +43,9 @@ public class ApiInfo extends BaseEntity {
 
     @Column
     private Boolean hasCondition;
+
+    @Column
+    private Integer httpStatus = HttpStatus.OK.value();
 
     @Column
     private String retResult;

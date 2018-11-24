@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,6 +50,7 @@ public class ApiController {
     @RequestMapping(value = "/api/{accessKey}/**")
     @ResponseBody
     public Object mockApi(HttpServletRequest request,
+                          HttpServletResponse response,
                           @PathVariable String accessKey) {
         Object apiResponse = new ApiResponse(ApiResponseCode.API_NOT_FOUND);
         String servletPath = request.getServletPath();
@@ -68,6 +70,7 @@ public class ApiController {
             if (existApiInfo != null) {
                 try {
                     apiResponse = toApiResponse(existApiInfo, request);
+                    response.setStatus(existApiInfo.getHttpStatus());
                 } catch (Exception e) {
                     log.error("parse response failed", e);
                     apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
@@ -82,6 +85,7 @@ public class ApiController {
                             if (!StringUtils.isEmpty(value) && !value.contains("/")) {
                                 if (method.equalsIgnoreCase(apiInfo.getMethod())) {
                                     apiResponse = toApiResponse(apiInfo, request);
+                                    response.setStatus(apiInfo.getHttpStatus());
                                 } else {
                                     apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
                                 }

@@ -192,6 +192,7 @@ public class ApiMockController {
 
         updateObj.setMethod(request.getMethod());
         updateObj.setContentType(StringUtils.isEmpty(request.getContentType()) ? null : request.getContentType());
+        updateObj.setHttpStatus(request.getHttpStatus());
         updateObj.setRetResult(request.getRetResult());
         updateObj.setHasCondition(!CollectionUtils.isEmpty(request.getApiConditionList()));
         updateObj.setApiConditionList(buildApiConditions(updateObj, request.getApiConditionList()));
@@ -255,6 +256,7 @@ public class ApiMockController {
         apiInfoVo.setApiName(apiInfo.getApiName());
         apiInfoVo.setMethod(apiInfo.getMethod());
         apiInfoVo.setContentType(apiInfo.getContentType());
+        apiInfoVo.setHttpStatus(apiInfo.getHttpStatus());
         apiInfoVo.setRetResult(apiInfo.getRetResult());
         apiInfoVo.setCreatedBy(apiInfo.getCreatedBy());
         apiInfoVo.setUpdatedBy(apiInfo.getUpdatedBy());

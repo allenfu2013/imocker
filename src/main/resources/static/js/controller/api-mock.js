@@ -191,7 +191,7 @@
         };
 
         $scope.cancel = function () {
-            $window.location.reload();
+            // $window.location.reload();
         };
 
         $scope.mock = function (id) {
