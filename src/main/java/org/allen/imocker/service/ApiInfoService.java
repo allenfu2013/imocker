@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,6 +65,14 @@ public class ApiInfoService {
 
                 if (request.getUserId() != null) {
                     list.add(cb.equal(root.get("userId").as(Long.class), request.getUserId()));
+                }
+
+                if (request.getStart() != null) {
+                    list.add(cb.greaterThanOrEqualTo(root.get("updatedAt").as(Date.class), request.getStart()));
+                }
+
+                if (request.getEnd() != null) {
+                    list.add(cb.lessThanOrEqualTo(root.get("updatedAt").as(Date.class), request.getEnd()));
                 }
 
                 return cb.and(list.toArray(new Predicate[list.size()]));

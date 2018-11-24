@@ -16,11 +16,14 @@
             var apiName = $("#apiName").val();
             var method = $("#method").val();
             var operator = $("#operator").val();
+            var start = $("#start").val();
+            var end = $("#end").val();
             var pageSize = $("#pageLimit").val();
             $scope.pageSize = pageSize;
 
             var url = "api-mocks/page-query?pageNo=" + page + "&pageSize=" + pageSize +
-                "&apiName=" + apiName + "&method=" + method + "&operator=" + operator ;
+                "&apiName=" + apiName + "&method=" + method + "&operator=" + operator +
+                "&start=" + start + "&end=" + end;
             $http.get(url).success(function (ret) {
                 if (ret.retCode == "00") {
                     callback && callback(ret.data);
@@ -38,6 +41,8 @@
             $("#apiName").val("");
             $("#method").val("");
             $("#operator").val("");
+            $("#start").val("");
+            $("#end").val("");
         };
 
         $scope.create = function () {

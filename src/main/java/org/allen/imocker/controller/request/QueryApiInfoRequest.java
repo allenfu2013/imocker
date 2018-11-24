@@ -2,6 +2,8 @@ package org.allen.imocker.controller.request;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class QueryApiInfoRequest {
 
@@ -18,5 +20,9 @@ public class QueryApiInfoRequest {
     private String createdBy;
 
     private Long userId;
+
+    private Date start;
+
+    private Date end;
 
 }

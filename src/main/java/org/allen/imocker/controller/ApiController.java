@@ -69,8 +69,7 @@ public class ApiController {
             ApiInfo existApiInfo = apiInfoService.findByShortApiNameAndMethod(accessKeyEntity.getType(), accessKeyEntity.getRefId(), apiName, method);
             if (existApiInfo != null) {
                 try {
-                    apiResponse = toApiResponse(existApiInfo, request);
-                    response.setStatus(existApiInfo.getHttpStatus());
+                    apiResponse = toApiResponse(existApiInfo, request, response);
                 } catch (Exception e) {
                     log.error("parse response failed", e);
                     apiResponse = new ApiResponse(ApiResponseCode.SERVER_ERROR);
@@ -84,8 +83,7 @@ public class ApiController {
                         for (String value : variableMap.values()) {
                             if (!StringUtils.isEmpty(value) && !value.contains("/")) {
                                 if (method.equalsIgnoreCase(apiInfo.getMethod())) {
-                                    apiResponse = toApiResponse(apiInfo, request);
-                                    response.setStatus(apiInfo.getHttpStatus());
+                                    apiResponse = toApiResponse(apiInfo, request, response);
                                 } else {
                                     apiResponse = new ApiResponse(ApiResponseCode.API_METHOD_INVALID);
                                 }
@@ -104,65 +102,70 @@ public class ApiController {
         return apiResponse;
     }
 
-    private String toApiResponse(ApiInfo apiInfo, HttpServletRequest request) {
-        return  apiInfo.getHasCondition() ? getConditionRetValue(apiInfo, request) : apiInfo.getRetResult();
-    }
+    private String toApiResponse(ApiInfo apiInfo, HttpServletRequest request, HttpServletResponse response) {
+        if (!apiInfo.getHasCondition()) {
+            response.setStatus(apiInfo.getHttpStatus());
+            return apiInfo.getRetResult();
+        } else {
+            // TODO 暂时先用统一的status, 后续需要根据条件配置返回status
+            response.setStatus(apiInfo.getHttpStatus());
 
-    private String getConditionRetValue(ApiInfo apiInfo, HttpServletRequest request) {
-        String contentType = apiInfo.getContentType();
-        JSONObject jsonObject = null;
-        if (contentType.contains(CONTENT_TYPE_JSON)){
-            try {
-                BufferedReader reader = request.getReader();
-                String content = IOUtils.toString(reader);
-                if (StringUtils.isEmpty(content))
-                    return apiInfo.getRetResult();
-                jsonObject = JSON.parseObject(content);
-            } catch (Exception e) {
-                log.error("Parse request body failed", e);
-                throw new RuntimeException("Parse request body failed", e);
-            }
-        }
-
-        List<ApiCondition> apiConditionList = apiInfoService.getApiConditionList(apiInfo);
-
-        for (ApiCondition apiCondition : apiConditionList) {
-            String condKey = apiCondition.getCondKey();
-            String condType = apiCondition.getCondType();
-            String condExpression = apiCondition.getCondExpression();
-            String condValue = apiCondition.getCondValue();
-            String mockRetValue = apiCondition.getMockRetValue();
-
-            String paramValue = null;
-            if (CONTENT_TYPE_URLENCODED.equalsIgnoreCase(contentType) || CONTENT_TYPE_FORM_DATA.equalsIgnoreCase(contentType)) {
-                paramValue = request.getParameter(condKey);
-            } else if (CONTENT_TYPE_JSON.equalsIgnoreCase(contentType)){
-                paramValue = jsonObject.getString(condKey);
-            }
-
-            if (!StringUtils.isEmpty(paramValue)) {
-                Object x = null;
-                Object y = null;
-                if ("Integer".equalsIgnoreCase(condType) || "Long".equalsIgnoreCase(condType)) {
-                    x = Long.parseLong(paramValue);
-                    y = Long.parseLong(condValue);
-                } else if ("BigDecimal".equalsIgnoreCase(condType)) {
-                    x = new BigDecimal(paramValue);
-                    y = new BigDecimal(condValue);
-                } else if ("Boolean".equalsIgnoreCase(condType)) {
-                    x = Boolean.parseBoolean(paramValue);
-                    y = Boolean.parseBoolean(condValue);
-                } else {
-                    x = paramValue;
-                    y = condValue;
-                }
-
-                boolean flag = CalcUtil.compare(x, condExpression, y);
-                if (flag) {
-                    return mockRetValue;
+            String contentType = apiInfo.getContentType();
+            JSONObject jsonObject = null;
+            if (contentType.contains(CONTENT_TYPE_JSON)){
+                try {
+                    BufferedReader reader = request.getReader();
+                    String content = IOUtils.toString(reader);
+                    if (StringUtils.isEmpty(content))
+                        return apiInfo.getRetResult();
+                    jsonObject = JSON.parseObject(content);
+                } catch (Exception e) {
+                    log.error("Parse request body failed", e);
+                    throw new RuntimeException("Parse request body failed", e);
                 }
             }
+
+            List<ApiCondition> apiConditionList = apiInfoService.getApiConditionList(apiInfo);
+
+            for (ApiCondition apiCondition : apiConditionList) {
+                String condKey = apiCondition.getCondKey();
+                String condType = apiCondition.getCondType();
+                String condExpression = apiCondition.getCondExpression();
+                String condValue = apiCondition.getCondValue();
+                String mockRetValue = apiCondition.getMockRetValue();
+
+                String paramValue = null;
+                if (CONTENT_TYPE_URLENCODED.equalsIgnoreCase(contentType) || CONTENT_TYPE_FORM_DATA.equalsIgnoreCase(contentType)) {
+                    paramValue = request.getParameter(condKey);
+                } else if (CONTENT_TYPE_JSON.equalsIgnoreCase(contentType)){
+                    paramValue = jsonObject.getString(condKey);
+                }
+
+                if (!StringUtils.isEmpty(paramValue)) {
+                    Object x = null;
+                    Object y = null;
+                    if ("Integer".equalsIgnoreCase(condType) || "Long".equalsIgnoreCase(condType)) {
+                        x = Long.parseLong(paramValue);
+                        y = Long.parseLong(condValue);
+                    } else if ("BigDecimal".equalsIgnoreCase(condType)) {
+                        x = new BigDecimal(paramValue);
+                        y = new BigDecimal(condValue);
+                    } else if ("Boolean".equalsIgnoreCase(condType)) {
+                        x = Boolean.parseBoolean(paramValue);
+                        y = Boolean.parseBoolean(condValue);
+                    } else {
+                        x = paramValue;
+                        y = condValue;
+                    }
+
+                    boolean flag = CalcUtil.compare(x, condExpression, y);
+                    if (flag) {
+                        return mockRetValue;
+                    }
+                }
+            }
+            return apiInfo.getRetResult();
         }
-        return apiInfo.getRetResult();
     }
+
 }

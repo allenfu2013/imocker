@@ -26,6 +26,18 @@
                     <input type="text" class="form-control" id="operator" />
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="start">更新时间(开始)</label>
+                    <input type="text" style="height: 34px;" class="form-control Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd 00:00:00'})" id="start" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="end">更新时间(结束)</label>
+                    <input type="text" style="height: 34px;" class="form-control Wdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd 23:59:59'})" id="end" />
+                </div>
+            </div>
         </div>
         <div>
             <button class="btn btn-primary" style="width:100px; margin-right:50px;" ng-click="search()">查询</button>

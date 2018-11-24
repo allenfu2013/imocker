@@ -21,12 +21,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriTemplate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -98,7 +100,10 @@ public class ApiMockController {
                             @RequestParam(value = "apiName", required = false) String apiName,
                             @RequestParam(value = "method", required = false) String method,
                             @RequestParam(value = "operator", required = false) String operator,
-                            @RequestParam(value = "status", required = false) Integer status) {
+                            @RequestParam(value = "status", required = false) Integer status,
+                            @RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date start,
+                            @RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date end
+                            ) {
         log.info("query api mock start, tenantId:{}, userId:{}, pageNo:{}, pageSize:{}, apiName:{}, method:{}, operator:{}, status:{}",
                 tenantId, userId, pageNo, pageSize, apiName, method, operator, status);
         ApiResponse apiResponse = null;
@@ -106,10 +111,11 @@ public class ApiMockController {
         try {
             QueryApiInfoRequest request = new QueryApiInfoRequest();
             request.setTenantId(tenantId);
-//            request.setProject();
             request.setApiName(apiName);
             request.setMethod(method);
             request.setUpdatedBy(operator);
+            request.setStart(start);
+            request.setEnd(end);
 
             if (TenantType.DEFAULT == tenantType) {
                 request.setUserId(userId);
